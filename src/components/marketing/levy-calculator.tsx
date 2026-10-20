@@ -61,8 +61,21 @@ const DEFAULTS: Inputs = {
   under18s: 0,
 }
 
-export function LevyCalculator() {
-  const [inputs, setInputs] = useState<Inputs>(DEFAULTS)
+export function LevyCalculator({
+  defaultCouncil = 'edinburgh',
+  defaultCheckIn,
+  defaultCheckOut,
+}: {
+  defaultCouncil?: CouncilValue
+  defaultCheckIn?: string
+  defaultCheckOut?: string
+} = {}) {
+  const [inputs, setInputs] = useState<Inputs>({
+    ...DEFAULTS,
+    council: defaultCouncil,
+    checkIn: defaultCheckIn ?? DEFAULTS.checkIn,
+    checkOut: defaultCheckOut ?? DEFAULTS.checkOut,
+  })
 
   const council = COUNCILS.find((c) => c.value === inputs.council)!
   const isWales = council.country === 'wales'
