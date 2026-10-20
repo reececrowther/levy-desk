@@ -28,14 +28,11 @@ export default function PrivacyPage() {
 
         <Section title="1. Who we are">
           <p>
-            Levy Desk is operated by <strong>[YOUR COMPANY NAME]</strong>, registered in England and Wales (company number <strong>[YOUR COMPANY NUMBER]</strong>), with registered address at <strong>[YOUR REGISTERED ADDRESS]</strong>.
+            Levy Desk is a trading name operated as a sole trader in the United Kingdom.
           </p>
           <p>
             We are the data controller for personal data processed through levydesk.co.uk. For data protection enquiries, contact us at <a href="mailto:privacy@levydesk.co.uk" className="text-orange-600 hover:underline">privacy@levydesk.co.uk</a>.
           </p>
-          <Note>
-            We are registered with the Information Commissioner's Office (ICO) under registration number <strong>[YOUR ICO REGISTRATION NUMBER]</strong>. You can verify this at ico.org.uk.
-          </Note>
         </Section>
 
         <Section title="2. What data we collect">
@@ -218,8 +215,7 @@ export default function PrivacyPage() {
         <Section title="10. Contact us">
           <p>For any data protection questions or to exercise your rights:</p>
           <p>
-            Email: <a href="mailto:privacy@levydesk.co.uk" className="text-orange-600 hover:underline">privacy@levydesk.co.uk</a><br />
-            Post: <strong>[YOUR COMPANY NAME]</strong>, <strong>[YOUR REGISTERED ADDRESS]</strong>
+            Email: <a href="mailto:privacy@levydesk.co.uk" className="text-orange-600 hover:underline">privacy@levydesk.co.uk</a>
           </p>
         </Section>
 

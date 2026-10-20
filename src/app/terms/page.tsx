@@ -35,7 +35,7 @@ export default function TermsPage() {
 
         <Section title="1. The service">
           <p>
-            Levy Desk is provided by <strong>[YOUR COMPANY NAME]</strong>, registered in England and Wales (company number <strong>[YOUR COMPANY NUMBER]</strong>). References to "we", "us", or "Levy Desk" mean that company.
+            Levy Desk is a trading name operated as a sole trader in the United Kingdom. References to "we", "us", or "Levy Desk" mean that operator.
           </p>
           <p>
             The service helps holiday let owners and letting agents calculate visitor levies and produce quarterly return packs for councils in Scotland and Wales. It is a software tool, not a filing agent, accountant, or legal adviser.
@@ -149,7 +149,7 @@ export default function TermsPage() {
 
         <Section title="12. Contact">
           <p>
-            For questions about these terms, email <a href="mailto:hello@levydesk.co.uk" className="text-orange-600 hover:underline">hello@levydesk.co.uk</a> or write to <strong>[YOUR COMPANY NAME]</strong>, <strong>[YOUR REGISTERED ADDRESS]</strong>.
+            For questions about these terms, email <a href="mailto:hello@levydesk.co.uk" className="text-orange-600 hover:underline">hello@levydesk.co.uk</a>.
           </p>
         </Section>
 
