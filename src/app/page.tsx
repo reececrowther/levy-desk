@@ -7,9 +7,11 @@ import { LevyCalculator } from '@/components/marketing/levy-calculator'
 // ─── SEO ──────────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: 'Visitor Levy Calculator — Edinburgh, Glasgow, Cardiff | Levy Desk',
+  title: {
+    absolute: 'Visitor Levy Calculator — Scotland & Wales | Levy Desk',
+  },
   description:
-    'Free visitor levy calculator for holiday let owners and letting agents in Scotland and Wales. Apply the correct rate, night cap, and exemptions for Edinburgh, Glasgow, Cardiff, and more. Produce a ready-to-file return pack.',
+    'Free visitor levy calculator for holiday let owners in Scotland and Wales. Correct rates, night caps and exemptions for Edinburgh, Glasgow, Cardiff and more.',
   keywords: [
     'visitor levy calculator',
     'Edinburgh visitor levy',
@@ -24,18 +26,19 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Visitor Levy Calculator | Levy Desk',
+    title: 'Visitor Levy Calculator — Scotland & Wales',
     description:
-      'Calculate your visitor levy correctly. Apply the right rate for Edinburgh, Glasgow, or Cardiff — no spreadsheet required.',
+      'Correct rates, night caps and exemptions applied automatically. Free to use for Edinburgh, Glasgow, Cardiff and more.',
     type: 'website',
     locale: 'en_GB',
     url: '/',
+    siteName: 'Levy Desk',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Visitor Levy Calculator — Edinburgh, Glasgow, Cardiff',
+    title: 'Visitor Levy Calculator — Scotland & Wales',
     description:
-      'Calculate your visitor levy correctly. Apply the right rate for Edinburgh, Glasgow, or Cardiff — no spreadsheet required.',
+      'Correct rates, night caps and exemptions applied automatically. Free to use for Edinburgh, Glasgow, Cardiff and more.',
   },
 }
 
