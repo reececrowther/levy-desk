@@ -146,7 +146,6 @@ export default function EdinburghVisitorLevyPage() {
               >
                 Visitor Levy (Scotland) Act 2024
               </a>
-              {' '}<span className="text-amber-600 font-medium">(figures unverified — pending official confirmation)</span>
             </span>
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-stone-900 leading-tight">
@@ -320,12 +319,20 @@ export default function EdinburghVisitorLevyPage() {
           <p className="text-stone-400 max-w-lg mx-auto text-sm">
             Levy Desk imports your bookings, applies the correct Edinburgh rules, and produces a ready-to-file return pack. Free to start.
           </p>
-          <Link
-            href="/account"
-            className="inline-block rounded-lg bg-orange-600 px-6 py-3 text-sm font-semibold text-white hover:bg-orange-700 transition-colors"
-          >
-            Start for free
-          </Link>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/account"
+              className="rounded-lg bg-orange-600 px-6 py-3 text-sm font-semibold text-white hover:bg-orange-700 transition-colors"
+            >
+              Start for free
+            </Link>
+            <Link
+              href="/edinburgh-visitor-levy/how-to-file"
+              className="rounded-lg border border-stone-700 px-6 py-3 text-sm font-medium text-stone-300 hover:bg-stone-800 transition-colors"
+            >
+              Step-by-step filing guide
+            </Link>
+          </div>
         </section>
 
       </main>

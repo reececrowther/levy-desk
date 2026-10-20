@@ -25,6 +25,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-10-20',
     },
     {
+      url: `${BASE_URL}/edinburgh-visitor-levy/how-to-file`,
+      lastModified: '2026-10-20',
+    },
+    {
       url: `${BASE_URL}/glasgow-visitor-levy`,
       lastModified: '2026-10-20',
     },
