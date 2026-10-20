@@ -1,12 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
+import { STRIPE_PRICES } from '@/lib/billing-config'
 import { db } from '@/lib/db'
 import type Stripe from 'stripe'
 
 export const runtime = 'nodejs'
 
-// Maps Stripe subscription status to a Levy Desk Plan value
-function planFromMetadata(metadata: Stripe.Metadata): string | null {
+// Resolve a plan from a Stripe price ID. Falls back to checkout metadata for
+// backwards compatibility if price IDs are not yet configured in env.
+function planFromPriceId(priceId: string): 'OWNER' | 'AGENT' | 'BNB' | null {
+  if (priceId === STRIPE_PRICES.OWNER) return 'OWNER'
+  if (priceId === STRIPE_PRICES.AGENT) return 'AGENT'
+  if (priceId === STRIPE_PRICES.BNB) return 'BNB'
+  return null
+}
+
+function planFromMetadata(metadata: Stripe.Metadata): 'OWNER' | 'AGENT' | 'BNB' | null {
   const plan = metadata.plan
   if (plan === 'OWNER' || plan === 'AGENT' || plan === 'BNB') return plan
   return null
@@ -57,6 +66,16 @@ export async function POST(req: NextRequest) {
           where: { stripeCustomerId: customerId },
           data: { plan: 'FREE', stripeSubscriptionId: null },
         })
+      } else {
+        // Plan may have changed via billing portal price switch
+        const priceId = sub.items.data[0]?.price.id
+        const plan = priceId ? planFromPriceId(priceId) : null
+        if (plan) {
+          await db.workspace.updateMany({
+            where: { stripeCustomerId: customerId },
+            data: { plan, stripeSubscriptionId: sub.id },
+          })
+        }
       }
       break
     }
