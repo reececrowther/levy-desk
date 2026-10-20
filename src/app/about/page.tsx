@@ -96,10 +96,10 @@ export default function AboutPage() {
         <section className="space-y-4">
           <h2 className="text-xl font-semibold text-stone-900">Who we are</h2>
           <p className="text-stone-600 leading-relaxed">
-            Levy Desk is a small UK product built specifically for the Scottish and Welsh visitor levy schemes. We are based in the UK and built this tool to fill a gap that accountants, letting agents, and hosts were all running into at the same time.
+            Levy Desk was founded by <strong className="text-stone-800">Reece</strong>, a UK-based developer who built this tool after seeing holiday let hosts and letting agents struggle with the complexity of the new visitor levy schemes. We are a small, independent product — not affiliated with any council, tourist board, or booking platform.
           </p>
           <p className="text-stone-600 leading-relaxed">
-            We are independent — not affiliated with any council, tourist board, or booking platform.
+            Our goal is straightforward: make it impossible to file an incorrect return, and make the process fast enough that compliance stops being a burden.
           </p>
         </section>
 

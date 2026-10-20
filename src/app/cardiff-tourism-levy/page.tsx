@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { MarketingNav } from '@/components/marketing/marketing-nav'
+import { MarketingFooter } from '@/components/marketing/marketing-footer'
 import { LevyCalculator } from '@/components/marketing/levy-calculator'
 
 export const metadata: Metadata = {
-  title: { absolute: 'Cardiff Tourism Levy — Welsh Visitor Accommodation Levy Guide 2027 | Levy Desk' },
+  title: { absolute: 'Cardiff Tourism Levy — Wales VAL Guide 2027 | Levy Desk' },
   description:
     "Cardiff's Welsh Visitor Accommodation Levy starts April 2027. £1.30 per person per night (£0.75 for hostels and campsites). Under-18s and stays over 31 nights are exempt. Free calculator.",
   keywords: [
@@ -90,8 +91,8 @@ function BreadcrumbSchema() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Levy Desk', item: 'https://levydesk.co.uk' },
-      { '@type': 'ListItem', position: 2, name: 'Cardiff Tourism Levy', item: 'https://levydesk.co.uk/cardiff-tourism-levy' },
+      { '@type': 'ListItem', position: 1, name: 'Levy Desk', item: 'https://www.levydesk.co.uk' },
+      { '@type': 'ListItem', position: 2, name: 'Cardiff Tourism Levy', item: 'https://www.levydesk.co.uk/cardiff-tourism-levy' },
     ],
   }
   return (
@@ -120,12 +121,33 @@ export default function CardiffTourismLevyPage() {
 
         {/* Hero */}
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
               From 1 Apr 2027
             </span>
             <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
               Wales
+            </span>
+            <span className="text-xs text-stone-400">
+              Last reviewed: October 2026 &middot;{' '}
+              <a
+                href="https://www.gov.wales/visitor-accommodation-levy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-stone-600"
+              >
+                Welsh Government
+              </a>
+              {' '}&middot;{' '}
+              <a
+                href="https://www.legislation.gov.uk/asc/2024/2/contents"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-stone-600"
+              >
+                Visitor Accommodation (Wales) Act 2024
+              </a>
+              {' '}<span className="text-amber-600 font-medium">(figures unverified — pending official confirmation)</span>
             </span>
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-stone-900 leading-tight">
@@ -320,21 +342,9 @@ export default function CardiffTourismLevyPage() {
           </Link>
         </section>
 
-        {/* Footer */}
-        <footer className="border-t border-stone-200 pt-8 text-sm text-stone-400 flex flex-wrap justify-between gap-4">
-          <div className="space-y-1">
-            <p className="font-medium text-stone-600">Levy Desk</p>
-            <p>Visitor levy returns for Scotland and Wales</p>
-          </div>
-          <div className="flex gap-6">
-            <Link href="/" className="hover:text-stone-600">Home</Link>
-            <Link href="/edinburgh-visitor-levy" className="hover:text-stone-600">Edinburgh</Link>
-            <Link href="/glasgow-visitor-levy" className="hover:text-stone-600">Glasgow</Link>
-            <Link href="/login" className="hover:text-stone-600">Sign in</Link>
-          </div>
-        </footer>
-
       </main>
+
+      <MarketingFooter />
     </div>
   )
 }

@@ -68,18 +68,26 @@ const FAQ_ITEMS = [
     q: "When are Edinburgh returns due?",
     a: "Edinburgh uses quarterly calendar returns. Q3 2026 (1 July – 30 September) was due by 31 October 2026. Q4 2026 (1 October – 31 December) is due by 31 January 2027. Levy Desk shows the next deadline on your dashboard and sends reminders.",
   },
+  {
+    q: "How does Glasgow's visitor levy work?",
+    a: "Glasgow's visitor levy is 5% of gross accommodation income, the same rate as Edinburgh. The key difference is that Glasgow has no night cap — every night of a stay is charged, unlike Edinburgh which stops at 5 nights. Glasgow also has no host retention allowance.",
+  },
+  {
+    q: "When does Glasgow's levy start?",
+    a: "Glasgow's visitor levy is confirmed to start from 1 January 2027. Quarterly returns follow the same calendar pattern as Edinburgh. Levy Desk will calculate Glasgow levies automatically for any booking from that date.",
+  },
 ]
 
 const COUNCIL_TABLE = [
-  { name: 'Edinburgh',           country: 'Scotland', rate: '5% of gross',                 cap: '5 nights',  liveFrom: '24 Jul 2026', status: 'Live',      verified: false },
-  { name: 'Glasgow',             country: 'Scotland', rate: '5% of gross',                 cap: 'None',      liveFrom: '1 Jan 2027',  status: 'Confirmed', verified: false },
-  { name: 'Aberdeen',            country: 'Scotland', rate: '7% of gross',                 cap: 'None',      liveFrom: '1 Apr 2027',  status: 'Confirmed', verified: false },
-  { name: 'Stirling',            country: 'Scotland', rate: '3% of gross',                 cap: '7 nights',  liveFrom: '1 Jun 2027',  status: 'Confirmed', verified: false },
-  { name: 'West Dunbartonshire', country: 'Scotland', rate: '5% of gross',                 cap: 'None',      liveFrom: '1 Jul 2027',  status: 'Confirmed', verified: false },
-  { name: 'Cardiff',             country: 'Wales',    rate: '£1.30/person/night',           cap: '31 nights', liveFrom: '1 Apr 2027',  status: 'Confirmed', verified: false },
+  { name: 'Edinburgh',           country: 'Scotland', rate: '5% of gross',       cap: '5 nights',  liveFrom: '24 Jul 2026', status: 'Live',      verified: false, href: '/edinburgh-visitor-levy' },
+  { name: 'Glasgow',             country: 'Scotland', rate: '5% of gross',       cap: 'None',      liveFrom: '1 Jan 2027',  status: 'Confirmed', verified: false, href: '/glasgow-visitor-levy' },
+  { name: 'Aberdeen',            country: 'Scotland', rate: '7% of gross',       cap: 'None',      liveFrom: '1 Apr 2027',  status: 'Confirmed', verified: false, href: null },
+  { name: 'Stirling',            country: 'Scotland', rate: '3% of gross',       cap: '7 nights',  liveFrom: '1 Jun 2027',  status: 'Confirmed', verified: false, href: null },
+  { name: 'West Dunbartonshire', country: 'Scotland', rate: '5% of gross',       cap: 'None',      liveFrom: '1 Jul 2027',  status: 'Confirmed', verified: false, href: null },
+  { name: 'Cardiff',             country: 'Wales',    rate: '£1.30/person/night', cap: '31 nights', liveFrom: '1 Apr 2027',  status: 'Confirmed', verified: false, href: '/cardiff-tourism-levy' },
 ]
 
-// ─── JSON-LD FAQ schema ────────────────────────────────────────────────────────
+// ─── JSON-LD schemas ──────────────────────────────────────────────────────────
 
 function FaqSchema() {
   const schema = {
@@ -99,6 +107,91 @@ function FaqSchema() {
   )
 }
 
+function OrganizationSchema() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Levy Desk',
+    url: 'https://www.levydesk.co.uk',
+    logo: 'https://www.levydesk.co.uk/icon.png',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: 'hello@levydesk.co.uk',
+      contactType: 'customer support',
+    },
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
+function SoftwareApplicationSchema() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Levy Desk',
+    url: 'https://www.levydesk.co.uk',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    description: 'Visitor levy return software for holiday let owners and letting agents in Scotland and Wales. Calculates Edinburgh, Glasgow, and Cardiff levies and produces ready-to-file quarterly return packs.',
+    offers: [
+      {
+        '@type': 'Offer',
+        name: 'Free',
+        price: '0',
+        priceCurrency: 'GBP',
+        description: '1 property, manual booking entry, full levy calculation, CSV export',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Owner',
+        price: '8',
+        priceCurrency: 'GBP',
+        description: 'Unlimited properties, CSV/Excel import, Airbnb and Booking.com presets, PDF return packs',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Agent',
+        price: '99',
+        priceCurrency: 'GBP',
+        description: 'Multiple clients, per-client return packs, owner statements, accountant read-only access',
+      },
+      {
+        '@type': 'Offer',
+        name: 'B&B / Hotel',
+        price: '25',
+        priceCurrency: 'GBP',
+        description: 'Up to 10 rooms, room-level breakdown, PDF return packs, deadline reminders',
+      },
+    ],
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
+function WebSiteSchema() {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Levy Desk',
+    url: 'https://www.levydesk.co.uk',
+    description: 'Visitor levy return software for holiday let owners and letting agents in Scotland and Wales.',
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  )
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function HomePage() {
@@ -108,6 +201,9 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen" style={{ background: '#fdf8f2' }}>
       <FaqSchema />
+      <OrganizationSchema />
+      <SoftwareApplicationSchema />
+      <WebSiteSchema />
 
       {/* ── Nav ──────────────────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-stone-200 bg-[#fdf8f2]/90 backdrop-blur-sm">
@@ -311,7 +407,13 @@ export default async function HomePage() {
               <tbody className="divide-y divide-stone-100 bg-white">
                 {COUNCIL_TABLE.map((row) => (
                   <tr key={row.name} className="hover:bg-stone-50">
-                    <td className="px-5 py-3 font-medium text-stone-900">{row.name}</td>
+                    <td className="px-5 py-3 font-medium text-stone-900">
+                      {row.href ? (
+                        <Link href={row.href} className="text-orange-700 hover:underline">{row.name}</Link>
+                      ) : (
+                        row.name
+                      )}
+                    </td>
                     <td className="px-5 py-3 text-stone-500">{row.country}</td>
                     <td className="px-5 py-3 font-mono text-stone-700">{row.rate}</td>
                     <td className="px-5 py-3 text-stone-500">{row.cap}</td>
@@ -336,6 +438,66 @@ export default async function HomePage() {
             * Exact start date unverified. Levy Desk uses a conservative default and flags
             affected bookings for host confirmation.
           </p>
+        </div>
+      </section>
+
+      {/* ── For letting agents ───────────────────────────────────────────────── */}
+      <section className="border-t border-stone-200">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+            <div className="space-y-5">
+              <div className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-medium text-stone-600">
+                For letting agents
+              </div>
+              <h2 className="text-2xl font-bold text-stone-900">
+                Manage levy returns for all your clients in one place
+              </h2>
+              <p className="text-stone-600 leading-relaxed">
+                Letting agents managing properties across Edinburgh, Glasgow, and Cardiff face a complex patchwork of rules. Levy Desk gives you a single workspace per client, with separate return packs, per-property breakdowns, and read-only access for client accountants.
+              </p>
+              <ul className="space-y-2 text-sm text-stone-600">
+                {[
+                  'One workspace per client — data stays separated',
+                  'Per-client return packs in PDF and CSV',
+                  'Owner statements showing levy collected and remitted',
+                  'Accountant read-only access at no extra cost',
+                  'Priced at £5/property/month (£99/month minimum)',
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0 text-xs font-bold text-orange-500">✓</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex gap-3">
+                <Link
+                  href="/account"
+                  className="rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-orange-700 transition-colors"
+                >
+                  Start free trial
+                </Link>
+                <a
+                  href="mailto:hello@levydesk.co.uk"
+                  className="rounded-lg border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
+                >
+                  Ask a question
+                </a>
+              </div>
+            </div>
+            <div className="mt-10 lg:mt-0 space-y-3">
+              <div className="rounded-xl border border-stone-200 bg-white p-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-stone-400 mb-3">Agent — worked example</p>
+                <div className="space-y-2 text-sm text-stone-600">
+                  <div className="flex justify-between"><span>Properties under management</span><span className="font-medium text-stone-800">24</span></div>
+                  <div className="flex justify-between"><span>Monthly cost</span><span className="font-medium text-stone-800">£120/month</span></div>
+                  <div className="flex justify-between border-t border-stone-100 pt-2"><span>Per-property cost</span><span className="font-medium text-stone-800">£5/property</span></div>
+                </div>
+              </div>
+              <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
+                <strong className="text-stone-800">Client data stays separate.</strong> Each client has their own workspace, return history, and export. You can switch between clients without mixing data.
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

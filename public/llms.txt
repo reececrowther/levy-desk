@@ -1,0 +1,38 @@
+# Levy Desk
+
+Levy Desk is a UK web application that helps holiday let owners and letting agents calculate visitor levies and produce correct, ready-to-file quarterly return packs for councils in Scotland and Wales. It does not file returns or make payments on behalf of users. Rules are versioned by effective date and all calculations store their full working.
+
+## Public pages
+
+- https://www.levydesk.co.uk/ — Homepage with free visitor levy calculator, council coverage table, and pricing
+- https://www.levydesk.co.uk/edinburgh-visitor-levy — Edinburgh Visitor Levy guide: 5% rate, 5-night cap, 2% host retention, quarterly returns from 24 Jul 2026
+- https://www.levydesk.co.uk/glasgow-visitor-levy — Glasgow Visitor Levy guide: 5% rate, no night cap, quarterly returns from 1 Jan 2027
+- https://www.levydesk.co.uk/cardiff-tourism-levy — Cardiff Tourism Levy guide: Welsh Visitor Accommodation Levy, £1.30/adult/night, under-18s exempt, 32-night long-stay exemption, from 1 Apr 2027
+- https://www.levydesk.co.uk/about — About Levy Desk: product background, how it works, accuracy approach
+- https://www.levydesk.co.uk/privacy — Privacy Policy (UK GDPR)
+- https://www.levydesk.co.uk/terms — Terms of Service
+
+## Council coverage
+
+| Council | Country | Rate | Night cap | Live from |
+|---|---|---|---|---|
+| Edinburgh | Scotland | 5% of gross income | 5 nights | 24 Jul 2026 |
+| Glasgow | Scotland | 5% of gross income | None | 1 Jan 2027* |
+| Aberdeen | Scotland | 7% of gross income | None | 1 Apr 2027* |
+| Stirling | Scotland | 3% of gross income | 7 nights | 1 Jun 2027* |
+| West Dunbartonshire | Scotland | 5% of gross income | None | 1 Jul 2027* |
+| Cardiff | Wales | £1.30/adult/night (£0.75 hostels/campsites) | 31 nights | 1 Apr 2027* |
+
+*Start dates marked with an asterisk are unverified pending official confirmation.
+
+## Key legislation
+
+- Visitor Levy (Scotland) Act 2024: https://www.legislation.gov.uk/asp/2024/7/contents
+- Visitor Accommodation (Register and Levy) Etc. (Wales) Act 2024: https://www.legislation.gov.uk/asc/2024/2/contents
+- City of Edinburgh Council guidance: https://www.edinburgh.gov.uk/visitor-levy
+- Welsh Government guidance: https://www.gov.wales/visitor-accommodation-levy
+
+## Contact
+
+- General: hello@levydesk.co.uk
+- Privacy: privacy@levydesk.co.uk

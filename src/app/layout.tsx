@@ -3,7 +3,7 @@ import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://levydesk.co.uk'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.levydesk.co.uk'),
   title: {
     default: 'Levy Desk — Visitor Levy Returns for Holiday Lets',
     template: '%s | Levy Desk',
