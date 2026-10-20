@@ -1,0 +1,345 @@
+// Levy Desk — Prisma schema
+// Money: all pence fields are Int (integer pence). Never Float.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─── Auth.js required tables ──────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  memberships   WorkspaceMember[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// ─── App tables ───────────────────────────────────────────────────────────────
+
+// What the spec calls "Account" — the billing/org entity
+model Workspace {
+  id                   String            @id @default(cuid())
+  name                 String
+  type                 WorkspaceType
+  plan                 Plan              @default(FREE)
+  vatRegistered        Boolean           @default(false)
+  vatNumber            String?
+  stripeCustomerId     String?           @unique
+  stripeSubscriptionId String?
+  // Rolling 12-month accommodation + levy turnover (pence) — used for VAT threshold warning
+  turnover12mPence     Int               @default(0)
+  members              WorkspaceMember[]
+  invites              WorkspaceInvite[]
+  clients              Client[]
+  properties           Property[]
+  returns              LevyReturn[]
+  auditLogs            AuditLog[]
+  columnMappings       ColumnMapping[]
+  importBatches        ImportBatch[]
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  role        MemberRole    @default(OWNER)
+  createdAt   DateTime      @default(now())
+
+  @@unique([workspaceId, userId])
+}
+
+model WorkspaceInvite {
+  id          String     @id @default(cuid())
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  email       String
+  role        MemberRole @default(ACCOUNTANT)
+  token       String     @unique @default(cuid())
+  expiresAt   DateTime
+  createdAt   DateTime   @default(now())
+
+  @@index([token])
+}
+
+// Letting-agent's clients
+model Client {
+  id          String       @id @default(cuid())
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  name        String
+  contactEmail String?
+  properties  Property[]
+  returns     LevyReturn[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Property {
+  id                      String            @id @default(cuid())
+  workspace               Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId             String
+  client                  Client?           @relation(fields: [clientId], references: [id])
+  clientId                String?
+  name                    String
+  addressLine1            String?
+  addressLine2            String?
+  town                    String?
+  postcode                String
+  council                 String            // slug e.g. "edinburgh"
+  country                 Country
+  accommodationType       AccommodationType
+  unitsOrRooms            Int               @default(1)
+  licenceNumber           String?           // Scotland
+  welshRegisterNumber     String?           // Wales — required from 2026-10-01
+  breakfastIncluded       Boolean           @default(false)
+  breakfastRetailValuePence Int?            // pence per night (retail value, not cost)
+  bookings                Booking[]
+  importBatches           ImportBatch[]
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+}
+
+model Booking {
+  id                    String          @id @default(cuid())
+  property              Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId            String
+  source                BookingSource
+  externalRef           String?
+  bookedAt              DateTime        @db.Date
+  firstPaymentAt        DateTime?       @db.Date
+  checkIn               DateTime        @db.Date
+  checkOut              DateTime        @db.Date
+  adults                Int
+  under18s              Int             @default(0)
+  guestPaidGrossPence   Int             // pence — full guest-paid gross ex-VAT on accommodation
+  extrasPence           Int             @default(0)
+  commissionPence       Int?
+  payoutPence           Int?
+  currency              String          @default("GBP")
+  status                BookingStatus   @default(CONFIRMED)
+  rawImportRow          Json?
+  acknowledgedFlags     String[]
+  calculation           Calculation?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  @@unique([propertyId, source, externalRef])
+}
+
+model Calculation {
+  id              String    @id @default(cuid())
+  booking         Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  bookingId       String    @unique
+  schemeRuleId    String    // version slug e.g. "edinburgh-v1"
+  nightsCharged   Int
+  basePence       Int
+  exclusionsPence Int
+  levyPence       Int
+  vatOnLevyPence  Int
+  retentionPence  Int
+  flags           String[]
+  working         Json      // CalculationWorking — full step-by-step audit trail
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// Quarterly (or annual) return for a council
+model LevyReturn {
+  id                   String       @id @default(cuid())
+  workspace            Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId          String
+  // For agent workspaces — return is per-client; null for owner/BnB workspaces
+  client               Client?      @relation(fields: [clientId], references: [id])
+  clientId             String?
+  council              String
+  periodStart          DateTime     @db.Date
+  periodEnd            DateTime     @db.Date
+  totalLevyPence       Int
+  totalVatOnLevyPence  Int
+  totalRetentionPence  Int
+  netPayablePence      Int
+  status               ReturnStatus @default(DRAFT)
+  lockedAt             DateTime?
+  filedRef             String?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  userId      String
+  action      String
+  entityType  String
+  entityId    String
+  before      Json?
+  after       Json?
+  createdAt   DateTime  @default(now())
+}
+
+// Postcode lookup cache — avoids repeated calls to postcodes.io
+model PostcodeCache {
+  postcode    String   @id
+  council     String?  // slug, null when postcode not in a levy council area
+  adminDistrict String?
+  country     String?  // "Scotland" | "Wales" | "England" etc.
+  cachedAt    DateTime @default(now())
+
+  @@index([cachedAt])
+}
+
+// Saved column mappings per workspace + source — preset or user-defined
+model ColumnMapping {
+  id          String        @id @default(cuid())
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  source      BookingSource
+  name        String        // e.g. "Airbnb default", "Booking.com 2024"
+  isPreset    Boolean       @default(false)
+  // JSON: { targetField: sourceColumnHeader }
+  // targetField keys: externalRef | bookedAt | firstPaymentAt | checkIn | checkOut |
+  //                   adults | under18s | guestPaidGross | extras | commission | payout | status
+  mapping     Json
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@unique([workspaceId, source, name])
+}
+
+// One import batch per file upload
+model ImportBatch {
+  id             String        @id @default(cuid())
+  workspace      Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId    String
+  property       Property      @relation(fields: [propertyId], references: [id])
+  propertyId     String
+  source         BookingSource
+  filename       String
+  // Raw file content stored as base64 (CSV as UTF-8 text, Excel as base64)
+  rawContent     String        @db.Text
+  headers        String[]
+  status         ImportStatus  @default(PENDING)
+  totalRows      Int           @default(0)
+  importedRows   Int           @default(0)
+  skippedRows    Int           @default(0)
+  errorRows      Int           @default(0)
+  // Per-row results: [{ rowIndex, status, bookingId?, error? }]
+  results        Json?
+  columnMappingId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum WorkspaceType {
+  OWNER
+  AGENT
+  ACCOUNTANT
+}
+
+enum Plan {
+  FREE
+  OWNER
+  AGENT
+  BNB
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  ACCOUNTANT // read-only
+}
+
+enum Country {
+  SCOTLAND
+  WALES
+}
+
+enum AccommodationType {
+  SELF_CATERING
+  BNB_GUEST_HOUSE
+  HOTEL
+  HOSTEL_DORM
+  CAMPSITE
+  OTHER
+}
+
+enum BookingSource {
+  AIRBNB
+  BOOKING_COM
+  VRBO
+  DIRECT
+  SOFTWARE
+  OTHER
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  NO_SHOW
+}
+
+enum ReturnStatus {
+  DRAFT
+  READY
+  FILED
+  PAID
+}
+
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETE
+  FAILED
+}

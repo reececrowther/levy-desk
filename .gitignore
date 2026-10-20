@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment files — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Prisma generated client
+prisma/generated/
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
