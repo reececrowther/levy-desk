@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { LevyCalculator } from '@/components/marketing/levy-calculator'
+import { MarketingFooter } from '@/components/marketing/marketing-footer'
 
 // ─── SEO ──────────────────────────────────────────────────────────────────────
 
@@ -451,18 +452,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-stone-800 bg-stone-900">
-        <div className="mx-auto max-w-6xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
-          <p>
-            <span className="font-semibold text-stone-400">Levy Desk</span> — visitor levy
-            return management for Scotland and Wales
-          </p>
-          <p>
-            Calculations are estimates. Always verify figures against the council&apos;s official
-            guidance before filing.
-          </p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }
