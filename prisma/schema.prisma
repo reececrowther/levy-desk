@@ -281,6 +281,21 @@ model ImportBatch {
   updatedAt      DateTime      @updatedAt
 }
 
+// Emails captured from the public calculator — pre-signup leads
+model CalculatorLead {
+  id        String    @id @default(cuid())
+  email     String
+  council   String
+  levyPence Int
+  consentAt DateTime  @default(now())
+  emailedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@unique([email, council])
+  @@index([council])
+  @@index([createdAt])
+}
+
 // ─── Enums ────────────────────────────────────────────────────────────────────
 
 enum WorkspaceType {

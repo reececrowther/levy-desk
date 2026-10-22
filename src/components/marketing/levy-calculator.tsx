@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { calculate } from '@/levy/calculator'
 import { SCHEME_RULES } from '@/levy/rules'
 import type { AccommodationType, Country } from '@/levy/types'
@@ -70,6 +70,10 @@ export function LevyCalculator({
   defaultCheckIn?: string
   defaultCheckOut?: string
 } = {}) {
+  const [emailInput, setEmailInput] = useState('')
+  const [emailState, setEmailState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const prevCouncil = useRef(defaultCouncil)
+
   const [inputs, setInputs] = useState<Inputs>({
     ...DEFAULTS,
     council: defaultCouncil,
@@ -144,6 +148,30 @@ export function LevyCalculator({
     return () => clearTimeout(timer)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result])
+
+  // Reset email form if the user switches council (so they can capture for the new one)
+  useEffect(() => {
+    if (inputs.council !== prevCouncil.current) {
+      prevCouncil.current = inputs.council
+      if (emailState === 'success') setEmailState('idle')
+    }
+  }, [inputs.council, emailState])
+
+  async function handleEmailSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!result) return
+    setEmailState('loading')
+    try {
+      const res = await fetch('/api/calculator-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailInput, council: inputs.council, levyPence: result.levyPence }),
+      })
+      setEmailState(res.ok ? 'success' : 'error')
+    } catch {
+      setEmailState('error')
+    }
+  }
 
   const hasLevy = result && result.levyPence > 0
   const noRule = result && result.schemeRuleId === 'no-rule'
@@ -357,6 +385,44 @@ export function LevyCalculator({
               Sign up to file the return
               <span aria-hidden>→</span>
             </a>
+
+            <div className="border-t border-orange-200 pt-4">
+              {emailState === 'success' ? (
+                <p className="text-xs text-green-700 font-medium">
+                  ✓ Check your inbox — we&apos;ll remind you before the next deadline.
+                </p>
+              ) : (
+                <form onSubmit={handleEmailSubmit} className="space-y-2">
+                  <p className="text-xs text-stone-500">
+                    Email me this result and a reminder before the next filing deadline.
+                  </p>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      required
+                      placeholder="your@email.com"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      className="min-w-0 flex-1 rounded-lg border border-stone-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                    <button
+                      type="submit"
+                      disabled={emailState === 'loading'}
+                      className="shrink-0 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 disabled:opacity-50 transition-colors"
+                    >
+                      {emailState === 'loading' ? '...' : 'Send'}
+                    </button>
+                  </div>
+                  {emailState === 'error' && (
+                    <p className="text-xs text-red-600">Something went wrong — please try again.</p>
+                  )}
+                  <p className="text-xs text-stone-400">
+                    One email only.{' '}
+                    <a href="/privacy" className="underline hover:text-stone-600">Privacy policy.</a>
+                  </p>
+                </form>
+              )}
+            </div>
           </>
         )}
       </div>
