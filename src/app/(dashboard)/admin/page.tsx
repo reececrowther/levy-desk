@@ -9,6 +9,10 @@ export default async function AdminPage() {
   if (!session?.user?.id) redirect('/login')
   if (session.user.email !== process.env.ADMIN_EMAIL) redirect('/dashboard')
 
+  const leads = await db.calculatorLead.findMany({
+    orderBy: { createdAt: 'desc' },
+  })
+
   const workspaces = await db.workspace.findMany({
     include: {
       members: {
@@ -45,10 +49,11 @@ export default async function AdminPage() {
       </div>
 
       {/* Summary stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-4">
         <StatCard label="Workspaces" value={totalWorkspaces} />
         <StatCard label="Unique users" value={totalUsers} />
         <StatCard label="Properties" value={totalProperties} />
+        <StatCard label="Calculator leads" value={leads.length} />
         <div className="rounded-lg border border-stone-200 bg-white p-4">
           <p className="text-xs text-stone-500">Plans</p>
           <div className="mt-2 space-y-1">
@@ -162,6 +167,55 @@ export default async function AdminPage() {
           ))}
         </div>
       </div>
+      {/* Calculator leads */}
+      <div>
+        <h2 className="mb-3 text-sm font-semibold">Calculator leads</h2>
+        {leads.length === 0 ? (
+          <p className="text-sm text-stone-500">No leads yet.</p>
+        ) : (
+          <div className="overflow-hidden rounded-lg border border-stone-200">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-stone-50 text-xs font-medium uppercase tracking-wide text-stone-600">
+                  <tr>
+                    <th className="px-4 py-3 text-left">Email</th>
+                    <th className="px-4 py-3 text-left">Council</th>
+                    <th className="px-4 py-3 text-right">Levy estimate</th>
+                    <th className="px-4 py-3 text-left">Captured</th>
+                    <th className="px-4 py-3 text-left">Emailed</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-100">
+                  {leads.map((lead) => (
+                    <tr key={lead.id} className="hover:bg-stone-50">
+                      <td className="px-4 py-3 text-stone-800">{lead.email}</td>
+                      <td className="px-4 py-3 capitalize text-stone-600">
+                        {lead.council.replace(/_/g, ' ')}
+                      </td>
+                      <td className="px-4 py-3 text-right tabular-nums font-medium text-stone-900">
+                        £{(lead.levyPence / 100).toFixed(2)}
+                      </td>
+                      <td className="px-4 py-3 text-stone-500">
+                        {lead.createdAt.toLocaleDateString('en-GB', {
+                          day: 'numeric', month: 'short', year: 'numeric',
+                        })}
+                      </td>
+                      <td className="px-4 py-3">
+                        {lead.emailedAt ? (
+                          <span className="text-green-700">&#10003; Sent</span>
+                        ) : (
+                          <span className="text-stone-400">Pending</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+
     </div>
   )
 }
