@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { calculate } from '@/levy/calculator'
 import { SCHEME_RULES } from '@/levy/rules'
 import type { AccommodationType, Country } from '@/levy/types'
@@ -125,6 +125,25 @@ export function LevyCalculator({
       return null
     }
   }, [inputs, isWales, council.country])
+
+  // Fire a GA4 event 800ms after the user stops changing inputs, if a valid
+  // result is showing. Fires again whenever the council changes.
+  useEffect(() => {
+    if (!result || result.schemeRuleId === 'no-rule') return
+    const timer = setTimeout(() => {
+      const g = typeof window !== 'undefined' && (window as Window & { gtag?: (...a: unknown[]) => void }).gtag
+      if (g) {
+        g('event', 'calculator_result', {
+          council: inputs.council,
+          nights_charged: result.nightsCharged,
+          levy_pence: result.levyPence,
+          vat_registered: inputs.vatRegistered,
+        })
+      }
+    }, 800)
+    return () => clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result])
 
   const hasLevy = result && result.levyPence > 0
   const noRule = result && result.schemeRuleId === 'no-rule'
@@ -330,6 +349,10 @@ export function LevyCalculator({
             <a
               href="/account"
               className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-orange-700 transition-colors"
+              onClick={() => {
+                const g = typeof window !== 'undefined' && (window as Window & { gtag?: (...a: unknown[]) => void }).gtag
+                if (g) g('event', 'calculator_cta_click', { council: inputs.council })
+              }}
             >
               Sign up to file the return
               <span aria-hidden>→</span>
