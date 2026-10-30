@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 }
 
 const FILING_DEADLINES = [
-  { quarter: 'Q1 2027', period: '1 Jan – 31 Mar 2027', due: '30 Apr 2027', status: 'first' },
+  { quarter: 'Q1 2027', period: '25 Jan – 31 Mar 2027', due: '30 Apr 2027', status: 'first' },
   { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '31 Jul 2027', status: 'upcoming' },
   { quarter: 'Q3 2027', period: '1 Jul – 30 Sep 2027', due: '31 Oct 2027', status: 'upcoming' },
   { quarter: 'Q4 2027', period: '1 Oct – 31 Dec 2027', due: '31 Jan 2028', status: 'upcoming' },
@@ -118,7 +118,7 @@ export default function GlasgowVisitorLevyPage() {
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-              From 1 Jan 2027
+              From 25 Jan 2027
             </span>
             <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
               Scotland
@@ -149,7 +149,7 @@ export default function GlasgowVisitorLevyPage() {
             Glasgow Visitor Levy
           </h1>
           <p className="text-xl text-stone-600 max-w-2xl leading-relaxed">
-            A 5% levy on gross holiday let income, with no night cap. Quarterly returns from January 2027. No host retention allowance.
+            A 5% levy on gross holiday let income, with no night cap. Quarterly returns from 25 January 2027. Hosts retain 1.5% of the levy collected.
           </p>
         </div>
 
@@ -160,7 +160,7 @@ export default function GlasgowVisitorLevyPage() {
             {[
               { label: 'Rate', value: '5%', note: 'of gross income' },
               { label: 'Night cap', value: 'None', note: 'all nights charged' },
-              { label: 'Host retention', value: 'None', note: 'full levy remitted' },
+              { label: 'Host retention', value: '1.5%', note: 'of levy collected' },
               { label: 'Filing', value: 'Quarterly', note: 'from Q1 2027' },
             ].map((f) => (
               <div key={f.label} className="rounded-xl border border-stone-200 bg-white p-4">
@@ -236,7 +236,7 @@ export default function GlasgowVisitorLevyPage() {
         <section className="space-y-4">
           <h2 className="text-lg font-semibold text-stone-900">Filing deadlines</h2>
           <p className="text-stone-600 text-sm">
-            Glasgow follows the same quarterly calendar pattern as Edinburgh. The first return covers Q1 2027.
+            Glasgow's levy starts 25 January 2027. The first return covers 25 Jan – 31 Mar 2027, due 30 April 2027.
           </p>
           <div className="overflow-hidden rounded-xl border border-stone-200">
             <table className="w-full text-sm">

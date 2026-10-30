@@ -9,7 +9,7 @@ import type { AccommodationType, Country } from '@/levy/types'
 
 const COUNCILS = [
   { value: 'edinburgh',          label: 'Edinburgh',           country: 'scotland' as Country, liveFrom: '2026-07-24', status: 'Live' },
-  { value: 'glasgow',            label: 'Glasgow',             country: 'scotland' as Country, liveFrom: '2027-01-01', status: 'Confirmed' },
+  { value: 'glasgow',            label: 'Glasgow',             country: 'scotland' as Country, liveFrom: '2027-01-25', status: 'Confirmed' },
   { value: 'aberdeen',           label: 'Aberdeen',            country: 'scotland' as Country, liveFrom: '2027-04-01', status: 'Confirmed' },
   { value: 'stirling',           label: 'Stirling',            country: 'scotland' as Country, liveFrom: '2027-06-01', status: 'Confirmed' },
   { value: 'west_dunbartonshire', label: 'West Dunbartonshire', country: 'scotland' as Country, liveFrom: '2027-07-01', status: 'Confirmed' },

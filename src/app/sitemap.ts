@@ -36,5 +36,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/cardiff-tourism-levy`,
       lastModified: '2026-10-20',
     },
+    {
+      url: `${BASE_URL}/edinburgh-visitor-levy/airbnb-hosts`,
+      lastModified: '2026-10-30',
+    },
+    {
+      url: `${BASE_URL}/edinburgh-visitor-levy/what-if-i-miss-the-deadline`,
+      lastModified: '2026-10-30',
+    },
+    {
+      url: `${BASE_URL}/visitor-levy-tracker`,
+      lastModified: '2026-10-30',
+    },
   ]
 }

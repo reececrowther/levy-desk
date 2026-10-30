@@ -80,9 +80,9 @@ const FAQ_ITEMS = [
 
 const COUNCIL_TABLE = [
   { name: 'Edinburgh',           country: 'Scotland', rate: '5% of gross',       cap: '5 nights',  liveFrom: '24 Jul 2026', status: 'Live',      verified: true,  href: '/edinburgh-visitor-levy' },
-  { name: 'Glasgow',             country: 'Scotland', rate: '5% of gross',       cap: 'None',      liveFrom: '1 Jan 2027',  status: 'Confirmed', verified: false, href: '/glasgow-visitor-levy' },
+  { name: 'Glasgow',             country: 'Scotland', rate: '5% of gross',       cap: 'None',      liveFrom: '25 Jan 2027', status: 'Confirmed', verified: false, href: '/glasgow-visitor-levy' },
   { name: 'Aberdeen',            country: 'Scotland', rate: '7% of gross',       cap: 'None',      liveFrom: '1 Apr 2027',  status: 'Confirmed', verified: false, href: null },
-  { name: 'Stirling',            country: 'Scotland', rate: '3% of gross',       cap: '7 nights',  liveFrom: '1 Jun 2027',  status: 'Confirmed', verified: false, href: null },
+  { name: 'Stirling',            country: 'Scotland', rate: '3% of gross',       cap: '7 nights',  liveFrom: '14 Jun 2027', status: 'Confirmed', verified: false, href: null },
   { name: 'West Dunbartonshire', country: 'Scotland', rate: '5% of gross',       cap: 'None',      liveFrom: '1 Jul 2027',  status: 'Confirmed', verified: false, href: null },
   { name: 'Cardiff',             country: 'Wales',    rate: '£1.30/person/night', cap: '31 nights', liveFrom: '1 Apr 2027',  status: 'Confirmed', verified: false, href: '/cardiff-tourism-levy' },
 ]

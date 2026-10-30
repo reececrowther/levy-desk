@@ -60,7 +60,7 @@ const FAQ = [
   },
   {
     q: 'Does the Cardiff levy apply to Airbnb and holiday let bookings?',
-    a: "Yes. The Welsh Visitor Accommodation Levy applies to all short-term residential accommodation in Cardiff, including Airbnb, VRBO, and direct holiday let bookings. You must file quarterly returns with Cardiff Council from April 2027.",
+    a: "Yes. The Welsh Visitor Accommodation Levy applies to all short-term residential accommodation in Cardiff, including Airbnb, VRBO, and direct holiday let bookings. Returns are filed with the Welsh Revenue Authority (WRA) from April 2027.",
   },
   {
     q: 'Do I need a Welsh Tourism Accommodation Register number?',
@@ -147,8 +147,7 @@ export default function CardiffTourismLevyPage() {
               >
                 Visitor Accommodation (Wales) Act 2024
               </a>
-              {' '}<span className="text-amber-600 font-medium">(figures unverified — pending official confirmation)</span>
-            </span>
+                </span>
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-stone-900 leading-tight">
             Cardiff Tourism Levy
