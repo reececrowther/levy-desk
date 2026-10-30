@@ -302,12 +302,20 @@ export default function GlasgowVisitorLevyPage() {
           <p className="text-stone-400 max-w-lg mx-auto text-sm">
             Start importing your bookings now so you're ready to file the moment Glasgow's levy goes live in January 2027.
           </p>
-          <Link
-            href="/account"
-            className="inline-block rounded-lg bg-orange-600 px-6 py-3 text-sm font-semibold text-white hover:bg-orange-700 transition-colors"
-          >
-            Start for free
-          </Link>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/account"
+              className="rounded-lg bg-orange-600 px-6 py-3 text-sm font-semibold text-white hover:bg-orange-700 transition-colors"
+            >
+              Start for free
+            </Link>
+            <Link
+              href="/glasgow-visitor-levy/how-to-file"
+              className="rounded-lg border border-stone-700 px-6 py-3 text-sm font-medium text-stone-300 hover:bg-stone-800 transition-colors"
+            >
+              Step-by-step filing guide
+            </Link>
+          </div>
         </section>
 
       </main>

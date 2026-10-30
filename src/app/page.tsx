@@ -214,6 +214,7 @@ export default async function HomePage() {
             <a href="#how-it-works" className="hover:text-stone-900">How it works</a>
             <a href="#councils" className="hover:text-stone-900">Councils</a>
             <a href="#pricing" className="hover:text-stone-900">Pricing</a>
+            <Link href="/visitor-levy-tracker" className="hover:text-stone-900">Tracker</Link>
           </nav>
           <div className="flex items-center gap-3">
             <Link
@@ -434,10 +435,15 @@ export default async function HomePage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 text-xs text-stone-400">
-            * Exact start date unverified. Levy Desk uses a conservative default and flags
-            affected bookings for host confirmation.
-          </p>
+          <div className="mt-3 flex items-center justify-between">
+            <p className="text-xs text-stone-400">
+              * Exact start date unverified. Levy Desk uses a conservative default and flags
+              affected bookings for host confirmation.
+            </p>
+            <Link href="/visitor-levy-tracker" className="text-xs font-medium text-orange-600 hover:underline shrink-0 ml-4">
+              Full tracker including councils considering a levy →
+            </Link>
+          </div>
         </div>
       </section>
 

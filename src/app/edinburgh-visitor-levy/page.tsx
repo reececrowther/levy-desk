@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { MarketingNav } from '@/components/marketing/marketing-nav'
 import { MarketingFooter } from '@/components/marketing/marketing-footer'
 import { LevyCalculator } from '@/components/marketing/levy-calculator'
+import { DeadlineBanner } from '@/components/marketing/deadline-banner'
+
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: { absolute: 'Edinburgh Visitor Levy — Rates, Rules & Calculator 2026 | Levy Desk' },
@@ -108,6 +111,7 @@ export default function EdinburghVisitorLevyPage() {
       <FaqSchema />
       <BreadcrumbSchema />
       <MarketingNav />
+      <DeadlineBanner />
 
       <main className="mx-auto max-w-5xl px-6 py-12 space-y-16">
 
@@ -309,6 +313,23 @@ export default function EdinburghVisitorLevyPage() {
                   {a}
                 </div>
               </details>
+            ))}
+          </div>
+        </section>
+
+        {/* Related guides */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-stone-900">Guides for Edinburgh hosts</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              { href: '/edinburgh-visitor-levy/how-to-file', title: 'How to file your return', desc: 'Step-by-step: register, calculate, apply retention, submit.' },
+              { href: '/edinburgh-visitor-levy/airbnb-hosts', title: 'Guide for Airbnb hosts', desc: 'Airbnb will not collect the levy for you — here is what to do.' },
+              { href: '/edinburgh-visitor-levy/what-if-i-miss-the-deadline', title: 'Missed the deadline?', desc: 'What penalties apply and how to minimise them.' },
+            ].map((g) => (
+              <Link key={g.href} href={g.href} className="rounded-xl border border-stone-200 bg-white p-4 hover:border-orange-300 hover:bg-orange-50 transition-colors">
+                <p className="text-sm font-semibold text-stone-800">{g.title}</p>
+                <p className="text-xs text-stone-500 mt-1">{g.desc}</p>
+              </Link>
             ))}
           </div>
         </section>

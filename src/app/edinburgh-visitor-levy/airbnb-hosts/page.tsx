@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { MarketingNav } from '@/components/marketing/marketing-nav'
 import { MarketingFooter } from '@/components/marketing/marketing-footer'
 import { LevyCalculator } from '@/components/marketing/levy-calculator'
+import { DeadlineBanner } from '@/components/marketing/deadline-banner'
+
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: { absolute: 'Edinburgh Visitor Levy for Airbnb Hosts — What You Must Do | Levy Desk' },
@@ -89,6 +92,7 @@ export default function EdinburghAirbnbHostsPage() {
       <BreadcrumbSchema />
       <FaqSchema />
       <MarketingNav />
+      <DeadlineBanner />
 
       <main className="mx-auto max-w-3xl px-6 py-12 space-y-12">
 

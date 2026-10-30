@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { MarketingNav } from '@/components/marketing/marketing-nav'
 import { MarketingFooter } from '@/components/marketing/marketing-footer'
+import { DeadlineBanner } from '@/components/marketing/deadline-banner'
+
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: { absolute: 'How to File Your Edinburgh Visitor Levy Return — Step-by-Step Guide | Levy Desk' },
@@ -307,6 +310,7 @@ export default function HowToFileEdinburghPage() {
       <BreadcrumbSchema />
       <FaqSchema />
       <MarketingNav />
+      <DeadlineBanner />
 
       <main className="mx-auto max-w-3xl px-6 py-12 space-y-12">
 

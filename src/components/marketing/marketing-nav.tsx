@@ -8,6 +8,9 @@ export function MarketingNav() {
           Levy Desk
         </Link>
         <div className="flex items-center gap-3">
+          <Link href="/visitor-levy-tracker" className="hidden text-sm text-stone-600 hover:text-stone-900 sm:block">
+            All councils
+          </Link>
           <Link href="/login" className="text-sm text-stone-600 hover:text-stone-900">
             Sign in
           </Link>

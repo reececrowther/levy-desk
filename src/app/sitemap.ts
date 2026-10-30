@@ -48,5 +48,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/visitor-levy-tracker`,
       lastModified: '2026-10-30',
     },
+    {
+      url: `${BASE_URL}/glasgow-visitor-levy/how-to-file`,
+      lastModified: '2026-10-30',
+    },
   ]
 }
