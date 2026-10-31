@@ -167,7 +167,13 @@ export function LevyCalculator({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: emailInput, council: inputs.council, levyPence: result.levyPence }),
       })
-      setEmailState(res.ok ? 'success' : 'error')
+      if (res.ok) {
+        setEmailState('success')
+        const g = typeof window !== 'undefined' && (window as Window & { gtag?: (...a: unknown[]) => void }).gtag
+        if (g) g('event', 'calculator_email_capture', { council: inputs.council, levy_pence: result.levyPence })
+      } else {
+        setEmailState('error')
+      }
     } catch {
       setEmailState('error')
     }
