@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db'
 import { requireUser } from './auth-helpers'
+import { sendInviteEmail } from '@/lib/email/invite'
 
 const WorkspaceSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
@@ -78,6 +79,8 @@ export async function inviteMember(workspaceId: string, input: z.infer<typeof In
   const expiresAt = new Date()
   expiresAt.setDate(expiresAt.getDate() + 7)
 
+  const workspace = await db.workspace.findUniqueOrThrow({ where: { id: workspaceId } })
+
   const invite = await db.workspaceInvite.create({
     data: {
       workspaceId,
@@ -85,6 +88,15 @@ export async function inviteMember(workspaceId: string, input: z.infer<typeof In
       role: data.role,
       expiresAt,
     },
+  })
+
+  const baseUrl = process.env.NEXTAUTH_URL ?? 'https://levydesk.co.uk'
+  await sendInviteEmail({
+    toEmail: data.email,
+    workspaceName: workspace.name,
+    inviterName: user.name ?? user.email,
+    role: data.role,
+    inviteUrl: `${baseUrl}/invite/${invite.token}`,
   })
 
   revalidatePath('/account')
