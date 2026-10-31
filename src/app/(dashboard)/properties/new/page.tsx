@@ -7,6 +7,15 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createProperty, lookupPropertyPostcode } from '@/server/actions/properties'
 
+const COUNCILS = [
+  { value: 'edinburgh', label: 'Edinburgh' },
+  { value: 'glasgow', label: 'Glasgow' },
+  { value: 'aberdeen', label: 'Aberdeen' },
+  { value: 'stirling', label: 'Stirling' },
+  { value: 'west_dunbartonshire', label: 'West Dunbartonshire' },
+  { value: 'cardiff', label: 'Cardiff' },
+]
+
 export default function NewPropertyPage() {
   const router = useRouter()
   const [lookingUp, setLookingUp] = useState(false)
@@ -14,6 +23,7 @@ export default function NewPropertyPage() {
   const [council, setCouncil] = useState('')
   const [country, setCountry] = useState<'SCOTLAND' | 'WALES' | ''>('')
   const [error, setError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
 
   async function handlePostcodeLookup(postcode: string) {
     if (!postcode || postcode.length < 5) return
@@ -34,29 +44,29 @@ export default function NewPropertyPage() {
   }
 
   async function handleSubmit(fd: FormData) {
-    const data = {
-      workspaceId: fd.get('workspaceId') as string,
-      name: fd.get('name') as string,
-      addressLine1: (fd.get('addressLine1') as string) || undefined,
-      town: (fd.get('town') as string) || undefined,
-      postcode: fd.get('postcode') as string,
-      council: fd.get('council') as string,
-      country: fd.get('country') as 'SCOTLAND' | 'WALES',
-      accommodationType: fd.get('accommodationType') as string,
-      unitsOrRooms: Number(fd.get('unitsOrRooms')),
-      licenceNumber: (fd.get('licenceNumber') as string) || undefined,
-      welshRegisterNumber: (fd.get('welshRegisterNumber') as string) || undefined,
-      breakfastIncluded: fd.get('breakfastIncluded') === 'true',
-      breakfastRetailValuePence: fd.get('breakfastRetailValuePence')
-        ? Number(fd.get('breakfastRetailValuePence'))
-        : undefined,
-    }
-
+    setError(null)
+    setSubmitting(true)
     try {
-      await createProperty(data as Parameters<typeof createProperty>[0])
+      await createProperty({
+        name: fd.get('name') as string,
+        addressLine1: (fd.get('addressLine1') as string) || undefined,
+        town: (fd.get('town') as string) || undefined,
+        postcode: fd.get('postcode') as string,
+        council: fd.get('council') as string,
+        country: fd.get('country') as 'SCOTLAND' | 'WALES',
+        accommodationType: fd.get('accommodationType') as 'BNB_GUEST_HOUSE' | 'CAMPSITE' | 'HOSTEL_DORM' | 'HOTEL' | 'OTHER' | 'SELF_CATERING',
+        unitsOrRooms: Number(fd.get('unitsOrRooms')),
+        licenceNumber: (fd.get('licenceNumber') as string) || undefined,
+        welshRegisterNumber: (fd.get('welshRegisterNumber') as string) || undefined,
+        breakfastIncluded: fd.get('breakfastIncluded') === 'true',
+        breakfastRetailValuePence: fd.get('breakfastRetailValuePence')
+          ? Number(fd.get('breakfastRetailValuePence'))
+          : undefined,
+      })
       router.push('/properties')
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong')
+      setError(e instanceof Error ? e.message : 'Something went wrong. Please try again.')
+      setSubmitting(false)
     }
   }
 
@@ -71,9 +81,6 @@ export default function NewPropertyPage() {
       )}
 
       <form action={handleSubmit} className="space-y-4">
-        {/* workspaceId is injected server-side; for the form we use a hidden field
-            filled from session — in a real app use a server component wrapper */}
-        <input type="hidden" name="workspaceId" value="PLACEHOLDER" />
 
         <Field id="name" label="Property name">
           <Input id="name" name="name" placeholder="Sea View Cottage" required />
@@ -116,16 +123,22 @@ export default function NewPropertyPage() {
           )}
         </div>
 
-        <Field id="council" label="Council">
-          <Input
+        <div className="space-y-1.5">
+          <Label htmlFor="council">Council</Label>
+          <select
             id="council"
             name="council"
             value={council}
             onChange={(e) => setCouncil(e.target.value)}
-            placeholder="e.g. edinburgh"
             required
-          />
-        </Field>
+            className="flex h-9 w-full rounded-md border border-stone-200 bg-white px-3 py-1 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900"
+          >
+            <option value="">Select council</option>
+            {COUNCILS.map((c) => (
+              <option key={c.value} value={c.value}>{c.label}</option>
+            ))}
+          </select>
+        </div>
 
         <div className="space-y-1.5">
           <Label htmlFor="country">Country</Label>
@@ -193,8 +206,8 @@ export default function NewPropertyPage() {
         </Field>
 
         <div className="flex gap-3">
-          <Button type="submit" className="flex-1">
-            Save property
+          <Button type="submit" className="flex-1" disabled={submitting}>
+            {submitting ? 'Saving…' : 'Save property'}
           </Button>
           <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel

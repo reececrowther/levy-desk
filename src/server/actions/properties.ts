@@ -9,7 +9,6 @@ import { PLAN_LIMITS } from '@/lib/billing-config'
 import type { AccommodationType, Country } from '@prisma/client'
 
 const PropertySchema = z.object({
-  workspaceId: z.string().cuid(),
   name: z.string().min(1, 'Name is required').max(200),
   addressLine1: z.string().optional(),
   town: z.string().optional(),
@@ -34,8 +33,8 @@ const PropertySchema = z.object({
 export type PropertyFormValues = z.infer<typeof PropertySchema>
 
 export async function createProperty(input: PropertyFormValues) {
-  const { workspace } = await requireWorkspace(input.workspaceId)
-  if (!workspace) throw new Error('Workspace not found')
+  const { workspace } = await requireWorkspace()
+  if (!workspace) throw new Error('No workspace found. Create a workspace first.')
 
   const limits = PLAN_LIMITS[workspace.plan as keyof typeof PLAN_LIMITS]
   if (limits.maxProperties !== null) {
@@ -52,7 +51,7 @@ export async function createProperty(input: PropertyFormValues) {
 
   const property = await db.property.create({
     data: {
-      workspaceId: data.workspaceId,
+      workspaceId: workspace.id,
       name: data.name,
       addressLine1: data.addressLine1,
       town: data.town,
