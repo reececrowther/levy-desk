@@ -6,13 +6,7 @@
 import { db } from './db'
 import { calculate } from '@/levy/calculator'
 import { SCHEME_RULES } from '@/levy/rules/index'
-import { Flag } from '@/levy/flags'
 import { toEngineBooking, toEngineProperty, calculationToDb } from './levy-adapter'
-
-function sourceFlags(source: string): string[] {
-  if (source === 'BOOKING_COM') return [Flag.BOOKING_COM_DOUBLE_REMIT]
-  return []
-}
 
 export async function recalculate(bookingId: string): Promise<void> {
   const booking = await db.booking.findUniqueOrThrow({ where: { id: bookingId } })
@@ -27,12 +21,6 @@ export async function recalculate(bookingId: string): Promise<void> {
 
   const calc = calculate(engineBooking, engineProperty, { rules: SCHEME_RULES })
   const calcData = calculationToDb(calc)
-
-  const extra = sourceFlags(booking.source)
-  if (extra.length > 0) {
-    const existing = Array.isArray(calcData.flags) ? (calcData.flags as string[]) : []
-    calcData.flags = [...existing, ...extra]
-  }
 
   await db.calculation.upsert({
     where: { bookingId },

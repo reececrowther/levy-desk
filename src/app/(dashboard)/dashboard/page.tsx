@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { db } from '@/lib/db'
 import { formatPence, quarterBounds } from '@/lib/format'
+import { scotlandDeadline, dateToQuarterKey, parseQuarterKey } from '@/lib/quarters'
 import { Badge } from '@/components/ui/badge'
 
 export const metadata = { title: 'Dashboard' }
@@ -57,14 +58,12 @@ export default async function DashboardPage() {
   }
 
   // Next filing deadline: end of month after quarter end
-  const qEndDate = new Date(qEnd)
-  const deadlineDate = new Date(qEndDate)
-  deadlineDate.setMonth(deadlineDate.getMonth() + 1)
-  deadlineDate.setDate(deadlineDate.getDate() + 1)
-  const deadline = deadlineDate.toLocaleDateString('en-GB', {
+  const quarter = parseQuarterKey(dateToQuarterKey(new Date()))
+  const deadline = scotlandDeadline(quarter).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'UTC',
   })
 
   return (

@@ -33,7 +33,10 @@ export async function updateWorkspace(
   id: string,
   input: Partial<z.infer<typeof WorkspaceSchema>>,
 ) {
-  await requireWorkspaceMember(id)
+  const member = await requireWorkspaceMember(id)
+  if (member.role !== 'OWNER' && member.role !== 'ADMIN') {
+    throw new Error('Only workspace owners and admins can update workspace settings.')
+  }
   const data = WorkspaceSchema.partial().parse(input)
 
   const workspace = await db.workspace.update({
