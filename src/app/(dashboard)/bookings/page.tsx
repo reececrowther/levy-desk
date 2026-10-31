@@ -131,7 +131,15 @@ export default async function BookingsPage({
                       )}
                     </td>
                     <td className="py-2.5">
-                      {calc && <WorkingDrawer calculation={calc} />}
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/bookings/${b.id}/edit`}
+                          className="text-xs text-stone-500 hover:text-stone-800"
+                        >
+                          Edit
+                        </Link>
+                        {calc && <WorkingDrawer calculation={calc} />}
+                      </div>
                     </td>
                   </tr>
                 )

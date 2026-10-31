@@ -64,6 +64,102 @@ export async function createBooking(input: BookingFormValues) {
   return booking
 }
 
+const EditBookingSchema = z.object({
+  id: z.string().cuid(),
+  propertyId: z.string().cuid(),
+  source: z.enum(['AIRBNB', 'BOOKING_COM', 'VRBO', 'DIRECT', 'SOFTWARE', 'OTHER']),
+  externalRef: z.string().optional(),
+  bookedAt: z.string().date('Invalid date'),
+  firstPaymentAt: z.string().date('Invalid date').optional(),
+  checkIn: z.string().date('Invalid date'),
+  checkOut: z.string().date('Invalid date'),
+  adults: z.coerce.number().int().min(0),
+  under18s: z.coerce.number().int().min(0).default(0),
+  guestPaidGrossPence: z.coerce.number().int().min(0),
+  extrasPence: z.coerce.number().int().min(0).default(0),
+  commissionPence: z.coerce.number().int().min(0).optional(),
+  payoutPence: z.coerce.number().int().min(0).optional(),
+  status: z.enum(['CONFIRMED', 'CANCELLED', 'NO_SHOW']).default('CONFIRMED'),
+}).refine((d) => d.checkOut > d.checkIn, {
+  message: 'Check-out must be after check-in',
+  path: ['checkOut'],
+})
+
+export async function editBooking(input: z.infer<typeof EditBookingSchema>) {
+  const { id, ...fields } = EditBookingSchema.parse(input)
+
+  const booking = await db.booking.findUniqueOrThrow({ where: { id } })
+  const property = await db.property.findUniqueOrThrow({ where: { id: booking.propertyId } })
+  const { workspace, user } = await requireWorkspace(property.workspaceId)
+  if (!workspace) throw new Error('No workspace.')
+
+  if (fields.propertyId !== booking.propertyId) {
+    await db.property.findFirstOrThrow({
+      where: { id: fields.propertyId, workspaceId: workspace.id },
+    })
+  }
+
+  const lockedReturn = await db.levyReturn.findFirst({
+    where: {
+      workspaceId: workspace.id,
+      council: property.council,
+      lockedAt: { not: null },
+      periodStart: { lte: booking.checkIn },
+      periodEnd: { gte: booking.checkIn },
+    },
+  })
+
+  if (lockedReturn) {
+    await db.auditLog.create({
+      data: {
+        workspaceId: workspace.id,
+        userId: user.id,
+        action: 'AMENDMENT',
+        entityType: 'Booking',
+        entityId: id,
+        before: {
+          guestPaidGrossPence: booking.guestPaidGrossPence,
+          adults: booking.adults,
+          under18s: booking.under18s,
+          checkIn: booking.checkIn.toISOString(),
+          checkOut: booking.checkOut.toISOString(),
+        } as Prisma.InputJsonValue,
+        after: {
+          guestPaidGrossPence: fields.guestPaidGrossPence,
+          adults: fields.adults,
+          under18s: fields.under18s,
+          checkIn: fields.checkIn,
+          checkOut: fields.checkOut,
+        } as Prisma.InputJsonValue,
+      },
+    })
+  }
+
+  await db.booking.update({
+    where: { id },
+    data: {
+      propertyId: fields.propertyId,
+      source: fields.source as BookingSource,
+      externalRef: fields.externalRef || null,
+      bookedAt: new Date(fields.bookedAt),
+      firstPaymentAt: fields.firstPaymentAt ? new Date(fields.firstPaymentAt) : null,
+      checkIn: new Date(fields.checkIn),
+      checkOut: new Date(fields.checkOut),
+      adults: fields.adults,
+      under18s: fields.under18s,
+      guestPaidGrossPence: fields.guestPaidGrossPence,
+      extrasPence: fields.extrasPence,
+      commissionPence: fields.commissionPence ?? null,
+      payoutPence: fields.payoutPence ?? null,
+      status: fields.status as BookingStatus,
+    },
+  })
+
+  await recalculate(id)
+  revalidatePath('/bookings')
+  revalidatePath(`/bookings/${id}/edit`)
+}
+
 export async function updateBookingStatus(
   id: string,
   status: 'CONFIRMED' | 'CANCELLED' | 'NO_SHOW',
