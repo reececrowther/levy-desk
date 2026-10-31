@@ -130,6 +130,66 @@ export async function lockReturn(returnId: string) {
   revalidatePath(`/returns/${returnId}`)
 }
 
+export async function markReturnFiled(returnId: string, filedRef?: string) {
+  const { workspace, user } = await requireWorkspace()
+  if (!workspace) throw new Error('No workspace.')
+
+  const levyReturn = await db.levyReturn.findFirst({
+    where: { id: returnId, workspaceId: workspace.id },
+  })
+  if (!levyReturn) throw new Error('Return not found.')
+  if (!levyReturn.lockedAt) throw new Error('Return must be locked before marking as filed.')
+  if (levyReturn.status === 'FILED' || levyReturn.status === 'PAID') {
+    throw new Error('Return is already filed.')
+  }
+
+  await db.levyReturn.update({
+    where: { id: returnId },
+    data: { status: 'FILED', filedRef: filedRef || null },
+  })
+
+  await db.auditLog.create({
+    data: {
+      workspaceId: workspace.id,
+      userId: user.id,
+      action: 'MARK_FILED',
+      entityType: 'LevyReturn',
+      entityId: returnId,
+      after: { filedRef: filedRef ?? null } as Prisma.InputJsonValue,
+    },
+  })
+
+  revalidatePath(`/returns/${returnId}`)
+}
+
+export async function markReturnPaid(returnId: string) {
+  const { workspace, user } = await requireWorkspace()
+  if (!workspace) throw new Error('No workspace.')
+
+  const levyReturn = await db.levyReturn.findFirst({
+    where: { id: returnId, workspaceId: workspace.id },
+  })
+  if (!levyReturn) throw new Error('Return not found.')
+  if (levyReturn.status !== 'FILED') throw new Error('Return must be filed before marking as paid.')
+
+  await db.levyReturn.update({
+    where: { id: returnId },
+    data: { status: 'PAID' },
+  })
+
+  await db.auditLog.create({
+    data: {
+      workspaceId: workspace.id,
+      userId: user.id,
+      action: 'MARK_PAID',
+      entityType: 'LevyReturn',
+      entityId: returnId,
+    },
+  })
+
+  revalidatePath(`/returns/${returnId}`)
+}
+
 export async function unlockReturn(returnId: string) {
   const { workspace, user } = await requireWorkspace()
   if (!workspace) throw new Error('No workspace.')
