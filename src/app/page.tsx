@@ -480,7 +480,7 @@ export default async function HomePage() {
                   href="/account"
                   className="rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-orange-700 transition-colors"
                 >
-                  Start free trial
+                  Get started free
                 </Link>
                 <a
                   href="mailto:hello@levydesk.co.uk"
@@ -539,7 +539,7 @@ export default async function HomePage() {
                 'Exceptions queue',
                 'PDF return packs',
               ]}
-              cta="Start free trial"
+              cta="Get started free"
               href="/account"
               highlight
             />
@@ -554,7 +554,7 @@ export default async function HomePage() {
                 'Accountant read-only access',
                 '£5/unit/month',
               ]}
-              cta="Start free trial"
+              cta="Get started free"
               href="/account"
             />
             <PricingCard
@@ -567,7 +567,7 @@ export default async function HomePage() {
                 'PDF return packs',
                 'Deadline reminders',
               ]}
-              cta="Start free trial"
+              cta="Get started free"
               href="/account"
             />
           </div>
