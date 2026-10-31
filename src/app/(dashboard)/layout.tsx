@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { signOut } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { NavLink } from '@/components/nav-link'
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -89,13 +90,3 @@ export default async function DashboardLayout({ children }: { children: React.Re
   )
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="rounded-md px-3 py-1.5 text-stone-600 hover:bg-orange-50 hover:text-stone-900"
-    >
-      {children}
-    </Link>
-  )
-}

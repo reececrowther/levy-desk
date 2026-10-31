@@ -96,7 +96,7 @@ export default async function ResultsPage({ params }: { params: Promise<{ batchI
                 <td className="px-4 py-2 text-xs">
                   {r.bookingId && (
                     <Link
-                      href={`/bookings`}
+                      href={`/bookings/${r.bookingId}/edit`}
                       className="text-blue-600 hover:underline"
                     >
                       View
@@ -112,7 +112,7 @@ export default async function ResultsPage({ params }: { params: Promise<{ batchI
 
       <div className="mt-6 flex gap-3">
         <Link
-          href="/bookings"
+          href={`/bookings?propertyId=${batch.propertyId}`}
           className="rounded-md bg-stone-900 px-4 py-2 text-sm text-white hover:bg-stone-700"
         >
           View bookings
