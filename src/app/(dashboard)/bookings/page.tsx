@@ -58,17 +58,28 @@ export default async function BookingsPage({
     <div className="p-8 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold">Bookings</h1>
-        <Button asChild size="sm">
-          <Link href="/bookings/new">Add booking</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button asChild size="sm" variant="outline">
+            <Link href="/imports/new">Import from file</Link>
+          </Button>
+          <Button asChild size="sm">
+            <Link href="/bookings/new">Add booking</Link>
+          </Button>
+        </div>
       </div>
 
       {bookings.length === 0 ? (
         <div className="rounded-lg border border-dashed border-stone-300 p-10 text-center">
           <p className="text-sm text-stone-500">No bookings yet.</p>
-          <Button asChild size="sm" className="mt-3">
-            <Link href="/bookings/new">Add your first booking</Link>
-          </Button>
+          <p className="mt-1 text-xs text-stone-400">Add bookings manually or import a CSV / Excel file from your platform.</p>
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <Button asChild size="sm" variant="outline">
+              <Link href="/imports/new">Import from file</Link>
+            </Button>
+            <Button asChild size="sm">
+              <Link href="/bookings/new">Add manually</Link>
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="overflow-x-auto">
