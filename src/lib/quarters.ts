@@ -26,10 +26,8 @@ export function dateToQuarterKey(date: Date): string {
 /** Deadline for Scotland: end of the month following the quarter end */
 export function scotlandDeadline(quarter: Quarter): Date {
   const qEnd = quarter.periodEnd
-  // First day of the month after quarter end + 1 month = last day of that month
-  const month = qEnd.getUTCMonth() + 2 // +1 for next month, +1 for 1-indexed → +2
-  const year = qEnd.getUTCFullYear() + (month > 11 ? 1 : 0)
-  return new Date(Date.UTC(year, month % 12 + 1, 0))
+  // Day 0 of (M+2) = last day of (M+1). JS handles month overflow automatically.
+  return new Date(Date.UTC(qEnd.getUTCFullYear(), qEnd.getUTCMonth() + 2, 0))
 }
 
 /**

@@ -24,7 +24,7 @@ export async function generateReturn(
   _prev: GenerateState,
   formData: FormData,
 ): Promise<GenerateState> {
-  const { workspace } = await requireWorkspace()
+  const { workspace, user } = await requireWorkspace()
   if (!workspace) return { error: 'No workspace found.' }
 
   const parsed = GenerateSchema.safeParse({
@@ -90,7 +90,7 @@ export async function generateReturn(
   await db.auditLog.create({
     data: {
       workspaceId: workspace.id,
-      userId: (await requireWorkspace()).user.id,
+      userId: user.id,
       action: 'GENERATE_RETURN',
       entityType: 'LevyReturn',
       entityId: levyReturn.id,

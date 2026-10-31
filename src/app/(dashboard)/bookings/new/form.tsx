@@ -78,7 +78,8 @@ export function NewBookingForm({ properties }: Props) {
 
       <div className="grid grid-cols-2 gap-3">
         <Field id="bookedAt" label="Booking date">
-          <Input id="bookedAt" name="bookedAt" type="date" required />
+          <Input id="bookedAt" name="bookedAt" type="date" required
+            defaultValue={new Date().toISOString().slice(0, 10)} />
         </Field>
         <Field id="firstPaymentAt" label="First payment date">
           <Input id="firstPaymentAt" name="firstPaymentAt" type="date" />
