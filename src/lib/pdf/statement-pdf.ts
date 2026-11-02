@@ -27,6 +27,7 @@ export type StatementSummary = {
   propertyName: string
   propertyAddress: string
   council: string
+  country: string
   quarter: Quarter
   rows: StatementRow[]
   totalGrossPence: number
@@ -68,7 +69,7 @@ export async function generateStatementPDF(s: StatementSummary): Promise<Buffer>
     const W = doc.page.width - 100
 
     const council = councilLabel(s.council)
-    const deadline = scotlandDeadline(s.quarter)
+    const deadline = s.country === 'SCOTLAND' ? scotlandDeadline(s.quarter) : null
 
     // ── Header ────────────────────────────────────────────────────────────────
 
@@ -118,11 +119,13 @@ export async function generateStatementPDF(s: StatementSummary): Promise<Buffer>
       formatPence(s.netPayablePence), 50, y, { width: W, align: 'right' },
     )
     y += 18
-    doc
-      .fillColor(LIGHT)
-      .fontSize(9)
-      .font('Helvetica')
-      .text(`Filing deadline: ${formatDate(deadline)}`, 50, y)
+    if (deadline) {
+      doc
+        .fillColor(LIGHT)
+        .fontSize(9)
+        .font('Helvetica')
+        .text(`Filing deadline: ${formatDate(deadline)}`, 50, y)
+    }
     y += 28
 
     doc.moveTo(50, y).lineTo(50 + W, y).strokeColor(LINE).stroke()

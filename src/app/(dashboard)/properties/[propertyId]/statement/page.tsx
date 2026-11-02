@@ -72,7 +72,7 @@ export default async function StatementPage({
   const totalRetentionPence = rows.reduce((s, b) => s + (b.calculation?.retentionPence ?? 0), 0)
   const netPayablePence = totalLevyPence - totalRetentionPence
 
-  const deadline = quarter ? scotlandDeadline(quarter) : null
+  const deadline = quarter && property.country === 'SCOTLAND' ? scotlandDeadline(quarter) : null
   const addressParts = [property.addressLine1, property.town, property.postcode].filter(Boolean)
   const propertyAddress = addressParts.length > 0 ? addressParts.join(', ') : property.postcode
 

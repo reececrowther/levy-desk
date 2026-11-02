@@ -9,7 +9,7 @@ export async function OnboardingChecklist({ workspaceId }: Props) {
   const [propertyCount, bookingCount, returnCount] = await Promise.all([
     db.property.count({ where: { workspaceId } }),
     db.booking.count({ where: { property: { workspaceId } } }),
-    db.levyReturn.count({ where: { workspaceId } }),
+    db.levyReturn.count({ where: { workspaceId, status: { in: ['READY', 'FILED', 'PAID'] } } }),
   ])
 
   let activeExceptionCount = 0

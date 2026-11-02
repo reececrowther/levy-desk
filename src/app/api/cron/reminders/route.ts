@@ -35,7 +35,7 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET
-  if (secret && request.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!secret || request.headers.get('authorization') !== `Bearer ${secret}`) {
     return new NextResponse('Unauthorised', { status: 401 })
   }
 
@@ -108,8 +108,9 @@ export async function GET(request: Request) {
 
         const deadline = scotlandDeadline(quarter)
 
-        try {
-          for (const email of ownerEmails) {
+        let sendError: string | null = null
+        for (const email of ownerEmails) {
+          try {
             if (bookingCount > 0) {
               await sendDeadlineReminder({
                 toEmail: email,
@@ -129,22 +130,28 @@ export async function GET(request: Request) {
                 deadline,
               })
             }
+          } catch (e) {
+            sendError = `${workspace.id}/${council}/${email}: ${e instanceof Error ? e.message : String(e)}`
+            errors.push(sendError)
           }
+        }
 
-          await db.reminderLog.create({
-            data: {
-              workspaceId: workspace.id,
-              council,
-              quarterKey: quarter.key,
-              type,
-            },
-          })
-
-          sent++
-        } catch (e) {
-          errors.push(
-            `${workspace.id}/${council}: ${e instanceof Error ? e.message : String(e)}`,
-          )
+        if (!sendError) {
+          try {
+            await db.reminderLog.create({
+              data: {
+                workspaceId: workspace.id,
+                council,
+                quarterKey: quarter.key,
+                type,
+              },
+            })
+            sent++
+          } catch (e) {
+            errors.push(
+              `${workspace.id}/${council} log: ${e instanceof Error ? e.message : String(e)}`,
+            )
+          }
         }
       }
     }

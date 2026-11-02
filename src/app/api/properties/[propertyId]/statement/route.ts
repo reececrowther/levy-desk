@@ -77,6 +77,7 @@ export async function GET(
     propertyName: property.name,
     propertyAddress,
     council: property.council,
+    country: property.country,
     quarter,
     rows,
     totalGrossPence,

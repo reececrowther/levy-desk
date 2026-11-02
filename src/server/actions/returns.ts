@@ -230,7 +230,9 @@ export async function sendNilReminder(returnId: string) {
   const quarter = parseQuarterKey(
     `${levyReturn.periodStart.getUTCFullYear()}-Q${Math.floor(levyReturn.periodStart.getUTCMonth() / 3) + 1}`,
   )
-  const deadline = scotlandDeadline(quarter)
+  const SCOTLAND_COUNCILS = ['edinburgh', 'glasgow', 'aberdeen', 'stirling', 'west_dunbartonshire', 'highland']
+  const deadline = SCOTLAND_COUNCILS.includes(levyReturn.council) ? scotlandDeadline(quarter) : null
+  if (!deadline) return // no deadline function yet for this council
 
   await sendNilReturnReminder({
     toEmail: user.email,

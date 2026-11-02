@@ -33,6 +33,7 @@ export async function sendNilReturnReminder(input: NilReturnReminderInput): Prom
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'UTC',
   })
 
   const subject = `Nil return reminder — ${council} ${input.quarter.label}`
