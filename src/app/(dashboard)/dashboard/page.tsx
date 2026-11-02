@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { formatPence, quarterBounds } from '@/lib/format'
 import { scotlandDeadline, dateToQuarterKey, parseQuarterKey } from '@/lib/quarters'
 import { Badge } from '@/components/ui/badge'
+import { OnboardingChecklist } from '@/components/onboarding-checklist'
 
 export const metadata = { title: 'Dashboard' }
 
@@ -72,6 +73,8 @@ export default async function DashboardPage() {
         <h1 className="text-lg font-semibold">Dashboard</h1>
         <p className="text-sm text-stone-500">{member.workspace.name}</p>
       </div>
+
+      <OnboardingChecklist workspaceId={member.workspaceId} />
 
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-4">
