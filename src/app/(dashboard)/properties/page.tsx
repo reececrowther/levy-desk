@@ -88,6 +88,12 @@ export default async function PropertiesPage() {
                       Edit
                     </Link>
                     <Link
+                      href={`/properties/${p.id}/statement`}
+                      className="text-xs text-stone-500 hover:text-stone-800"
+                    >
+                      Statement
+                    </Link>
+                    <Link
                       href={`/bookings?propertyId=${p.id}`}
                       className="text-xs text-stone-500 hover:text-stone-800"
                     >
