@@ -103,6 +103,7 @@ export default async function ExceptionsPage() {
                   <ExceptionRow
                     key={flag}
                     bookingId={calc.booking.id}
+                    propertyId={calc.booking.propertyId}
                     flag={flag}
                     description={flagDescription(flag)}
                     booking={{

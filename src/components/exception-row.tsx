@@ -14,6 +14,7 @@ type BookingSnapshot = {
 
 type Props = {
   bookingId: string
+  propertyId: string
   flag: string
   description: FlagDescription
   booking: BookingSnapshot
@@ -25,7 +26,7 @@ const SEVERITY_STYLE: Record<string, string> = {
   info: 'border-l-blue-400',
 }
 
-export function ExceptionRow({ bookingId, flag, description, booking }: Props) {
+export function ExceptionRow({ bookingId, propertyId, flag, description, booking }: Props) {
   const [pending, startTransition] = useTransition()
   const [expanded, setExpanded] = useState(false)
 
@@ -83,10 +84,10 @@ export function ExceptionRow({ bookingId, flag, description, booking }: Props) {
 
           {flag === Flag.WELSH_PROPERTY_UNREGISTERED && (
             <a
-              href="/properties"
+              href={`/properties/${propertyId}/edit`}
               className="inline-block rounded-md border border-stone-300 px-3 py-1.5 text-sm text-stone-700 hover:bg-stone-50"
             >
-              Edit property →
+              Add register number →
             </a>
           )}
 
