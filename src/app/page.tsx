@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Visitor Levy Calculator — Scotland & Wales',
+    title: 'Visitor Levy Calculator — Scotland & Wales | Levy Desk',
     description:
       'Correct rates, night caps and exemptions applied automatically. Free to use for Edinburgh, Glasgow, Cardiff and more.',
     type: 'website',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Visitor Levy Calculator — Scotland & Wales',
+    title: 'Visitor Levy Calculator — Scotland & Wales | Levy Desk',
     description:
       'Correct rates, night caps and exemptions applied automatically. Free to use for Edinburgh, Glasgow, Cardiff and more.',
   },
@@ -66,7 +66,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "When are Edinburgh returns due?",
-    a: "Edinburgh uses quarterly calendar returns. Q3 2026 (1 July – 30 September) was due by 31 October 2026. Q4 2026 (1 October – 31 December) is due by 31 January 2027. Levy Desk shows the next deadline on your dashboard and sends reminders.",
+    a: "Edinburgh uses quarterly calendar returns. Returns are due 30 days after the quarter end. Q3 2026 was due 30 October 2026. Q4 2026 (1 October – 31 December) is due 30 January 2027. Levy Desk shows the next deadline on your dashboard and sends reminders.",
   },
   {
     q: "How does Glasgow's visitor levy work?",

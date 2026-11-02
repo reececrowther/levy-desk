@@ -444,6 +444,23 @@ export default function HowToFileEdinburghPage() {
           </div>
         </section>
 
+        {/* See also */}
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold text-stone-900">More Edinburgh visitor levy guides</h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              { href: '/edinburgh-visitor-levy', title: 'Edinburgh visitor levy — full guide', desc: 'Rates, night cap, exemptions, portal figures, and penalties in one place.' },
+              { href: '/edinburgh-visitor-levy/airbnb-hosts', title: 'Guide for Airbnb hosts', desc: 'Airbnb will not collect the levy for you — here is what to do.' },
+              { href: '/edinburgh-visitor-levy/what-if-i-miss-the-deadline', title: 'Missed the deadline?', desc: 'What penalties apply and how to minimise them.' },
+            ].map((g) => (
+              <Link key={g.href} href={g.href} className="rounded-xl border border-stone-200 bg-white p-4 hover:border-orange-300 hover:bg-orange-50 transition-colors">
+                <p className="text-sm font-semibold text-stone-800">{g.title}</p>
+                <p className="text-xs text-stone-500 mt-1">{g.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* Disclaimer */}
         <div className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800">
           <strong>Disclaimer:</strong> This guide is based on Levy Desk's interpretation of Edinburgh City Council's published guidance and the Visitor Levy (Scotland) Act 2024. Always verify figures and portal procedures with the{' '}

@@ -128,6 +128,9 @@ export default function EdinburghVisitorLevyPage() {
             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
               Live from 24 Jul 2026
             </span>
+            <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700">
+              Q4 return due 30 Jan 2027
+            </span>
             <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
               Scotland
             </span>
@@ -253,7 +256,7 @@ export default function EdinburghVisitorLevyPage() {
         <section className="space-y-4">
           <h2 className="text-lg font-semibold text-stone-900">Filing deadlines</h2>
           <p className="text-stone-600 text-sm">
-            Returns are due at the end of the calendar month following each quarter. You must file even for quarters with zero levy (a nil return).
+            Returns are due 30 days after the quarter end. You must file even for quarters with zero levy (a nil return). The Q4 2026 return covers 1 October to 31 December 2026 and is due by <strong>30 January 2027</strong>.
           </p>
           <div className="overflow-hidden rounded-xl border border-stone-200">
             <table className="w-full text-sm">
@@ -281,6 +284,89 @@ export default function EdinburghVisitorLevyPage() {
               </tbody>
             </table>
           </div>
+        </section>
+
+        {/* Portal-ready figures */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-stone-900">What to enter on the Edinburgh portal</h2>
+          <p className="text-stone-600 text-sm">
+            The Edinburgh Council portal asks for these figures. Levy Desk produces them all automatically from your bookings.
+          </p>
+          <div className="overflow-hidden rounded-xl border border-stone-200">
+            <table className="w-full text-sm">
+              <thead className="bg-stone-50 text-xs uppercase tracking-wide text-stone-500">
+                <tr>
+                  <th className="px-4 py-3 text-left font-medium">Portal field</th>
+                  <th className="px-4 py-3 text-left font-medium">What to enter</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {[
+                  ['Total liable nights', 'Sum of chargeable nights across all bookings. Each stay is capped at 5 consecutive nights, so a 10-night booking counts as 5.'],
+                  ['Gross liable income', 'Total accommodation income on those chargeable nights. For stays longer than 5 nights, prorate: (gross × 5 ÷ total nights).'],
+                  ['Levy collected', '5% of gross liable income. This is the amount due to the council before your retention.'],
+                  ['Host retention', '2% of levy collected. You keep this — it covers your administration costs.'],
+                  ['Net levy payable', 'Levy collected minus host retention. This is what you remit to Edinburgh Council.'],
+                  ['VAT on levy (if applicable)', '20% of levy collected, if you are VAT-registered. Remit to the council alongside the levy.'],
+                ].map(([field, desc]) => (
+                  <tr key={field}>
+                    <td className="px-4 py-3 font-medium text-stone-900 align-top w-2/5">{field}</td>
+                    <td className="px-4 py-3 text-stone-600">{desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="rounded-xl border border-stone-200 bg-white p-5 space-y-2 text-sm">
+            <p className="text-xs font-semibold uppercase tracking-wide text-stone-400 mb-3">Q4 2026 worked example — 3 bookings</p>
+            {[
+              ['3-night stay, £300 gross', '3 nights × £100/night. Full 3 nights charged.', '£15.00'],
+              ['5-night stay, £600 gross', '5 nights at £120/night. 5-night cap reached.', '£30.00'],
+              ['7-night stay, £700 gross', 'Cap: 5/7 × £700 = £500 liable. £500 × 5%.', '£25.00'],
+            ].map(([label, note, levy]) => (
+              <div key={label} className="flex justify-between items-start border-b border-stone-50 pb-2 last:border-0 last:pb-0">
+                <div>
+                  <p className="font-medium text-stone-800">{label}</p>
+                  <p className="text-stone-500 text-xs">{note}</p>
+                </div>
+                <span className="font-mono font-semibold text-stone-900 ml-4 shrink-0">{levy}</span>
+              </div>
+            ))}
+            <div className="border-t border-stone-200 pt-3 space-y-1">
+              <div className="flex justify-between"><span className="text-stone-600">Total levy collected</span><span className="font-mono font-semibold text-stone-900">£70.00</span></div>
+              <div className="flex justify-between"><span className="text-stone-600">Host retention (2%)</span><span className="font-mono text-green-700">keep £1.40</span></div>
+              <div className="flex justify-between border-t border-stone-100 pt-1"><span className="font-semibold text-stone-900">Net levy payable</span><span className="font-mono font-semibold text-stone-900">£68.60</span></div>
+            </div>
+          </div>
+          <p className="text-sm text-stone-500">
+            <Link href="/edinburgh-visitor-levy/how-to-file" className="underline hover:text-stone-700">Step-by-step filing guide</Link> — covers registration, portal walkthrough, and what happens after you submit.
+          </p>
+        </section>
+
+        {/* Late filing penalties */}
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-stone-900">Late filing and penalties</h2>
+          <p className="text-stone-600 text-sm leading-relaxed">
+            Edinburgh City Council can issue a fixed penalty notice for any return not filed by the deadline, regardless of whether levy is owed. A nil return filed late can still attract a penalty.
+          </p>
+          <div className="rounded-xl border border-stone-200 bg-white divide-y divide-stone-100">
+            {[
+              { title: 'Fixed penalty', desc: 'A penalty notice may be issued for late filing. The amount is set by Edinburgh Council. For a first return with a short delay, the council may issue a warning — but you should not rely on this.' },
+              { title: 'Daily interest', desc: 'Interest accrues on any unpaid levy from the day after the deadline. This is separate from the filing penalty — you can file on time and still pay interest if payment is late.' },
+              { title: 'Non-filing escalation', desc: 'If you do not file after a reminder notice, the council can escalate to a formal assessment. Filing late is always better than not filing at all.' },
+            ].map(({ title, desc }) => (
+              <div key={title} className="px-5 py-4">
+                <p className="text-sm font-semibold text-stone-900">{title}</p>
+                <p className="text-sm text-stone-500 mt-1">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-stone-500">
+            Already missed a deadline?{' '}
+            <Link href="/edinburgh-visitor-levy/what-if-i-miss-the-deadline" className="underline hover:text-stone-700">
+              What to do if you have missed the Edinburgh levy deadline →
+            </Link>
+          </p>
         </section>
 
         {/* Calculator */}
