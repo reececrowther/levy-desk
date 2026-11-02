@@ -86,13 +86,13 @@ const STEPS = [
                 <td className="px-4 py-3 font-medium text-stone-900">Q3 2026</td>
                 <td className="px-4 py-3 text-stone-600">24 Jul – 30 Sep 2026</td>
                 <td className="px-4 py-3">
-                  <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">31 Oct 2026</span>
+                  <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700">30 Oct 2026</span>
                 </td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-medium text-stone-900">Q4 2026</td>
                 <td className="px-4 py-3 text-stone-600">1 Oct – 31 Dec 2026</td>
-                <td className="px-4 py-3 text-stone-500 text-xs">31 Jan 2027</td>
+                <td className="px-4 py-3 text-stone-500 text-xs">30 Jan 2027</td>
               </tr>
               <tr>
                 <td className="px-4 py-3 font-medium text-stone-900">Q1 2027</td>
@@ -247,7 +247,7 @@ const STEPS = [
 
 const FAQS = [
   {
-    q: 'What if I miss the 31 October 2026 deadline for Q3?',
+    q: 'What if I miss the 30 October 2026 deadline for Q3?',
     a: 'File as soon as possible even if you have missed the deadline. Edinburgh City Council can issue a fixed penalty for late filing, followed by interest on unpaid levy. Filing late is always better than not filing at all. Contact the council directly if you have a genuine reason for the delay.',
   },
   {
@@ -327,7 +327,7 @@ export default function HowToFileEdinburghPage() {
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
-              Q3 return due 31 Oct 2026
+              Q3 return due 30 Oct 2026
             </span>
             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
               Live levy
@@ -357,15 +357,15 @@ export default function HowToFileEdinburghPage() {
             How to file your Edinburgh<br className="hidden sm:block" /> visitor levy return
           </h1>
           <p className="text-xl text-stone-600 leading-relaxed">
-            A step-by-step guide for Edinburgh holiday let hosts filing their quarterly return — including the Q3 2026 return due by <strong>31 October 2026</strong>.
+            A step-by-step guide for Edinburgh holiday let hosts filing their quarterly return — including the Q3 2026 return due by <strong>30 October 2026</strong>.
           </p>
         </div>
 
         {/* Urgency banner */}
         <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-5">
-          <p className="text-sm font-semibold text-red-800">Q3 2026 deadline: 31 October 2026</p>
+          <p className="text-sm font-semibold text-red-800">Q3 2026 deadline: 30 October 2026</p>
           <p className="mt-1 text-sm text-red-700">
-            The first Edinburgh visitor levy quarter ran from 24 July to 30 September 2026. If you had any liable bookings in that period, your return and payment must reach Edinburgh City Council by <strong>31 October 2026</strong>. Follow the steps below.
+            The first Edinburgh visitor levy quarter ran from 24 July to 30 September 2026. If you had any liable bookings in that period, your return and payment must reach Edinburgh City Council by <strong>30 October 2026</strong>. Follow the steps below.
           </p>
         </div>
 

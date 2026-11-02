@@ -28,10 +28,10 @@ export const metadata: Metadata = {
 }
 
 const DEADLINES = [
-  { quarter: 'Q3 2026', period: '24 Jul – 30 Sep 2026', due: '31 Oct 2026' },
-  { quarter: 'Q4 2026', period: '1 Oct – 31 Dec 2026', due: '31 Jan 2027' },
+  { quarter: 'Q3 2026', period: '24 Jul – 30 Sep 2026', due: '30 Oct 2026' },
+  { quarter: 'Q4 2026', period: '1 Oct – 31 Dec 2026', due: '30 Jan 2027' },
   { quarter: 'Q1 2027', period: '1 Jan – 31 Mar 2027', due: '30 Apr 2027' },
-  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '31 Jul 2027' },
+  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '30 Jul 2027' },
 ]
 
 const FAQ = [

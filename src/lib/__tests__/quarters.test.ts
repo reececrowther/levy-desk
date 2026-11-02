@@ -66,24 +66,24 @@ describe('scotlandDeadline', () => {
     expect(d.toISOString().slice(0, 10)).toBe('2026-04-30')
   })
 
-  it('Q2 (Apr-Jun) deadline is 31 July', () => {
+  it('Q2 (Apr-Jun) deadline is 30 July', () => {
     const d = scotlandDeadline(parseQuarterKey('2026-Q2'))
-    expect(d.toISOString().slice(0, 10)).toBe('2026-07-31')
+    expect(d.toISOString().slice(0, 10)).toBe('2026-07-30')
   })
 
-  it('Q3 (Jul-Sep) deadline is 31 October', () => {
+  it('Q3 (Jul-Sep) deadline is 30 October', () => {
     const d = scotlandDeadline(parseQuarterKey('2026-Q3'))
-    expect(d.toISOString().slice(0, 10)).toBe('2026-10-31')
+    expect(d.toISOString().slice(0, 10)).toBe('2026-10-30')
   })
 
-  it('Q4 (Oct-Dec) deadline is 31 January next year', () => {
+  it('Q4 (Oct-Dec) deadline is 30 January next year', () => {
     const d = scotlandDeadline(parseQuarterKey('2026-Q4'))
-    expect(d.toISOString().slice(0, 10)).toBe('2027-01-31')
+    expect(d.toISOString().slice(0, 10)).toBe('2027-01-30')
   })
 
   it('Q4 deadline does not overflow into February', () => {
     const d = scotlandDeadline(parseQuarterKey('2024-Q4'))
-    expect(d.toISOString().slice(0, 10)).toBe('2025-01-31')
+    expect(d.toISOString().slice(0, 10)).toBe('2025-01-30')
   })
 })
 

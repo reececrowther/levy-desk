@@ -37,10 +37,10 @@ export const metadata: Metadata = {
 }
 
 const FILING_DEADLINES = [
-  { quarter: 'Q3 2026', period: '1 Jul – 30 Sep 2026', due: '31 Oct 2026', status: 'past' },
-  { quarter: 'Q4 2026', period: '1 Oct – 31 Dec 2026', due: '31 Jan 2027', status: 'current' },
+  { quarter: 'Q3 2026', period: '1 Jul – 30 Sep 2026', due: '30 Oct 2026', status: 'past' },
+  { quarter: 'Q4 2026', period: '1 Oct – 31 Dec 2026', due: '30 Jan 2027', status: 'current' },
   { quarter: 'Q1 2027', period: '1 Jan – 31 Mar 2027', due: '30 Apr 2027', status: 'upcoming' },
-  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '31 Jul 2027', status: 'upcoming' },
+  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '30 Jul 2027', status: 'upcoming' },
 ]
 
 const FAQ = [
@@ -62,7 +62,7 @@ const FAQ = [
   },
   {
     q: 'When are Edinburgh visitor levy returns due?',
-    a: 'Edinburgh uses quarterly calendar returns. Returns are due at the end of the month following the quarter end: Q4 2026 (Oct–Dec) is due 31 January 2027; Q1 2027 (Jan–Mar) is due 30 April 2027.',
+    a: 'Edinburgh uses quarterly calendar returns. Returns are due 30 days after the quarter end: Q4 2026 (Oct–Dec) is due 30 January 2027; Q1 2027 (Jan–Mar) is due 30 April 2027.',
   },
   {
     q: 'Do I owe VAT on the Edinburgh levy?',
