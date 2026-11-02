@@ -155,7 +155,7 @@ function SoftwareApplicationSchema() {
       {
         '@type': 'Offer',
         name: 'Agent',
-        price: '99',
+        price: '25',
         priceCurrency: 'GBP',
         description: 'Multiple clients, per-client return packs, owner statements, accountant read-only access',
       },
@@ -467,7 +467,7 @@ export default async function HomePage() {
                   'Per-client return packs in PDF and CSV',
                   'Owner statements showing levy collected and remitted',
                   'Accountant read-only access at no extra cost',
-                  'Priced at £5/property/month (£99/month minimum)',
+                  '£25/month includes 5 properties, then £5/property/month',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-xs font-bold text-orange-500">✓</span>
@@ -545,14 +545,15 @@ export default async function HomePage() {
             />
             <PricingCard
               plan="Agent"
-              price="from £99"
+              price="£25"
               per="/ month"
               features={[
+                '5 units included',
                 'Multiple clients',
                 'Per-client return packs',
                 'Owner statements',
                 'Accountant read-only access',
-                '£5/unit/month',
+                '£5/unit/month after 5',
               ]}
               cta="Get started free"
               href="/account"

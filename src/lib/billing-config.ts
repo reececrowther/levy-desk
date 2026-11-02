@@ -29,7 +29,7 @@ export const PLAN_LIMITS: Record<PlanKey, {
     maxProperties: null,
     maxClients: null,
     pricePerUnitPencePerMonth: 500,   // £5 per unit per month
-    minMonthlyPence: 9900,            // minimum £99/month
+    minMonthlyPence: 2500,            // £25/month includes 5 units
   },
   BNB: {
     label: 'B&B / Hotel',

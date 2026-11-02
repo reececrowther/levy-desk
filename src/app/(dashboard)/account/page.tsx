@@ -106,7 +106,7 @@ export default async function AccountPage({
             {plan === 'FREE' && (
               <>
                 <UpgradeButton plan="OWNER" label="Upgrade to Owner (£8/unit/month)" />
-                <UpgradeButton plan="AGENT" label="Upgrade to Agent (£5/unit/month, min £99)" />
+                <UpgradeButton plan="AGENT" label="Upgrade to Agent (£25/month, 5 units included)" />
                 <UpgradeButton plan="BNB" label="Upgrade to B&B / Hotel (£25/property/month)" />
               </>
             )}
