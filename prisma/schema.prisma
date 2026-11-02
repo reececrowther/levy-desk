@@ -82,6 +82,7 @@ model Workspace {
   auditLogs            AuditLog[]
   columnMappings       ColumnMapping[]
   importBatches        ImportBatch[]
+  reminderLogs         ReminderLog[]
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
 }
@@ -351,6 +352,19 @@ enum ReturnStatus {
   READY
   FILED
   PAID
+}
+
+model ReminderLog {
+  id          String    @id @default(cuid())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  council     String
+  quarterKey  String
+  type        String    // "DEADLINE_14" | "DEADLINE_7" | "NIL_14" | "NIL_7"
+  sentAt      DateTime  @default(now())
+
+  @@unique([workspaceId, council, quarterKey, type])
+  @@index([workspaceId])
 }
 
 enum ImportStatus {
