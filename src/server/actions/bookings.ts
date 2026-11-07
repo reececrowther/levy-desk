@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { requireWorkspace } from './auth-helpers'
 import { recalculate } from '@/lib/recalculate'
 import type { BookingSource, BookingStatus, Prisma } from '@prisma/client'
+import { bookingInPeriod } from '@/lib/return-period'
 
 const BookingSchema = z.object({
   propertyId: z.string().cuid(),
@@ -99,15 +100,11 @@ export async function editBooking(input: z.infer<typeof EditBookingSchema>) {
     })
   }
 
-  const lockedReturn = await db.levyReturn.findFirst({
-    where: {
-      workspaceId: workspace.id,
-      council: property.council,
-      lockedAt: { not: null },
-      periodStart: { lte: booking.checkIn },
-      periodEnd: { gte: booking.checkIn },
-    },
-  })
+  const lockedReturn = (
+    await db.levyReturn.findMany({
+      where: { workspaceId: workspace.id, council: property.council, lockedAt: { not: null } },
+    })
+  ).find((r) => bookingInPeriod(property.council, booking.checkIn, booking.checkOut, r.periodStart, r.periodEnd))
 
   if (lockedReturn) {
     await db.auditLog.create({
@@ -192,15 +189,11 @@ export async function updateBooking(input: z.infer<typeof UpdateBookingSchema>) 
   if (!workspace) throw new Error('No workspace.')
 
   // Check if this booking falls within a locked return period
-  const lockedReturn = await db.levyReturn.findFirst({
-    where: {
-      workspaceId: workspace.id,
-      council: property.council,
-      lockedAt: { not: null },
-      periodStart: { lte: booking.checkIn },
-      periodEnd: { gte: booking.checkIn },
-    },
-  })
+  const lockedReturn = (
+    await db.levyReturn.findMany({
+      where: { workspaceId: workspace.id, council: property.council, lockedAt: { not: null } },
+    })
+  ).find((r) => bookingInPeriod(property.council, booking.checkIn, booking.checkOut, r.periodStart, r.periodEnd))
 
   const before: Record<string, unknown> = {}
   const after: Record<string, unknown> = {}

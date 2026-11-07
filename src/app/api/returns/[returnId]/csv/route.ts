@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { generateReturnCSV } from '@/lib/csv/return-csv'
 import { parseQuarterKey } from '@/lib/quarters'
 import type { ReturnRow } from '@/lib/csv/return-csv'
+import { bookingPeriodWhere } from '@/lib/return-period'
 
 export async function GET(
   _req: Request,
@@ -29,7 +30,7 @@ export async function GET(
   const bookings = await db.booking.findMany({
     where: {
       property: { workspaceId: member.workspaceId, council: levyReturn.council },
-      checkIn: { gte: levyReturn.periodStart, lte: levyReturn.periodEnd },
+      ...bookingPeriodWhere(levyReturn.council, levyReturn.periodStart, levyReturn.periodEnd),
       status: 'CONFIRMED',
     },
     include: { calculation: true, property: true },

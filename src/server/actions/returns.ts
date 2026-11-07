@@ -9,6 +9,7 @@ import { parseQuarterKey, scotlandDeadline } from '@/lib/quarters'
 import { sendNilReturnReminder } from '@/lib/email/reminders'
 import type { Prisma } from '@prisma/client'
 import { sumReturnTotals } from '@/levy/return-totals'
+import { bookingPeriodWhere } from '@/lib/return-period'
 
 const VALID_COUNCILS = [
   'edinburgh', 'glasgow', 'aberdeen', 'stirling', 'west_dunbartonshire', 'highland', 'cardiff',
@@ -54,7 +55,7 @@ export async function generateReturn(
   const bookings = await db.booking.findMany({
     where: {
       property: { workspaceId: workspace.id, council },
-      checkIn: { gte: quarter.periodStart, lte: quarter.periodEnd },
+      ...bookingPeriodWhere(council, quarter.periodStart, quarter.periodEnd),
       status: 'CONFIRMED',
     },
     include: { calculation: true },

@@ -5,6 +5,7 @@ import { formatPence, quarterBounds } from '@/lib/format'
 import { scotlandDeadline, dateToQuarterKey, parseQuarterKey } from '@/lib/quarters'
 import { Badge } from '@/components/ui/badge'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import { bookingInPeriod, bookingOverlapsPeriodWhere } from '@/lib/return-period'
 
 export const metadata = { title: 'Dashboard' }
 
@@ -41,8 +42,8 @@ export default async function DashboardPage() {
     where: {
       booking: {
         property: { workspaceId: member.workspaceId },
-        checkIn: { gte: new Date(qStart) },
-        checkOut: { lte: new Date(qEnd + 'T23:59:59') },
+        // Superset of bookings that could belong to this quarter; filtered per council below
+        ...bookingOverlapsPeriodWhere(new Date(qStart), new Date(qEnd + 'T23:59:59Z')),
         status: 'CONFIRMED',
       },
     },
@@ -54,6 +55,7 @@ export default async function DashboardPage() {
 
   for (const calc of calculations) {
     const council = calc.booking.property.council
+    if (!bookingInPeriod(council, calc.booking.checkIn, calc.booking.checkOut, new Date(qStart), new Date(qEnd + 'T23:59:59Z'))) continue
     byCouncil.set(council, (byCouncil.get(council) ?? 0) + calc.levyPence)
     if (calc.flags.length > 0) flaggedCount++
   }

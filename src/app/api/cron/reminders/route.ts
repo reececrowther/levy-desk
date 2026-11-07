@@ -4,6 +4,7 @@ import { SCHEME_RULES } from '@/levy/rules'
 import { parseQuarterKey, scotlandDeadline } from '@/lib/quarters'
 import type { Quarter } from '@/lib/quarters'
 import { sendDeadlineReminder, sendNilReturnReminder } from '@/lib/email/reminders'
+import { bookingPeriodWhere } from '@/lib/return-period'
 
 // Maps the deadline month back to the quarter it belongs to (Scotland only).
 // Q1 → Apr 30, Q2 → Jul 31, Q3 → Oct 31, Q4 → Jan 31 (next year)
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
         const bookingCount = await db.booking.count({
           where: {
             property: { workspaceId: workspace.id, council },
-            checkIn: { gte: quarter.periodStart, lte: quarter.periodEnd },
+            ...bookingPeriodWhere(council, quarter.periodStart, quarter.periodEnd),
             status: 'CONFIRMED',
           },
         })

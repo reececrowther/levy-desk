@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { parseQuarterKey, availableQuarters, scotlandDeadline, formatQuarterPeriod } from '@/lib/quarters'
 import { formatPence } from '@/lib/format'
+import { bookingPeriodWhere } from '@/lib/return-period'
 
 export const metadata = { title: 'Owner Statement' }
 
@@ -57,7 +58,7 @@ export default async function StatementPage({
     ? await db.booking.findMany({
         where: {
           propertyId: property.id,
-          checkIn: { gte: quarter.periodStart, lte: quarter.periodEnd },
+          ...bookingPeriodWhere(property.council, quarter.periodStart, quarter.periodEnd),
           status: 'CONFIRMED',
         },
         include: { calculation: true },

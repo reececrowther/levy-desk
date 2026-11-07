@@ -254,8 +254,8 @@ const FAQS = [
     a: 'Yes. Platforms do not pay the levy to the council for you. Edinburgh Council guidance says that even when a booking is made through a third-party platform, the accommodation provider remains the liable person. Any levy the platform collects should be passed to you, and you include those bookings in your own return and pay the council.',
   },
   {
-    q: 'How do I handle a stay that spans the quarter boundary (e.g. check-in 28 Sep, check-out 3 Oct)?',
-    a: "Include the booking in the quarter in which the check-in date falls. A booking that checks in on 28 September 2026 is included in the Q3 2026 return, even though the guest stays into October. Do not split the income across quarters.",
+    q: 'How do I handle a stay that spans the quarter boundary (e.g. check-in 28 Dec, check-out 3 Jan)?',
+    a: "Include the whole booking in the return for the quarter in which the guest checks out. Edinburgh Council's guidance says a stay that starts in one quarter and finishes in the next belongs to the quarter when the visitor checked out, so a 28 December 2026 to 3 January 2027 stay goes in the Q1 2027 return. Do not split the income across quarters.",
   },
   {
     q: 'A booking was cancelled after I filed — do I need to amend the return?',

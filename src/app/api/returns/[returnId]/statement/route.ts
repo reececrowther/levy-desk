@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
+import { bookingPeriodWhere } from '@/lib/return-period'
 
 export const runtime = 'nodejs'
 
@@ -48,10 +49,7 @@ export async function GET(
   const bookings = await db.booking.findMany({
     where: {
       propertyId: { in: propertyIds },
-      checkIn: {
-        gte: levyReturn.periodStart,
-        lte: levyReturn.periodEnd,
-      },
+      ...bookingPeriodWhere(levyReturn.council, levyReturn.periodStart, levyReturn.periodEnd),
       status: 'CONFIRMED',
     },
     include: { calculation: true },

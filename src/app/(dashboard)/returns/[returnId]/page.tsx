@@ -5,6 +5,7 @@ import { db } from '@/lib/db'
 import { formatPence } from '@/lib/format'
 import { parseQuarterKey, scotlandDeadline, formatQuarterPeriod } from '@/lib/quarters'
 import { ReturnActions } from './return-actions'
+import { bookingPeriodWhere } from '@/lib/return-period'
 
 export default async function ReturnPage({ params }: { params: Promise<{ returnId: string }> }) {
   const { returnId } = await params
@@ -32,7 +33,7 @@ export default async function ReturnPage({ params }: { params: Promise<{ returnI
   const bookings = await db.booking.findMany({
     where: {
       property: { workspaceId: member.workspaceId, council: levyReturn.council },
-      checkIn: { gte: levyReturn.periodStart, lte: levyReturn.periodEnd },
+      ...bookingPeriodWhere(levyReturn.council, levyReturn.periodStart, levyReturn.periodEnd),
       status: 'CONFIRMED',
     },
     include: {
