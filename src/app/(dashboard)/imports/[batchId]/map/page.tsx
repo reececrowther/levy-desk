@@ -30,6 +30,7 @@ export default async function MapPage({ params }: { params: Promise<{ batchId: s
       filename={batch.filename}
       propertyName={batch.property.name}
       headers={batch.headers}
+      vatRegistered={member.workspace.vatRegistered}
     />
   )
 }

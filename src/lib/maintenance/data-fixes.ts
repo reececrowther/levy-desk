@@ -15,7 +15,7 @@ export const IMPORT_ONLY_FLAGS: readonly string[] = [
 ]
 
 /** Flags that are retired and must be dropped on recalculation. */
-export const RETIRED_FLAGS: readonly string[] = [Flag.BOOKING_COM_DOUBLE_REMIT]
+export const RETIRED_FLAGS: readonly string[] = [Flag.BOOKING_COM_DOUBLE_REMIT, Flag.AMBIGUITY_EDINBURGH_CAP_START]
 
 /** Engine flags + any import-only flags already on the calculation, minus retired flags. */
 export function mergeFlags(previous: readonly string[], fromEngine: readonly string[]): string[] {
@@ -42,6 +42,21 @@ export function correctedExtrasForCleaningFee(
     if (pence !== null && Math.abs(pence) === extrasPence) return 0
   }
   return null
+}
+
+/**
+ * One-off cleaning fee recorded in an imported row (pence), or 0.
+ * Used as the booking's per-stay fee: it is part of the guest-paid total and,
+ * under a night cap, charged in full (Edinburgh v2.1 p.8).
+ */
+export function cleaningFeeFromImportRow(rawImportRow: unknown): number {
+  if (!rawImportRow || typeof rawImportRow !== 'object') return 0
+  for (const [header, value] of Object.entries(rawImportRow as Record<string, unknown>)) {
+    if (!CLEANING_HEADER.test(header) || typeof value !== 'string') continue
+    const pence = parseCurrencyToPence(value)
+    if (pence !== null && pence > 0) return pence
+  }
+  return 0
 }
 
 /** Remove a cleaning-fee column from a saved mapping's `extras` field. Returns null if unchanged. */

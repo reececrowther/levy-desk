@@ -18,11 +18,12 @@ type Props = {
   filename: string
   propertyName: string
   headers: string[]
+  vatRegistered: boolean
 }
 
 const INITIAL: ProcessState = {}
 
-export function MapForm({ batchId, source, filename, propertyName, headers }: Props) {
+export function MapForm({ batchId, source, filename, propertyName, headers, vatRegistered }: Props) {
   const [actionState, action, pending] = useActionState(processImport, INITIAL)
   const [saveMapping, setSaveMapping] = useState(false)
 
@@ -53,6 +54,16 @@ export function MapForm({ batchId, source, filename, propertyName, headers }: Pr
       </div>
 
       <form action={action} className="space-y-6">
+        <label className="flex items-start gap-2 rounded-md border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700">
+          <input type="checkbox" name="amountsIncludeVat" defaultChecked={vatRegistered} className="mt-0.5" />
+          <span>
+            Amounts in this file include 20% VAT
+            <span className="block text-xs text-stone-500">
+              The levy is calculated on prices net of VAT. Ticked by default because your workspace is
+              {vatRegistered ? ' ' : ' not '}VAT-registered; amounts will be converted before saving.
+            </span>
+          </span>
+        </label>
         {actionState.error && (
           <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {actionState.error}

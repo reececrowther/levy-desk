@@ -124,7 +124,9 @@ describe('Worked example 2 — Edinburgh, same stay but booked and paid 2025-09-
 })
 
 describe('Worked example 3 — Edinburgh, stay 2026-07-22 to 2026-07-27, booked 2026-01-10', () => {
-  it('charges nights from 2026-07-24 only and raises AMBIGUITY_EDINBURGH_CAP_START', () => {
+  // Edinburgh guidance v2.1 p.10: stays that commenced before 24 July 2026 are not
+  // liable, even if they finish after it. (Replaces the earlier "ambiguity" reading.)
+  it('is not liable at all because the stay commenced before 2026-07-24', () => {
     const b = booking({
       bookedAt: '2026-01-10',
       firstPaymentAt: '2026-01-10',
@@ -133,9 +135,9 @@ describe('Worked example 3 — Edinburgh, stay 2026-07-22 to 2026-07-27, booked 
       guestPaidGrossPence: 50_000,
     })
     const result = calculate(b, edinburghProperty, { rules: SCHEME_RULES })
-    // 5 nights total: 22nd, 23rd are pre-scope; 24th, 25th, 26th are chargeable (3 nights ≤ cap)
-    expect(result.nightsCharged).toBe(3)
-    expect(result.flags).toContain(Flag.AMBIGUITY_EDINBURGH_CAP_START)
+    expect(result.nightsCharged).toBe(0)
+    expect(result.levyPence).toBe(0)
+    expect(result.flags).not.toContain(Flag.AMBIGUITY_EDINBURGH_CAP_START)
   })
 })
 

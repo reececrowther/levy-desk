@@ -117,7 +117,9 @@ export async function processImport(
     data: { status: 'PROCESSING' },
   })
 
-  await processImportBatch(batchId, mapping)
+  await processImportBatch(batchId, mapping, {
+    amountsIncludeVat: formData.get('amountsIncludeVat') === 'on',
+  })
   revalidatePath('/bookings')
   redirect(`/imports/${batchId}/results`)
 }

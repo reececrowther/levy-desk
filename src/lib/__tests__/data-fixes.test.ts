@@ -3,6 +3,7 @@ import {
   mergeFlags,
   correctedExtrasForCleaningFee,
   correctedColumnMapping,
+  cleaningFeeFromImportRow,
 } from '../maintenance/data-fixes'
 
 describe('mergeFlags', () => {
@@ -51,5 +52,15 @@ describe('correctedColumnMapping', () => {
 
   it('leaves other extras mappings alone', () => {
     expect(correctedColumnMapping({ extras: 'Parking', checkIn: 'Start Date' })).toBeNull()
+  })
+})
+
+describe('cleaningFeeFromImportRow', () => {
+  it('reads the Airbnb cleaning fee', () => {
+    expect(cleaningFeeFromImportRow({ 'Cleaning Fee': '£70.00' })).toBe(7_000)
+  })
+  it('returns 0 when there is no cleaning column', () => {
+    expect(cleaningFeeFromImportRow({ Amount: '100' })).toBe(0)
+    expect(cleaningFeeFromImportRow(null)).toBe(0)
   })
 })

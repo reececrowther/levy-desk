@@ -19,7 +19,6 @@ export const SCHEME_RULES: SchemeRule[] = [
     sourceUrl: 'https://www.edinburgh.gov.uk/downloads/file/37836/edinburgh-visitor-levy-scheme-information-for-accommodation-providers',
     verified: false,
     roundingRule: 'half_up',
-    edinburghCapBasis: 'first_chargeable_night',
   },
 
   // ─── Glasgow (confirmed; exact start day UNVERIFIED) ─────────────────────

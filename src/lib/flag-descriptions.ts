@@ -12,9 +12,17 @@ export type FlagDescription = {
 
 export const FLAG_DESCRIPTIONS: Record<string, FlagDescription> = {
   [Flag.AMBIGUITY_EDINBURGH_CAP_START]: {
-    title: 'Edinburgh cap basis unclear',
+    // Legacy flag: no longer raised (Nov 2026). Kept so older stored calculations still render.
+    title: 'Stay crossing 24 July 2026 (legacy check)',
     detail:
-      'The levy start date (24 July 2026) falls mid-stay. It is unclear whether the 5-night cap counts from night 1 of the stay or from the first chargeable night. The conservative default (first chargeable night) has been used. Acknowledge if you are satisfied with this, or contact Edinburgh Council for guidance.',
+      'No longer needed. Edinburgh Council guidance confirms stays that began before 24 July 2026 are not liable at all. Recalculate the booking to clear this flag.',
+    severity: 'warning',
+    acknowledgeOnly: true,
+  },
+  [Flag.PAYMENT_DATE_UNKNOWN]: {
+    title: 'Booked before 1 October 2025: payment date needed',
+    detail:
+      'Edinburgh exempts stays booked and paid (in part or full) before 1 October 2025, but only if the payment was non-refundable; a refundable deposit does not count. No payment date is recorded, so the levy has been charged. If a non-refundable payment was made before 1 October 2025, edit the booking and add the payment date to exempt it. Otherwise, acknowledge.',
     severity: 'warning',
     acknowledgeOnly: true,
   },

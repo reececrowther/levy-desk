@@ -48,6 +48,11 @@ export interface Booking {
   guestPaidGrossPence: number
   /** Separately priced extras (meals, parking, transport) excluded from levy base (pence) */
   extrasPence: number
+  /**
+   * One-off per-stay fees INCLUDED in guestPaidGross (e.g. a flat cleaning fee), in pence.
+   * When a night cap applies they are charged in full, not pro-rated (Edinburgh v2.1 p.8).
+   */
+  perStayFeesPence?: number
   /** Platform commission (pence) — informational only; levy base uses guestPaidGross */
   commissionPence?: number
   /** Host payout (pence) — may be less than gross when platform takes commission */
@@ -104,7 +109,7 @@ export interface SchemeRule {
   nightCap?: number
   /** Months (1-indexed) when levy applies. Null = all year. */
   seasonMonths?: number[]
-  /** Stays before this date (YYYY-MM-DD) are not chargeable */
+  /** Stays COMMENCING before this date (YYYY-MM-DD) are not chargeable at all, even if they end after it (Edinburgh v2.1 p.10) */
   stayStartDate?: string
   /** Bookings made AND first-paid before this date (YYYY-MM-DD) owe nothing */
   bookingCutOffDate?: string
@@ -117,7 +122,7 @@ export interface SchemeRule {
   sourceUrl: string
   verified: boolean
   roundingRule: RoundingRule
-  /** Config: Edinburgh 5-night cap basis for cross-boundary stays */
+  /** @deprecated Resolved by Edinburgh guidance v2.1 p.10; no longer read. */
   edinburghCapBasis?: EdinburghCapBasis
 }
 

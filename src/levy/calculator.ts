@@ -84,6 +84,23 @@ export function calculate(
     .sort((a, b) => (a.effectiveFrom > b.effectiveFrom ? -1 : 1))
     .at(0)
 
+  if (!rule && property.country === 'scotland') {
+    // Scotland: a stay that commenced before the scheme started is not liable at all,
+    // even if it ends after the start date (Edinburgh guidance v2.1 p.10; assumed for
+    // other Scottish councils, UNVERIFIED).
+    const firstRule = rules
+      .filter((r) => r.council === property.council && r.enabled)
+      .sort((a, b) => (a.effectiveFrom < b.effectiveFrom ? -1 : 1))
+      .at(0)
+    if (firstRule && firstRule.effectiveFrom < booking.checkOut) {
+      return buildCalculation(booking, firstRule, {
+        nightsCharged: 0, basePence: 0, exclusionsPence: 0, levyPence: 0,
+        vatOnLevyPence: 0, retentionPence: 0, flags: [],
+        steps: [`Stay commenced on ${booking.checkIn}, before the scheme start date ${firstRule.effectiveFrom}. Stays that begin before the start date are not liable, even if they end after it. Levy is £0.00`],
+      })
+    }
+  }
+
   if (!rule) {
     // Fallback: stay starts before any rule's effectiveFrom but overlaps with one.
     // Use the earliest rule that starts before the stay ends (checkOut exclusive).
@@ -137,10 +154,19 @@ export function calculate(
 
   // ── Booking cut-off (Edinburgh: booked and paid before 2025-10-01) ────────
   if (rule.bookingCutOffDate) {
-    const paymentDate = booking.firstPaymentAt ?? booking.bookedAt
-    if (paymentDate < rule.bookingCutOffDate) {
+    // Exempt only if a (non-refundable) payment was made before the cut-off (Edinburgh v2.1 p.10).
+    // The booking date alone is not enough: an unpaid early booking is still liable.
+    const paymentDate = booking.firstPaymentAt
+    if (!paymentDate && booking.bookedAt < rule.bookingCutOffDate) {
+      flags.push(Flag.PAYMENT_DATE_UNKNOWN)
       steps.push(
-        `Booking first paid on ${paymentDate}, before cut-off ${rule.bookingCutOffDate} — levy is £0.00`,
+        `Booked on ${booking.bookedAt}, before cut-off ${rule.bookingCutOffDate}, but no payment date recorded. ` +
+          'Levy charged. If a non-refundable payment was made before the cut-off, add the payment date to exempt it.',
+      )
+    }
+    if (paymentDate && paymentDate < rule.bookingCutOffDate) {
+      steps.push(
+        `First non-refundable payment on ${paymentDate}, before cut-off ${rule.bookingCutOffDate} — levy is £0.00`,
       )
       return buildCalculation(booking, rule, {
         nightsCharged: 0,
@@ -153,9 +179,11 @@ export function calculate(
         steps,
       })
     }
-    steps.push(
-      `Booking first paid on ${paymentDate} — on or after cut-off ${rule.bookingCutOffDate}, levy applies.`,
-    )
+    if (paymentDate) {
+      steps.push(
+        `First payment on ${paymentDate} — on or after cut-off ${rule.bookingCutOffDate}, levy applies.`,
+      )
+    }
   }
 
   // ── Wales-specific checks ─────────────────────────────────────────────────
@@ -199,10 +227,9 @@ export function calculate(
   // ── Scotland: determine chargeable nights ─────────────────────────────────
   let chargeableNights: string[]
   let nightCapApplied = false
-  let ambiguityFlag = false
 
   if (rule.country === 'scotland') {
-    const scottishResult = computeScottishChargeableNights(nights, rule, booking, steps, flags)
+    const scottishResult = computeScottishChargeableNights(nights, rule, booking, steps)
     chargeableNights = scottishResult.nights
     nightCapApplied = scottishResult.capApplied
     if (chargeableNights.length === 0) {
@@ -218,7 +245,6 @@ export function calculate(
         steps,
       })
     }
-    void ambiguityFlag
   } else {
     // Wales: all nights if stay < 32, else exempt
     chargeableNights = computeWelshChargeableNights(nights, booking, steps)
@@ -319,7 +345,6 @@ function computeScottishChargeableNights(
   rule: SchemeRule,
   booking: Booking,
   steps: string[],
-  flags: string[],
 ): ScottishNightResult {
   const stayStart = rule.stayStartDate
 
@@ -329,20 +354,10 @@ function computeScottishChargeableNights(
     : nights
 
   if (stayStart && inScopeNights.length < nights.length) {
-    const preScopeCount = nights.length - inScopeNights.length
+    // Normally unreachable: stays commencing before the start date are zeroed earlier.
     steps.push(
-      `${preScopeCount} night(s) before stay start date ${stayStart} — not chargeable.`,
+      `${nights.length - inScopeNights.length} night(s) before stay start date ${stayStart} — not chargeable.`,
     )
-
-    // Raise ambiguity flag if stay crosses the start date and there is a night cap
-    if (rule.nightCap !== undefined && rule.nightCap !== null && preScopeCount > 0) {
-      if (rule.edinburghCapBasis === 'first_chargeable_night' || rule.edinburghCapBasis === undefined) {
-        flags.push(Flag.AMBIGUITY_EDINBURGH_CAP_START)
-        steps.push(
-          'Ambiguity: stay crosses the levy start date. Cap basis set to first_chargeable_night (conservative default). Host should confirm.',
-        )
-      }
-    }
   }
 
   // Season filter (Highland)
@@ -404,22 +419,34 @@ function computePercentageLevy(
   const nightCount = chargeableNights.length
   const totalNightCount = totalNights(booking.checkIn, booking.checkOut)
 
-  // Pro-rate gross and extras to chargeable nights only
-  const pricePerNight = Math.round(booking.guestPaidGrossPence / totalNightCount)
-  const proratedGross = pricePerNight * nightCount
-  steps.push(
-    `Guest-paid gross: ${booking.guestPaidGrossPence}p over ${totalNightCount} nights = ${pricePerNight}p/night. ` +
-    `Pro-rated to ${nightCount} chargeable nights: ${proratedGross}p.`,
-  )
+  // Split the guest-paid total into: optional extras (excluded entirely), one-off
+  // per-stay fees such as a flat cleaning fee (charged in full when any night is
+  // chargeable, Edinburgh v2.1 p.8), and the nightly accommodation portion.
+  const extras = booking.extrasPence
+  const perStayFees = booking.perStayFeesPence ?? 0
+  const nightlyPortion = booking.guestPaidGrossPence - extras - perStayFees
 
-  // Extras (pro-rated)
-  const extrasPerNight = booking.extrasPence > 0
-    ? Math.round(booking.extrasPence / totalNightCount)
-    : 0
-  const proratedExtras = extrasPerNight * nightCount
-  if (proratedExtras > 0) {
-    steps.push(`Extras deduction (pro-rated): ${proratedExtras}p`)
+  let accommodationBase: number
+  if (nightCount === totalNightCount) {
+    accommodationBase = nightlyPortion
+    steps.push(
+      `Guest-paid total ${booking.guestPaidGrossPence}p − optional extras ${extras}p = ${booking.guestPaidGrossPence - extras}p` +
+        (perStayFees > 0 ? ` (includes one-off fees of ${perStayFees}p)` : ''),
+    )
+  } else {
+    // Night cap or out-of-scope nights: only the chargeable nights' share of the nightly
+    // portion. Uses the average nightly price; if the first nights were priced
+    // differently, the actual value of those nights should be used instead.
+    accommodationBase = Math.round((nightlyPortion * nightCount) / totalNightCount)
+    steps.push(
+      `Nightly portion ${nightlyPortion}p (total ${booking.guestPaidGrossPence}p − extras ${extras}p − one-off fees ${perStayFees}p) ` +
+        `over ${totalNightCount} nights → ${nightCount} chargeable nights = ${accommodationBase}p (average nightly price).`,
+    )
+    if (perStayFees > 0) {
+      steps.push(`One-off fees charged in full: ${perStayFees}p`)
+    }
   }
+  const proratedGross = accommodationBase + perStayFees
 
   // Breakfast deduction (pro-rated)
   let breakfastDeduction = 0
@@ -431,11 +458,9 @@ function computePercentageLevy(
     steps.push(`Breakfast deduction: ${bfPerNight}p × ${nightCount} nights = ${breakfastDeduction}p`)
   }
 
-  const exclusionsPence = proratedExtras + breakfastDeduction
-  const basePence = proratedGross - exclusionsPence
-  steps.push(
-    `Base = ${proratedGross}p − ${exclusionsPence}p (extras + breakfast) = ${basePence}p`,
-  )
+  const exclusionsPence = extras + breakfastDeduction
+  const basePence = proratedGross - breakfastDeduction
+  steps.push(`Levy base = ${proratedGross}p − breakfast ${breakfastDeduction}p = ${basePence}p`)
 
   // Levy = base × rate%
   const rawLevyPence = (basePence * rates.ratePercent) / 100

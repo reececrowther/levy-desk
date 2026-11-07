@@ -1,5 +1,5 @@
 export const Flag = {
-  /** Edinburgh: stay starts before 2026-07-24 — cap basis is ambiguous */
+  /** Legacy (no longer raised, Nov 2026): resolved by Edinburgh guidance v2.1 p.10 (stays commencing before 24 July 2026 are not liable). */
   AMBIGUITY_EDINBURGH_CAP_START: 'AMBIGUITY_EDINBURGH_CAP_START',
 
   /** Only payout is known; gross must be confirmed or grossed-up */
@@ -25,6 +25,9 @@ export const Flag = {
 
   /** Highland scheme is proposed, not confirmed; calculation is indicative only */
   HIGHLAND_PROPOSED: 'HIGHLAND_PROPOSED',
+
+  /** Booking made before the cut-off but no payment date recorded: levy charged until a payment date shows it is exempt */
+  PAYMENT_DATE_UNKNOWN: 'PAYMENT_DATE_UNKNOWN',
 
   /** Council start date is unverified; exact day not confirmed in legislation */
   UNVERIFIED_START_DATE: 'UNVERIFIED_START_DATE',

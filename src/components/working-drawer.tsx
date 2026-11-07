@@ -14,7 +14,8 @@ import { formatPence } from '@/lib/format'
 import type { Calculation } from '@prisma/client'
 
 const FLAG_LABELS: Record<string, string> = {
-  AMBIGUITY_EDINBURGH_CAP_START: 'Edinburgh cap ambiguity',
+  AMBIGUITY_EDINBURGH_CAP_START: 'Stay crossing 24 July (legacy, recalculate to clear)',
+  PAYMENT_DATE_UNKNOWN: 'Payment date needed (booked before 1 Oct 2025)',
   COMMISSION_UNKNOWN: 'Commission unknown',
   BOOKING_COM_DOUBLE_REMIT: 'Booking.com (legacy check, recalculate to clear)',
   BASE_IS_PAYOUT_NOT_GROSS: 'Base is payout, not gross',

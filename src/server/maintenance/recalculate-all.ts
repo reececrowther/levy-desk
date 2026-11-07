@@ -23,6 +23,7 @@ import {
   correctedColumnMapping,
 } from '@/lib/maintenance/data-fixes'
 import type { Prisma } from '@prisma/client'
+import { bookingInPeriod } from '@/lib/return-period'
 
 export interface ReturnImpact {
   id: string
@@ -64,12 +65,14 @@ export async function recalculateAll(opts: { apply: boolean; adminUserId: string
   const returns = await db.levyReturn.findMany({ include: { workspace: { include: { members: { include: { user: true }, orderBy: { createdAt: 'asc' } } } } } })
   const lockedReturns = returns.filter((r) => r.lockedAt !== null)
 
-  const inPeriod = (checkIn: Date, r: { periodStart: Date; periodEnd: Date }) =>
-    checkIn.getTime() >= r.periodStart.getTime() && checkIn.getTime() <= r.periodEnd.getTime()
+  const inPeriod = (
+    b: { checkIn: Date; checkOut: Date; property: { council: string } },
+    r: { periodStart: Date; periodEnd: Date },
+  ) => bookingInPeriod(b.property.council, b.checkIn, b.checkOut, r.periodStart, r.periodEnd)
 
   const isLocked = (b: (typeof bookings)[number]) =>
     lockedReturns.some(
-      (r) => r.workspaceId === b.property.workspaceId && r.council === b.property.council && inPeriod(b.checkIn, r),
+      (r) => r.workspaceId === b.property.workspaceId && r.council === b.property.council && inPeriod(b, r),
     )
 
   type NewCalc = ReturnType<typeof calculationToDb> & { flags: string[] }
@@ -85,7 +88,8 @@ export async function recalculateAll(opts: { apply: boolean; adminUserId: string
     if (locked) bookingsInLockedPeriods++
 
     const newExtras = correctedExtrasForCleaningFee(b.rawImportRow, b.extrasPence)
-    const engineBooking = { ...toEngineBooking(b), extrasPence: newExtras ?? b.extrasPence }
+    // Build the engine booking from the corrected row so one-off fees are derived correctly.
+    const engineBooking = toEngineBooking({ ...b, extrasPence: newExtras ?? b.extrasPence })
     const engineProperty = { ...toEngineProperty(b.property), vatRegistered: b.property.workspace.vatRegistered }
     const result = calculate(engineBooking, engineProperty, { rules: SCHEME_RULES })
     const calc = calculationToDb(result) as NewCalc
@@ -123,7 +127,7 @@ export async function recalculateAll(opts: { apply: boolean; adminUserId: string
           b.property.workspaceId === r.workspaceId &&
           b.property.council === r.council &&
           b.status === 'CONFIRMED' &&
-          inPeriod(b.checkIn, r),
+          inPeriod(b, r),
       )
       .map((b) => newCalcs.get(b.id)!.calc)
     const t = sumReturnTotals(lines)
@@ -173,7 +177,7 @@ export async function recalculateAll(opts: { apply: boolean; adminUserId: string
     for (const d of draftImpacts) {
       const r = returns.find((x) => x.id === d.id)!
       const lines = bookings
-        .filter((b) => b.property.workspaceId === r.workspaceId && b.property.council === r.council && b.status === 'CONFIRMED' && inPeriod(b.checkIn, r))
+        .filter((b) => b.property.workspaceId === r.workspaceId && b.property.council === r.council && b.status === 'CONFIRMED' && inPeriod(b, r))
         .map((b) => newCalcs.get(b.id)!.calc)
       const t = sumReturnTotals(lines)
       await db.levyReturn.update({

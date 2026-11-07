@@ -6,6 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createBooking } from '@/server/actions/bookings'
+import { excludeVat } from '@/levy/vat'
+
+function netOfVat(pence: number, fd: FormData): number {
+  return fd.get('amountsIncludeVat') === 'on' ? excludeVat(pence) : pence
+}
 
 interface Props {
   properties: { id: string; name: string }[]
@@ -30,8 +35,8 @@ export function NewBookingForm({ properties }: Props) {
         checkOut: fd.get('checkOut') as string,
         adults: Number(fd.get('adults')),
         under18s: Number(fd.get('under18s') ?? 0),
-        guestPaidGrossPence: Math.round(Number(fd.get('guestPaidGross')) * 100),
-        extrasPence: Math.round(Number(fd.get('extras') ?? 0) * 100),
+        guestPaidGrossPence: netOfVat(Math.round(Number(fd.get('guestPaidGross')) * 100), fd),
+        extrasPence: netOfVat(Math.round(Number(fd.get('extras') ?? 0) * 100), fd),
         commissionPence: fd.get('commission') ? Math.round(Number(fd.get('commission')) * 100) : undefined,
         payoutPence: fd.get('payout') ? Math.round(Number(fd.get('payout')) * 100) : undefined,
         currency: 'GBP',
@@ -81,7 +86,7 @@ export function NewBookingForm({ properties }: Props) {
           <Input id="bookedAt" name="bookedAt" type="date" required
             defaultValue={new Date().toISOString().slice(0, 10)} />
         </Field>
-        <Field id="firstPaymentAt" label="First payment date">
+        <Field id="firstPaymentAt" label="First non-refundable payment date (needed if booked before 1 Oct 2025)">
           <Input id="firstPaymentAt" name="firstPaymentAt" type="date" />
         </Field>
       </div>
@@ -120,9 +125,16 @@ export function NewBookingForm({ properties }: Props) {
         <p className="text-xs text-stone-400">
           Enter the full amount the guest paid (including platform commission, excluding VAT on accommodation).
         </p>
-        <Field id="guestPaidGross" label="Guest-paid gross (£)">
+        <Field id="guestPaidGross" label="Guest-paid total incl. cleaning and platform fees charged to the guest (£)">
           <Input id="guestPaidGross" name="guestPaidGross" type="number" step="0.01" min="0" placeholder="0.00" required />
         </Field>
+        <label className="flex items-start gap-2 text-sm text-stone-700">
+          <input type="checkbox" name="amountsIncludeVat" className="mt-0.5" />
+          <span>
+            Amounts entered include 20% VAT
+            <span className="block text-xs text-stone-500">Tick if you are VAT-registered and entered VAT-inclusive prices. They are stored net of VAT, which the levy is calculated on.</span>
+          </span>
+        </label>
         <Field id="extras" label="Optional extras: meals, parking, laundry (£). Not standard cleaning">
           <Input id="extras" name="extras" type="number" step="0.01" min="0" defaultValue="0.00" />
         </Field>

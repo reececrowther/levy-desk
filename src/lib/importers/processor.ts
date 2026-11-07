@@ -6,6 +6,7 @@ import { toEngineBooking, toEngineProperty, calculationToDb } from '@/lib/levy-a
 import { validateRow } from './validator'
 import type { ColumnMappingDef, TargetField } from './presets'
 import type { BookingSource, BookingStatus } from '@prisma/client'
+import { excludeVat, VAT_INCLUSIVE_IMPORT_MARKER } from '@/levy/vat'
 
 export type RowResult = {
   rowIndex: number
@@ -53,6 +54,7 @@ async function recalculate(bookingId: string, extraFlags: string[] = []): Promis
 export async function processImportBatch(
   batchId: string,
   mapping: ColumnMappingDef,
+  options: { amountsIncludeVat?: boolean } = {},
 ): Promise<ProcessResult> {
   const batch = await db.importBatch.findUniqueOrThrow({
     where: { id: batchId },
@@ -147,12 +149,15 @@ export async function processImportBatch(
           checkOut: new Date(row.checkOut),
           adults: row.adults,
           under18s: row.under18s,
-          guestPaidGrossPence: row.guestPaidGrossPence,
-          extrasPence: row.extrasPence,
+          // Levy base is net of VAT: convert VAT-inclusive file amounts before storing.
+          guestPaidGrossPence: options.amountsIncludeVat ? excludeVat(row.guestPaidGrossPence) : row.guestPaidGrossPence,
+          extrasPence: options.amountsIncludeVat ? excludeVat(row.extrasPence) : row.extrasPence,
           commissionPence: row.commissionPence,
           payoutPence: row.payoutPence,
           status: row.status as BookingStatus,
-          rawImportRow: rawRow as Record<string, string>,
+          rawImportRow: (options.amountsIncludeVat
+            ? { ...rawRow, [VAT_INCLUSIVE_IMPORT_MARKER]: 'true' }
+            : rawRow) as Record<string, string>,
         },
       })
     } catch (err) {

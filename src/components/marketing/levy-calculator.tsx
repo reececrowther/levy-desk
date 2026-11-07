@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { calculate } from '@/levy/calculator'
 import { SCHEME_RULES } from '@/levy/rules'
 import type { AccommodationType, Country } from '@/levy/types'
+import { excludeVat } from '@/levy/vat'
 
 // ─── Council data ─────────────────────────────────────────────────────────────
 
@@ -46,6 +47,7 @@ interface Inputs {
   grossPounds: string
   accommodationType: AccommodationType
   vatRegistered: boolean
+  pricesIncludeVat: boolean
   adults: number
   under18s: number
 }
@@ -57,6 +59,7 @@ const DEFAULTS: Inputs = {
   grossPounds: '600',
   accommodationType: 'self_catering',
   vatRegistered: false,
+  pricesIncludeVat: true,
   adults: 2,
   under18s: 0,
 }
@@ -105,7 +108,8 @@ export function LevyCalculator({
       checkOut: inputs.checkOut,
       adults: inputs.adults,
       under18s: inputs.under18s,
-      guestPaidGrossPence: grossPence,
+      // Levy base is net of VAT; VAT-registered hosts usually quote VAT-inclusive prices.
+      guestPaidGrossPence: inputs.vatRegistered && inputs.pricesIncludeVat ? excludeVat(grossPence) : grossPence,
       extrasPence: 0,
       currency: 'GBP',
       status: 'confirmed' as const,
@@ -292,6 +296,17 @@ export function LevyCalculator({
           />
           <span className="text-sm text-stone-700">VAT-registered business</span>
         </label>
+        {inputs.vatRegistered && (
+          <label className="ml-6 flex items-center gap-2.5 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={inputs.pricesIncludeVat}
+              onChange={(e) => set('pricesIncludeVat', e.target.checked)}
+              className="h-4 w-4 rounded border-stone-300 text-orange-600 focus:ring-orange-500"
+            />
+            <span className="text-sm text-stone-700">Price entered includes 20% VAT (levy is worked out on the price net of VAT)</span>
+          </label>
+        )}
       </div>
 
       {/* ── Result ── */}

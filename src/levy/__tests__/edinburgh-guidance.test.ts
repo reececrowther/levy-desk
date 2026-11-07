@@ -137,3 +137,81 @@ describe('p.4: VAT on the levy goes to HMRC, not the council', () => {
     expect(netPayableToCouncil(r.levyPence, r.retentionPence)).toBe(1_000 - r.retentionPence)
   })
 })
+
+describe('p.10: stays commencing before 24 July 2026 are not liable', () => {
+  it('stay 23–28 July 2026 → £0', () => {
+    const r = calc(booking({ checkIn: '2026-07-23', checkOut: '2026-07-28', guestPaidGrossPence: 50_000 }))
+    expect(r.levyPence).toBe(0)
+  })
+  it('stay starting on 24 July 2026 is liable', () => {
+    const r = calc(booking({ checkIn: '2026-07-24', checkOut: '2026-07-26', guestPaidGrossPence: 20_000 }))
+    expect(r.levyPence).toBe(1_000)
+  })
+})
+
+describe('p.10: cut-off depends on payment before 1 October 2025, not the booking date alone', () => {
+  it('booked and paid before the cut-off → exempt', () => {
+    const r = calc(
+      booking({ bookedAt: '2025-09-01', firstPaymentAt: '2025-09-01', checkIn: '2026-08-01', checkOut: '2026-08-03', guestPaidGrossPence: 20_000 }),
+    )
+    expect(r.levyPence).toBe(0)
+  })
+  it('booked before the cut-off but first paid after → liable', () => {
+    const r = calc(
+      booking({ bookedAt: '2025-09-01', firstPaymentAt: '2025-11-01', checkIn: '2026-08-01', checkOut: '2026-08-03', guestPaidGrossPence: 20_000 }),
+    )
+    expect(r.levyPence).toBe(1_000)
+  })
+  it('booked before the cut-off with no payment date → charged and flagged, not silently exempted', () => {
+    const r = calc(
+      booking({ bookedAt: '2025-09-01', firstPaymentAt: undefined, checkIn: '2026-08-01', checkOut: '2026-08-03', guestPaidGrossPence: 20_000 }),
+    )
+    expect(r.levyPence).toBe(1_000)
+    expect(r.flags).toContain(Flag.PAYMENT_DATE_UNKNOWN)
+  })
+  it('booked after the cut-off with no payment date → charged, no flag', () => {
+    const r = calc(
+      booking({ bookedAt: '2026-02-01', firstPaymentAt: undefined, checkIn: '2026-08-01', checkOut: '2026-08-03', guestPaidGrossPence: 20_000 }),
+    )
+    expect(r.levyPence).toBe(1_000)
+    expect(r.flags).not.toContain(Flag.PAYMENT_DATE_UNKNOWN)
+  })
+})
+
+describe('p.8: 5-night cap — one-off fees charged in full, nightly price only for the first 5 nights', () => {
+  it('7 nights at £100 + £70 flat cleaning: base = 5 × £100 + £70 = £570 → levy £28.50', () => {
+    const r = calc(
+      booking({ checkIn: '2026-09-01', checkOut: '2026-09-08', guestPaidGrossPence: 77_000, perStayFeesPence: 7_000 }),
+    )
+    expect(r.nightsCharged).toBe(5)
+    expect(r.basePence).toBe(57_000)
+    expect(r.levyPence).toBe(2_850)
+  })
+  it('without a known one-off fee the whole total is averaged (previous behaviour)', () => {
+    const r = calc(booking({ checkIn: '2026-09-01', checkOut: '2026-09-08', guestPaidGrossPence: 77_000 }))
+    expect(r.basePence).toBe(55_000)
+  })
+  it('stays within the cap are unaffected by one-off fees', () => {
+    const r = calc(
+      booking({ checkIn: '2026-09-01', checkOut: '2026-09-04', guestPaidGrossPence: 37_000, perStayFeesPence: 7_000 }),
+    )
+    expect(r.basePence).toBe(37_000)
+  })
+})
+
+describe('p.3: levy base is net of VAT', () => {
+  it('£240 VAT-inclusive → £200 net → levy £10.00', async () => {
+    const { excludeVat } = await import('../vat')
+    expect(excludeVat(24_000)).toBe(20_000)
+    const r = calc(
+      booking({ checkIn: '2026-09-01', checkOut: '2026-09-03', guestPaidGrossPence: excludeVat(24_000) }),
+      { ...flat, vatRegistered: true },
+    )
+    expect(r.levyPence).toBe(1_000)
+  })
+  it('rounds to the nearest penny', async () => {
+    const { excludeVat } = await import('../vat')
+    expect(excludeVat(1_001)).toBe(834) // 834.17
+    expect(excludeVat(1_003)).toBe(836) // 835.83
+  })
+})

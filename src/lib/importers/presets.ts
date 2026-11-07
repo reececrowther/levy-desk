@@ -30,7 +30,7 @@ export type TargetField = (typeof TARGET_FIELDS)[number]
 export const TARGET_FIELD_LABELS: Record<TargetField, string> = {
   externalRef: 'Booking reference',
   bookedAt: 'Booking date',
-  firstPaymentAt: 'First payment date',
+  firstPaymentAt: 'First non-refundable payment date',
   checkIn: 'Check-in date',
   checkOut: 'Check-out date',
   adults: 'Adults',
