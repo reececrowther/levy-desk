@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { calculate } from '../calculator'
 import { SCHEME_RULES } from '../rules/index'
 import { Flag } from '../flags'
-import type { Booking, Property } from '../types'
+import type { Booking, Property, SchemeRule } from '../types'
 
 // ─── Shared fixtures ──────────────────────────────────────────────────────────
 
@@ -336,7 +336,35 @@ describe('Worked example 14 — Edinburgh quarterly return: correct quarter assi
   })
 })
 
-describe('Worked example 15 — Rule change: Edinburgh v2 at 6% from 2027-04-01', () => {
+// Hypothetical rule change used only to test rule versioning. It must never live in
+// SCHEME_RULES: a fake 6% rate there would be applied to real April 2027 stays.
+const RULES_WITH_HYPOTHETICAL_EDINBURGH_V2: SchemeRule[] = [
+  ...SCHEME_RULES,
+  {
+    ...SCHEME_RULES.find((r) => r.id === 'edinburgh-v1')!,
+    id: 'edinburgh-v2',
+    effectiveFrom: '2027-04-01',
+    rates: { ratePercent: 6 },
+    status: 'confirmed',
+  },
+]
+
+describe('Real Edinburgh rules: 5% continues after 1 April 2027 (no invented rate change)', () => {
+  it('April 2027 stay is charged at 5% under edinburgh-v1', () => {
+    const b = booking({
+      bookedAt: '2027-01-01',
+      firstPaymentAt: '2027-01-01',
+      checkIn: '2027-04-10',
+      checkOut: '2027-04-15',
+      guestPaidGrossPence: 50_000,
+    })
+    const result = calculate(b, edinburghProperty, { rules: SCHEME_RULES })
+    expect(result.schemeRuleId).toBe('edinburgh-v1')
+    expect(result.levyPence).toBe(2_500)
+  })
+})
+
+describe('Worked example 15 — Rule change: hypothetical Edinburgh v2 at 6% from 2027-04-01', () => {
   it('Q3 2026 stay uses v1 at 5%', () => {
     const b = booking({
       bookedAt: '2026-06-01',
@@ -345,7 +373,7 @@ describe('Worked example 15 — Rule change: Edinburgh v2 at 6% from 2027-04-01'
       checkOut: '2026-08-15',
       guestPaidGrossPence: 50_000,
     })
-    const result = calculate(b, edinburghProperty, { rules: SCHEME_RULES })
+    const result = calculate(b, edinburghProperty, { rules: RULES_WITH_HYPOTHETICAL_EDINBURGH_V2 })
     expect(result.schemeRuleId).toBe('edinburgh-v1')
     expect(result.levyPence).toBe(2_500)
   })
@@ -358,7 +386,7 @@ describe('Worked example 15 — Rule change: Edinburgh v2 at 6% from 2027-04-01'
       checkOut: '2027-04-15',
       guestPaidGrossPence: 50_000,
     })
-    const result = calculate(b, edinburghProperty, { rules: SCHEME_RULES })
+    const result = calculate(b, edinburghProperty, { rules: RULES_WITH_HYPOTHETICAL_EDINBURGH_V2 })
     expect(result.schemeRuleId).toBe('edinburgh-v2')
     // 5 nights × £100 × 6% = £30.00 = 3000p
     expect(result.levyPence).toBe(3_000)
@@ -457,8 +485,8 @@ describe('Edge case — stay in February (leap year 2028)', () => {
   })
 })
 
-describe('Edge case — Edinburgh, Booking.com source raises double-remit flag', () => {
-  it('raises BOOKING_COM_DOUBLE_REMIT', () => {
+describe('Edinburgh, Booking.com booking is charged like any other (provider remains liable)', () => {
+  it('does not raise BOOKING_COM_DOUBLE_REMIT and charges the levy', () => {
     const b = booking({
       source: 'booking_com',
       bookedAt: '2026-06-01',
@@ -468,7 +496,8 @@ describe('Edge case — Edinburgh, Booking.com source raises double-remit flag',
       guestPaidGrossPence: 50_000,
     })
     const result = calculate(b, edinburghProperty, { rules: SCHEME_RULES })
-    expect(result.flags).toContain(Flag.BOOKING_COM_DOUBLE_REMIT)
+    expect(result.flags).not.toContain(Flag.BOOKING_COM_DOUBLE_REMIT)
+    expect(result.levyPence).toBe(2_500) // 5% of £500
   })
 })
 
