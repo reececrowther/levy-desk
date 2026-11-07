@@ -2,7 +2,6 @@ import Papa from 'papaparse'
 import { db } from '@/lib/db'
 import { calculate } from '@/levy/calculator'
 import { SCHEME_RULES } from '@/levy/rules/index'
-import { Flag } from '@/levy/flags'
 import { toEngineBooking, toEngineProperty, calculationToDb } from '@/lib/levy-adapter'
 import { validateRow } from './validator'
 import type { ColumnMappingDef, TargetField } from './presets'
@@ -180,12 +179,8 @@ export async function processImportBatch(
       continue
     }
 
-    // Add Booking.com double-remit flag for levy councils
-    const extraFlags: string[] =
-      source === 'BOOKING_COM' ? [Flag.BOOKING_COM_DOUBLE_REMIT] : []
-
     // Row-level flags from validation
-    extraFlags.push(...row.flags)
+    const extraFlags: string[] = [...row.flags]
 
     try {
       await recalculate(booking.id, extraFlags)

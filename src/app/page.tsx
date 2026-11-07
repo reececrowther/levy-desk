@@ -50,7 +50,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "I list on Airbnb. Do I still need to file a return?",
-    a: "Yes. Even where Airbnb collects and remits the levy on your behalf, you are legally required to file a return — including a nil return for quarters with no bookings. Levy Desk flags Booking.com and Airbnb bookings separately and can generate nil returns in one click.",
+    a: "Yes. Airbnb, Booking.com and other platforms do not pay the levy to the council for you. Even when a platform collects it from the guest, you remain the liable person and must file the return and pay the council yourself, including a nil return for quarters with no bookings. Levy Desk imports your Airbnb and Booking.com exports and can generate nil returns in one click.",
   },
   {
     q: "What is the Edinburgh 5-night cap?",
@@ -62,7 +62,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Do I owe VAT on the levy?",
-    a: "Only if your business is VAT-registered. If it is, you charge 20% VAT on the levy amount itself and remit both to the council. Levy Desk calculates and breaks this out separately in the return pack.",
+    a: "Only if your business is VAT-registered. The levy counts as part of your turnover, so a VAT-registered business accounts for VAT on it to HMRC through its normal VAT return. VAT is not paid to the council: the council return covers the levy only. Levy Desk shows the VAT figure separately so you can pass it to your accountant.",
   },
   {
     q: "When are Edinburgh returns due?",
@@ -372,12 +372,12 @@ export default async function HomePage() {
               body="Bookings made and fully paid before 1 October 2025 are exempt from Edinburgh's levy, regardless of the stay date. Without tracking payment dates, you may file the wrong figures."
             />
             <ProblemCard
-              title="Platform remittance"
-              body="Booking.com remits Edinburgh's levy directly to the council. If you also include those bookings in your return, you double-pay. Levy Desk flags every Booking.com booking and prompts you to confirm."
+              title="Platforms don't pay it for you"
+              body="Airbnb and Booking.com do not pay the levy to the council on your behalf. Even if a platform collects it from the guest, you are the liable person and must include those bookings in your return. Leave them out and you underpay."
             />
             <ProblemCard
               title="VAT on the levy"
-              body="VAT-registered hosts must charge 20% VAT on the levy itself — not on the accommodation price. This is a separate line on the return. Edinburgh also allows a 2% host retention on top."
+              body="The levy is calculated on the accommodation price net of VAT. For VAT-registered hosts the levy then counts as turnover, so VAT on it goes to HMRC, not to the council. Getting this wrong means overpaying the council. Edinburgh also lets you keep 2% of the levy."
             />
           </div>
         </div>

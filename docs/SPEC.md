@@ -140,7 +140,7 @@ calculate(booking: Booking, property: Property, rules: SchemeRule[]): Calculatio
 |---|---|
 | `AMBIGUITY_EDINBURGH_CAP_START` | Stay starts before 2026-07-24; it is unclear whether the 5-night cap counts from night 1 or the first chargeable night |
 | `COMMISSION_UNKNOWN` | Only payout is known; gross needs confirming or grossing-up |
-| `BOOKING_COM_DOUBLE_REMIT` | Booking.com source — confirm who is remitting the levy |
+| `BOOKING_COM_DOUBLE_REMIT` | Legacy, no longer raised (platforms do not remit for hosts; see RULES.md) |
 | `BASE_IS_PAYOUT_NOT_GROSS` | Gross not available; flagged for host to supply |
 | `WELSH_GUEST_COUNT_MISSING` | Cardiff booking has no guest count; return is blocked |
 | `BOOKING_PRE_ACCOUNTING_DATE` | Cardiff booking made before 2026-09-28; host should confirm levy was priced in |
@@ -192,6 +192,6 @@ See flags enum in §6. Full detail in RULES.md.
 
 1. **Edinburgh 5-night cap boundary**: for stays starting before 2026-07-24, does the cap count from night 1 of the stay or from the first chargeable night?
 2. **Commission inside the base**: when only a payout is known, the gross must be confirmed.
-3. **Booking.com double-remit**: Booking.com attributed 5% levy since October 2025; host must confirm who remits.
+3. **Platform bookings** (resolved 2026-11-07): platforms do not remit for hosts; the host is liable for all bookings. See RULES.md.
 4. **Payout vs gross**: flag and request gross when only payout is available.
 5. **Welsh guest count**: block the return until guest count is supplied.

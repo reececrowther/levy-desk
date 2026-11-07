@@ -103,7 +103,7 @@ const STEPS = [
           </table>
         </div>
         <p className="mt-3 text-sm text-stone-500">
-          For each booking you need: check-in date, check-out date, total nights, and the gross accommodation income (excluding cleaning fees and damage deposits).
+          For each booking you need: check-in date, check-out date, total nights, and the gross accommodation income (including standard cleaning fees, excluding optional extras and refundable damage deposits).
         </p>
         <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
           <strong>Pre-commencement exemption:</strong> Bookings that were <em>both made and fully paid before 1 October 2025</em> are fully exempt. Remove these from your return before calculating.
@@ -214,7 +214,6 @@ const STEPS = [
           <li>Total levy charged (after applying the 5-night cap)</li>
           <li>Host retention amount (2% of levy)</li>
           <li>Net levy to remit (levy minus retention)</li>
-          <li>VAT on levy (if VAT-registered)</li>
         </ul>
         <div className="mt-3 rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
           <strong>Nil returns:</strong> If you had no liable bookings in the quarter you must still file a nil return. Select "Nil return" on the portal — no payment is required.
@@ -251,8 +250,8 @@ const FAQS = [
     a: 'File as soon as possible even if you have missed the deadline. Edinburgh City Council can issue a fixed penalty for late filing, followed by interest on unpaid levy. Filing late is always better than not filing at all. Contact the council directly if you have a genuine reason for the delay.',
   },
   {
-    q: 'My booking platform (e.g. Airbnb) collects the levy on my behalf. Do I still need to file?',
-    a: 'Yes. Even where a platform collects and remits the levy on your behalf, you are still legally required to file a quarterly return with Edinburgh City Council. The return confirms the total levy your platform remitted and accounts for any bookings the platform did not cover (e.g. direct bookings). Mark platform-remitted amounts clearly on the return form.',
+    q: 'My booking platform (e.g. Airbnb) collects the levy from guests. Do I still need to file?',
+    a: 'Yes. Platforms do not pay the levy to the council for you. Edinburgh Council guidance says that even when a booking is made through a third-party platform, the accommodation provider remains the liable person. Any levy the platform collects should be passed to you, and you include those bookings in your own return and pay the council.',
   },
   {
     q: 'How do I handle a stay that spans the quarter boundary (e.g. check-in 28 Sep, check-out 3 Oct)?',
@@ -376,7 +375,7 @@ export default function HowToFileEdinburghPage() {
             {[
               'Your Edinburgh short-term letting licence number',
               'A list of all bookings with check-in dates in the quarter',
-              'Gross accommodation income per booking (excluding cleaning fees)',
+              'Gross accommodation income per booking (including standard cleaning fees)',
               'Confirmation of any pre-commencement exempt bookings (made and paid before 1 Oct 2025)',
               'Your VAT registration number (if applicable)',
               'Your operator reference number from the Edinburgh portal',
@@ -415,7 +414,7 @@ export default function HowToFileEdinburghPage() {
               { label: 'Levy rate', value: '5%', note: 'of gross income' },
               { label: 'Night cap', value: '5 nights', note: 'per consecutive stay' },
               { label: 'Host retention', value: '2%', note: 'of total levy' },
-              { label: 'VAT on levy', value: '20%', note: 'if VAT-registered only' },
+              { label: 'VAT on levy', value: 'HMRC', note: 'if VAT-registered; not paid to the council' },
             ].map((f) => (
               <div key={f.label} className="rounded-xl border border-stone-200 bg-white p-4">
                 <p className="text-xs text-stone-500">{f.label}</p>

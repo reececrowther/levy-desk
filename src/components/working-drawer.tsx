@@ -16,7 +16,7 @@ import type { Calculation } from '@prisma/client'
 const FLAG_LABELS: Record<string, string> = {
   AMBIGUITY_EDINBURGH_CAP_START: 'Edinburgh cap ambiguity',
   COMMISSION_UNKNOWN: 'Commission unknown',
-  BOOKING_COM_DOUBLE_REMIT: 'Booking.com — confirm remittance',
+  BOOKING_COM_DOUBLE_REMIT: 'Booking.com (legacy check, recalculate to clear)',
   BASE_IS_PAYOUT_NOT_GROSS: 'Base is payout, not gross',
   WELSH_GUEST_COUNT_MISSING: 'Welsh guest count missing',
   BOOKING_PRE_ACCOUNTING_DATE: 'Booked before accounting date',

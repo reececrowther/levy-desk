@@ -1,7 +1,5 @@
 /**
  * Shared recalculate helper used by server actions and import processor.
- * Always re-injects source-level flags (e.g. BOOKING_COM_DOUBLE_REMIT) so
- * they survive edit/recalculate cycles without needing to be stored separately.
  */
 import { db } from './db'
 import { calculate } from '@/levy/calculator'

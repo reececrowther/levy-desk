@@ -46,7 +46,7 @@ const FILING_DEADLINES = [
 const FAQ = [
   {
     q: 'Does the Edinburgh visitor levy apply to my Airbnb bookings?',
-    a: "Yes. The levy applies to all short-term accommodation, including Airbnb, self-catering cottages, B&Bs, and hotels. Even where Airbnb collects and remits the levy on your behalf, you are still legally required to file a quarterly return with the City of Edinburgh Council.",
+    a: "Yes. The levy applies to all short-term accommodation, including Airbnb, self-catering cottages, B&Bs, and hotels. Airbnb does not pay the levy to the council for you: you are the liable person and must file a quarterly return and pay the City of Edinburgh Council yourself.",
   },
   {
     q: "What is Edinburgh's 5-night cap?",
@@ -66,7 +66,7 @@ const FAQ = [
   },
   {
     q: 'Do I owe VAT on the Edinburgh levy?',
-    a: 'Only if your business is VAT-registered. If it is, you charge 20% VAT on top of the levy and remit both to the council. Levy Desk calculates and breaks this out separately in the return pack.',
+    a: 'Only if your business is VAT-registered. The levy counts as part of your turnover, so a VAT-registered business accounts for VAT on it to HMRC through its normal VAT return. VAT is not paid to the council: the council return covers the levy only. Levy Desk shows the VAT figure separately so you can pass it to your accountant.',
   },
 ]
 
@@ -186,7 +186,7 @@ export default function EdinburghVisitorLevyPage() {
         <section className="space-y-4">
           <h2 className="text-lg font-semibold text-stone-900">How Edinburgh's levy is calculated</h2>
           <p className="text-stone-600 leading-relaxed">
-            Edinburgh charges <strong>5% of the gross guest-paid accommodation income</strong>, excluding any extras such as cleaning fees or damage deposits. For stays longer than 5 consecutive nights, only 5 nights' worth of income is used as the levy base.
+            Edinburgh charges <strong>5% of the gross guest-paid accommodation income</strong>, including standard cleaning fees (even when itemised separately) but excluding optional extras such as meals, parking and laundry, and refundable damage deposits. For stays longer than 5 consecutive nights, only 5 nights' worth of income is used as the levy base.
           </p>
           <div className="rounded-xl border border-stone-200 bg-white p-6 space-y-4">
             <h3 className="text-sm font-semibold text-stone-700 uppercase tracking-wide">Worked examples</h3>
@@ -215,7 +215,7 @@ export default function EdinburghVisitorLevyPage() {
             </div>
           </div>
           <p className="text-sm text-stone-500">
-            VAT-registered businesses must also charge 20% VAT on the levy and remit it separately. Levy Desk breaks this out automatically.
+            For VAT-registered businesses, the levy is calculated on the price net of VAT, and the levy itself counts as turnover: VAT on it is accounted for to HMRC, not paid to the council. Levy Desk shows it separately.
           </p>
         </section>
 
@@ -307,7 +307,7 @@ export default function EdinburghVisitorLevyPage() {
                   ['Levy collected', '5% of gross liable income. This is the amount due to the council before your retention.'],
                   ['Host retention', '2% of levy collected. You keep this — it covers your administration costs.'],
                   ['Net levy payable', 'Levy collected minus host retention. This is what you remit to Edinburgh Council.'],
-                  ['VAT on levy (if applicable)', '20% of levy collected, if you are VAT-registered. Remit to the council alongside the levy.'],
+                  ['VAT on levy (if applicable)', 'If you are VAT-registered, account for VAT on the levy to HMRC on your VAT return. Do not add it to the council payment.'],
                 ].map(([field, desc]) => (
                   <tr key={field}>
                     <td className="px-4 py-3 font-medium text-stone-900 align-top w-2/5">{field}</td>

@@ -44,7 +44,7 @@ const FAQ = [
   },
   {
     q: 'Does the levy apply to the cleaning fee?',
-    a: "It depends on how the cleaning fee is structured. Edinburgh Council's guidance states the levy applies to accommodation charges. Standard cleaning fees that are part of the accommodation package are typically included in the levy base. Check Edinburgh Council's official guidance or treat cleaning fees conservatively as liable until you receive written confirmation otherwise.",
+    a: "Yes, in almost all cases. Edinburgh Council's guidance for accommodation providers (September 2026) says standard cleaning is part of the accommodation cost even when it is itemised separately, because guests cannot book without it. Only a genuinely optional cleaning charge that guests can opt out of is excluded.",
   },
   {
     q: 'What is the Edinburgh pre-commencement exemption for Airbnb bookings?',

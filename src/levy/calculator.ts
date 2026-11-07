@@ -124,11 +124,10 @@ export function calculate(
     })
   }
 
-  // ── Booking.com double-remit flag ─────────────────────────────────────────
-  if (booking.source === 'booking_com' && property.council === 'edinburgh') {
-    flags.push(Flag.BOOKING_COM_DOUBLE_REMIT)
-    steps.push('Booking.com source: flag raised — confirm whether Booking.com is remitting the levy.')
-  }
+  // Platform bookings (Airbnb, Booking.com, etc.) are treated like any other booking:
+  // the accommodation provider remains the liable person and remits the levy.
+  // Source: Edinburgh guidance v2.1 (Sept 2026), pp.6-7. The former
+  // BOOKING_COM_DOUBLE_REMIT flag was based on an incorrect assumption and is no longer raised.
 
   // ── Highland proposed flag ────────────────────────────────────────────────
   if (rule.status === 'proposed') {

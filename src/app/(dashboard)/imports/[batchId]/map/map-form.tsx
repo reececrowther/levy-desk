@@ -46,8 +46,8 @@ export function MapForm({ batchId, source, filename, propertyName, headers }: Pr
         </p>
         {source === 'BOOKING_COM' && (
           <p className="mt-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-            Booking.com bookings will be flagged with <strong>BOOKING_COM_DOUBLE_REMIT</strong> — check
-            whether Booking.com has already collected the levy in your area before filing.
+            Booking.com does not pay the levy to the council for you. Include these bookings in your
+            return even if Booking.com collected the levy from the guest.
           </p>
         )}
       </div>

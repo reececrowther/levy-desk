@@ -81,7 +81,7 @@ Phases are sequential. Do not start a phase until the previous one is accepted.
 
 ### Acceptance criteria
 - An Airbnb CSV export can be uploaded without manual column mapping.
-- A Booking.com CSV export raises `BOOKING_COM_DOUBLE_REMIT` on every Edinburgh booking.
+- ~~A Booking.com CSV export raises `BOOKING_COM_DOUBLE_REMIT` on every Edinburgh booking.~~ Superseded 2026-11-07: platforms do not remit for hosts.
 - Duplicate rows (same source + externalRef) are silently skipped, not duplicated.
 - Rows with validation errors are shown with a plain-English description of the error; valid rows in the same file are imported successfully.
 - Missing guest count or gross flags the booking but does not prevent other bookings importing.
@@ -154,7 +154,7 @@ Phases are sequential. Do not start a phase until the previous one is accepted.
 |---|---|---|---|---|
 | R1 | Exact start dates for Glasgow, Aberdeen, Stirling, West Dunbartonshire not yet confirmed | High | High | Use conservative (month-start) defaults; flag UNVERIFIED_START_DATE; do not allow returns for those councils until dates are verified |
 | R2 | Edinburgh 5-night cap boundary ambiguity for split stays | Medium | Medium | Config option with conservative default; flag affected bookings; require host confirmation before locking return |
-| R3 | Booking.com double-remit for Edinburgh | High | High | Flag every Booking.com Edinburgh booking; block return until host confirms |
+| R3 | Booking.com double-remit for Edinburgh | Resolved | — | Council guidance v2.1 confirms platforms do not remit; flag retired 2026-11-07 |
 | R4 | Highland scheme may never pass | Medium | Low | Ship disabled; enable only per account with explicit warning |
 | R5 | Welsh register compliance — hosts may not register in time | Medium | Medium | Flag unregistered properties; remind on dashboard |
 | R6 | VAT threshold breach from levy turnover | Low | High | Rolling 12-month warning at £5,000 below threshold |

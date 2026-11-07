@@ -26,9 +26,10 @@ export const FLAG_DESCRIPTIONS: Record<string, FlagDescription> = {
     acknowledgeOnly: false,
   },
   [Flag.BOOKING_COM_DOUBLE_REMIT]: {
-    title: 'Booking.com — confirm who remits the levy',
+    // Legacy flag: no longer raised (Nov 2026). Kept so older stored calculations still render.
+    title: 'Booking.com booking (legacy check)',
     detail:
-      'Booking.com has been collecting and remitting the Edinburgh visitor levy on behalf of hosts since October 2025. If Booking.com is remitting the levy for this booking, you must not include it in your own return. Confirm below once you have checked.',
+      'This check is no longer needed. Edinburgh Council guidance confirms platforms do not pay the levy to the council for you, so Booking.com bookings must be included in your return. Recalculate the booking to clear this flag.',
     severity: 'warning',
     acknowledgeOnly: true,
   },

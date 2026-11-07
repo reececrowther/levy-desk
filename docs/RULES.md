@@ -1,7 +1,7 @@
 # Levy Desk — Scheme Rules
 
-**Last updated:** 2026-10-16
-**Status key:** VERIFIED = source read and rule confirmed | UNVERIFIED = needs manual check against source
+**Last updated:** 2026-11-07
+**Status key:** VERIFIED = source read and rule confirmed | UNVERIFIED = needs manual check against source | DISCREPANCY = source read, engine does not yet match it
 
 ---
 
@@ -16,7 +16,7 @@
 - Where breakfast is included in the room price, it is deducted at its **retail value** before applying the rate.
 - Calculated on the **full guest-paid price** including platform commission, not the host's payout.
 - Charged **per night per unit** (not per person).
-- Returns reported by **date of stay**, not booking date.
+- Returns reported by stay, not booking date. Edinburgh: a stay spanning two quarters belongs to the quarter of **check-out** (v2.1 p.13). Check each council.
 - **Cancelled bookings and no-shows**: levy owed is nil; any levy collected in advance is refunded to the guest.
 - **Quarterly returns** in arrears.
 - Records must be kept for **five years**.
@@ -26,43 +26,56 @@
 
 ## Scotland — Edinburgh
 
-**Status:** UNVERIFIED (source URLs read; detail requires manual verification against the official scheme document)
-**Sources:**
-- https://www.edinburgh.gov.uk/business/information-businesses
-- https://www.edinburgh.gov.uk/downloads/file/37836/edinburgh-visitor-levy-scheme-information-for-accommodation-providers
+**Status:** PARTLY VERIFIED (2026-11-07) against the council's official provider guidance. Items marked VERIFIED below match the source; items marked DISCREPANCY are known gaps between the engine and the guidance, scheduled for the next phase.
+**Primary source (read in full):**
+- City of Edinburgh Council, *Edinburgh Visitor Levy Scheme: Information for accommodation providers*, **Version 2.1, September 2026**: https://www.edinburgh.gov.uk/downloads/file/40692/edinburgh-visitor-levy-scheme-information-for-accommodation-providers
+**Other sources:**
+- https://www.edinburgh.gov.uk/business/scheme-edinburgh-visitor-levy/2 (scheme summary)
+- Airbnb Help Centre article 4105 (host is liable; Airbnb does not pay the council): https://www.airbnb.co.uk/help/article/4105
 
-### Rule version 1 (current)
+### Rule version 1 (current, no end date)
 
-| Field | Value |
-|---|---|
-| Rate | 5% |
-| Night cap | 5 consecutive nights per stay |
-| Stay start date | 2026-07-24 (stays before this date: £0) |
-| Booking cut-off | Bookings made **and** paid (in part or full) before 2025-10-01: £0 |
-| Retention | Provider keeps 2% of levy collected |
-| Filing period | Quarterly in arrears by stay date |
-| First return | Covers 2026-07-24 to 2026-09-30; submit 1–31 October 2026; payment due 13 November 2026 |
-| Status | Live |
+| Field | Value | Status / source (v2.1 page) |
+|---|---|---|
+| Rate | 5% of the accommodation-only portion, net of VAT | VERIFIED p.3 |
+| Night cap | First 5 consecutive nights **per chargeable transaction** (booking) | VERIFIED p.7 |
+| Cap valuation | Use the actual value of the first 5 nights, not an average; per-stay fees (e.g. one-off cleaning) are charged in full | DISCREPANCY: engine averages gross across all nights (phase 2) |
+| Stay start | Stays **commencing** on/after 2026-07-24. Stays that began before 24 July are not liable at all, even if they finish after | DISCREPANCY: engine charges post-24-July nights of such stays (phase 2) |
+| Booking cut-off | Exempt if paid in part or full before 2025-10-01. Payment must be tangible, room-attributable and **non-refundable** (refundable deposits do not count); booking must state specific dates, rooms and nightly price | VERIFIED p.10. DISCREPANCY: engine falls back to booking date when no payment date is recorded (phase 2) |
+| Levy base: cleaning | Standard cleaning **is included** even when itemised separately; excluded only if guests can genuinely opt out | VERIFIED p.4. Fixed 2026-11-07 (Airbnb preset no longer deducts Cleaning Fee) |
+| Levy base: extras | Exclude meals/drinks, parking, laundry, entertainment, transport when separately chargeable | VERIFIED p.3 |
+| Levy base: commission | Include commission charged to the visitor (OTA as agent). Exclude commission the provider pays the OTA that is not charged to the visitor. Wholesaler resale: use the provider's sale price | VERIFIED pp.5-7 |
+| Platform bookings | Provider remains the liable person. No agreement lets an OTA pay the council directly; OTA-collected levy is passed to the provider, who remits | VERIFIED pp.6-7. Fixed 2026-11-07 (`BOOKING_COM_DOUBLE_REMIT` no longer raised) |
+| VAT | Levy is turnover; VAT-registered providers account for VAT on it to **HMRC**. VAT is not part of the council payment | VERIFIED p.4. Fixed 2026-11-07 (net payable excludes VAT) |
+| Retention | Provider keeps 2% of total levy due; calculated by visitorlevy.scot on the return total | VERIFIED p.12 |
+| Cancellations / no-shows | Not payable if the visitor never takes entry; refund any levy collected. If the visitor took entry and is later refunded, levy is still due | VERIFIED pp.9-10 |
+| Gift cards, points, credit | Chargeable at GBP value | VERIFIED p.8 |
+| Complimentary stays | Genuinely free stays: no chargeable transaction | VERIFIED pp.8-9 |
+| Exemptions | Exempt individuals pay the provider and reclaim from the council (no provider-side logic). Charities can apply for a site exemption | VERIFIED p.11 |
+| Quarter assignment | Stay belongs to the quarter in which the visitor **checks out** | DISCREPANCY: engine uses check-in (phase 2) |
+| Deadlines | Return due within 30 days of quarter end; payment due ~44 days after quarter end (see table) | VERIFIED p.13 |
+| Portal | visitorlevy.scot | VERIFIED p.13 |
+| Return contents | **Monthly** figures: accommodation-only revenue, revenue from pre-1-Oct-2025 bookings, revenue from night 6 onwards; availability; (on request) occupied nights, etc. | VERIFIED p.14. DISCREPANCY: return pack gives quarterly totals (phase 3) |
+| Record retention | 5 years from submission (5 years after the stay for pre-Oct-2025 bookings) | VERIFIED p.15 |
+| Penalties | Penalty Framework approved 26 May 2026, published on the council website; due diligence taken into account | VERIFIED p.15 (amounts not yet recorded here) |
 
-### Ambiguity 1 — 5-night cap boundary for split stays
+### Edinburgh deadlines (v2.1 p.13)
 
-For a stay that **starts before 2026-07-24** and ends on or after 2026-07-24:
-- Conservative default: cap counts from the **first chargeable night** (i.e. the first night on or after 2026-07-24). This means up to 5 chargeable nights even if the stay is long.
-- Alternative reading: cap counts from night 1 of the stay regardless of chargeability.
-- **Config option:** `edinburghCapBasis`: `first_chargeable_night` (default) | `first_night_of_stay`
-- **Flag raised:** `AMBIGUITY_EDINBURGH_CAP_START`
-- This config option must be documented and the host must confirm their choice before locking a return containing affected bookings.
+| Stays | Submit return | Payment due |
+|---|---|---|
+| 24 Jul – 30 Sep 2026 | 1 – 30 Oct 2026 | by 13 Nov 2026 |
+| 1 Oct – 31 Dec 2026 | 1 – 30 Jan 2027 | by 13 Feb 2027 |
+| 1 Jan – 31 Mar 2027 | 1 – 30 Apr 2027 | by 14 May 2027 |
+| 1 Apr – 30 Jun 2027 | 1 – 30 Jul 2027 | by 13 Aug 2027 |
+| 1 Jul – 30 Sep 2027 | 1 – 30 Oct 2027 | by 13 Nov 2027 |
 
-### Rule version 2 (example for testing rule versioning — not a real rule change)
+### Removed: Ambiguity 1 (cap basis for stays crossing 24 July 2026)
 
-| Field | Value |
-|---|---|
-| Effective from | 2027-04-01 |
-| Rate | 6% |
-| Night cap | 5 consecutive nights per stay |
-| All other fields | Unchanged from version 1 |
+Resolved by v2.1 p.10: stays that commenced before 24 July 2026 are not liable at all. `edinburghCapBasis` and `AMBIGUITY_EDINBURGH_CAP_START` become redundant once the phase 2 fix lands.
 
-> This version exists solely to support worked example 15 (rule-change test). It is not a real legislative change. Remove or replace once actual future rates are known.
+### Removed: Rule version 2 (6% from 2027-04-01)
+
+This was a hypothetical rule added to test rule versioning, but it was live in `SCHEME_RULES`, so April 2027 stays were being charged 6%. Removed 2026-11-07; the versioning test now builds its own fixture. Any stored calculations for Edinburgh stays from 1 April 2027 must be recalculated.
 
 ---
 
@@ -217,9 +230,11 @@ For a stay that **starts before 2026-07-24** and ends on or after 2026-07-24:
 
 ---
 
-## Booking.com attribution note
+## Platform bookings (Airbnb, Booking.com, VRBO)
 
-Booking.com has attributed 5% of the nightly rate to the Edinburgh levy since October 2025. This means Booking.com may be collecting and remitting the levy on the guest's payment. **Raise `BOOKING_COM_DOUBLE_REMIT`** on every Booking.com booking for Edinburgh so the host confirms whether Booking.com is remitting and whether the host still owes anything.
+**Status:** VERIFIED for Edinburgh (v2.1 pp.6-7; Airbnb Help Centre 4105).
+
+Platforms do not pay the levy to the council on the host's behalf. The accommodation provider remains the liable person and includes platform bookings in their return. The former `BOOKING_COM_DOUBLE_REMIT` flag was based on an incorrect assumption and is no longer raised (kept in the enum only so older stored calculations still render). Re-check this for each new council.
 
 ---
 

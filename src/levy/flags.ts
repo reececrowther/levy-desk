@@ -5,7 +5,7 @@ export const Flag = {
   /** Only payout is known; gross must be confirmed or grossed-up */
   COMMISSION_UNKNOWN: 'COMMISSION_UNKNOWN',
 
-  /** Booking.com source for Edinburgh — confirm who is remitting the levy */
+  /** Legacy (no longer raised, Nov 2026): platforms do not remit for hosts. Kept for stored calculations. */
   BOOKING_COM_DOUBLE_REMIT: 'BOOKING_COM_DOUBLE_REMIT',
 
   /** Gross was not available; levy base calculated from payout */
