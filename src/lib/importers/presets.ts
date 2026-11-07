@@ -36,7 +36,7 @@ export const TARGET_FIELD_LABELS: Record<TargetField, string> = {
   adults: 'Adults',
   under18s: 'Under-18s',
   guestPaidGross: 'Guest-paid gross (£)',
-  extras: 'Extras / cleaning fee (£)',
+  extras: 'Optional extras: meals, parking, laundry (£)',
   commission: 'Platform commission (£)',
   payout: 'Host payout (£)',
   status: 'Booking status',
@@ -52,7 +52,8 @@ export const AIRBNB_PRESET: ColumnMappingDef = {
   checkOut: 'End Date',
   adults: 'Guests',
   guestPaidGross: 'Amount',
-  extras: 'Cleaning Fee',
+  // Cleaning Fee is deliberately NOT mapped to extras: Edinburgh guidance (v2.1, Sept 2026, p.4)
+  // says standard cleaning is part of the levy base even when itemised separately.
   commission: 'Host Fee',
   payout: 'Paid Out',
   status: 'Type',

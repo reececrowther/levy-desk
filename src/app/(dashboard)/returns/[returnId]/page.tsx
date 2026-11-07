@@ -91,7 +91,7 @@ export default async function ReturnPage({ params }: { params: Promise<{ returnI
       {/* Summary */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <SummaryCard label="Levy due" value={formatPence(levyReturn.totalLevyPence)} />
-        <SummaryCard label="VAT on levy" value={formatPence(levyReturn.totalVatOnLevyPence)} />
+        <SummaryCard label="VAT on levy (to HMRC)" value={formatPence(levyReturn.totalVatOnLevyPence)} />
         <SummaryCard label="Retention (host keeps)" value={formatPence(levyReturn.totalRetentionPence)} />
         <SummaryCard
           label="Net payable to council"

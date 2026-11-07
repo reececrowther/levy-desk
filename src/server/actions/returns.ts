@@ -8,6 +8,7 @@ import { requireWorkspace } from './auth-helpers'
 import { parseQuarterKey, scotlandDeadline } from '@/lib/quarters'
 import { sendNilReturnReminder } from '@/lib/email/reminders'
 import type { Prisma } from '@prisma/client'
+import { sumReturnTotals } from '@/levy/return-totals'
 
 const VALID_COUNCILS = [
   'edinburgh', 'glasgow', 'aberdeen', 'stirling', 'west_dunbartonshire', 'highland', 'cardiff',
@@ -59,19 +60,10 @@ export async function generateReturn(
     include: { calculation: true },
   })
 
-  // Aggregate totals — only bookings that have a completed calculation
-  let totalLevyPence = 0
-  let totalVatOnLevyPence = 0
-  let totalRetentionPence = 0
-
-  for (const b of bookings) {
-    if (!b.calculation) continue
-    totalLevyPence += b.calculation.levyPence
-    totalVatOnLevyPence += b.calculation.vatOnLevyPence
-    totalRetentionPence += b.calculation.retentionPence
-  }
-
-  const netPayablePence = totalLevyPence + totalVatOnLevyPence - totalRetentionPence
+  // Aggregate totals — only bookings that have a completed calculation.
+  // Net payable to the council excludes VAT on the levy (that goes to HMRC).
+  const { totalLevyPence, totalVatOnLevyPence, totalRetentionPence, netPayablePence } =
+    sumReturnTotals(bookings.flatMap((b) => (b.calculation ? [b.calculation] : [])))
 
   const levyReturn = await db.levyReturn.create({
     data: {

@@ -61,7 +61,7 @@ export function generateReturnCSV(s: ReturnSummary): string {
   lines.push(row(['Total nights charged', s.totalNightsCharged]))
   lines.push(row(['Total levy base', formatPence(s.totalBasePence)]))
   lines.push(row(['Total levy due', formatPence(s.totalLevyPence)]))
-  lines.push(row(['VAT on levy (if registered)', formatPence(s.totalVatOnLevyPence)]))
+  lines.push(row(['VAT on levy (pay to HMRC, not the council)', formatPence(s.totalVatOnLevyPence)]))
   lines.push(row(['Retention (kept by host)', formatPence(s.totalRetentionPence)]))
   lines.push(row(['Net payable to council', formatPence(s.netPayablePence)]))
   lines.push('')

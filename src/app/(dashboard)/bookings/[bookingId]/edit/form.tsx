@@ -132,7 +132,7 @@ export function EditBookingForm({ booking, properties }: Props) {
           <Input id="guestPaidGross" name="guestPaidGross" type="number" step="0.01" min="0"
             defaultValue={poundsFromPence(booking.guestPaidGrossPence)} required />
         </Field>
-        <Field id="extras" label="Separately priced extras — meals, parking (£)">
+        <Field id="extras" label="Optional extras: meals, parking, laundry (£). Not standard cleaning">
           <Input id="extras" name="extras" type="number" step="0.01" min="0"
             defaultValue={poundsFromPence(booking.extrasPence)} />
         </Field>

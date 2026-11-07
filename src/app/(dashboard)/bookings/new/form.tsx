@@ -123,7 +123,7 @@ export function NewBookingForm({ properties }: Props) {
         <Field id="guestPaidGross" label="Guest-paid gross (£)">
           <Input id="guestPaidGross" name="guestPaidGross" type="number" step="0.01" min="0" placeholder="0.00" required />
         </Field>
-        <Field id="extras" label="Separately priced extras — meals, parking (£)">
+        <Field id="extras" label="Optional extras: meals, parking, laundry (£). Not standard cleaning">
           <Input id="extras" name="extras" type="number" step="0.01" min="0" defaultValue="0.00" />
         </Field>
         <Field id="commission" label="Platform commission (£, optional)">

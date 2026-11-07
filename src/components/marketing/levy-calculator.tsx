@@ -227,7 +227,7 @@ export function LevyCalculator({
         {!isWales && (
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-stone-700">
-              Guest-paid gross (excl. extras)
+              Guest-paid total (incl. cleaning, excl. optional extras)
             </label>
             <div className="relative">
               <span className="absolute left-3 top-2.5 text-sm text-stone-400">£</span>
@@ -318,11 +318,11 @@ export function LevyCalculator({
                 Estimated levy
               </p>
               <p className="text-5xl font-bold text-stone-900 tracking-tight">
-                {pence(result.levyPence + result.vatOnLevyPence)}
+                {pence(result.levyPence)}
               </p>
               {result.vatOnLevyPence > 0 && (
                 <p className="text-xs text-stone-500 mt-1">
-                  Incl. {pence(result.vatOnLevyPence)} VAT on levy
+                  Plus {pence(result.vatOnLevyPence)} VAT on the levy, payable to HMRC (not the council)
                 </p>
               )}
             </div>
@@ -345,7 +345,7 @@ export function LevyCalculator({
               )}
               <Row label="Levy" value={pence(result.levyPence)} />
               {result.vatOnLevyPence > 0 && (
-                <Row label="VAT on levy (20%)" value={pence(result.vatOnLevyPence)} />
+                <Row label="VAT on levy (to HMRC)" value={pence(result.vatOnLevyPence)} />
               )}
               {result.retentionPence > 0 && (
                 <Row
@@ -357,7 +357,7 @@ export function LevyCalculator({
               <div className="border-t border-orange-200 pt-1.5">
                 <Row
                   label="Net payable to council"
-                  value={pence(result.levyPence + result.vatOnLevyPence - result.retentionPence)}
+                  value={pence(result.levyPence - result.retentionPence)}
                   bold
                 />
               </div>

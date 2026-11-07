@@ -49,7 +49,7 @@ export async function generateReturnPDF(s: ReturnSummary): Promise<Buffer> {
       ['Total nights charged', String(s.totalNightsCharged)],
       ['Levy base (accommodation gross minus exclusions)', formatPence(s.totalBasePence)],
       ['Levy due', formatPence(s.totalLevyPence)],
-      ['VAT on levy (20%, VAT-registered hosts only)', formatPence(s.totalVatOnLevyPence)],
+      ['VAT on levy: pay to HMRC on your VAT return, not to the council', formatPence(s.totalVatOnLevyPence)],
       ['Retention kept by host', formatPence(s.totalRetentionPence)],
     ]
 
