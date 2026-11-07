@@ -46,6 +46,9 @@ export default async function AdminPage() {
       <div>
         <h1 className="text-lg font-semibold">Admin</h1>
         <p className="text-sm text-stone-500">Platform overview — admin only</p>
+        <a href="/admin/maintenance" className="mt-2 inline-block text-sm text-orange-700 hover:underline">
+          Data maintenance: recalculate bookings →
+        </a>
       </div>
 
       {/* Summary stats */}

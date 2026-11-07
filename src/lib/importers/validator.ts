@@ -68,7 +68,7 @@ function pad(year: string, month: string, day: string): string {
 
 // ─── Currency helpers ──────────────────────────────────────────────────────────
 
-function parseCurrencyToPence(raw: string): number | null {
+export function parseCurrencyToPence(raw: string): number | null {
   if (!raw.trim()) return null
   // Strip currency symbols, spaces; handle (negative) and - negative
   const cleaned = raw.replace(/[£$€\s]/g, '').replace(/,/g, '')
