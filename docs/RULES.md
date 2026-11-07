@@ -81,17 +81,35 @@ This was a hypothetical rule added to test rule versioning, but it was live in `
 
 ## Scotland — Glasgow
 
-**Status:** UNVERIFIED
-**Source:** https://www.visitscotland.com/travel-planning/visitor-levy
+**Status:** VERIFIED (2026-11-07) against Glasgow City Council's own documents, except where marked.
+**Sources (read in full):**
+- Glasgow City Council, *Glasgow Visitor Levy Scheme: User Guide for Accommodation Providers* (**October 2025**): https://www.glasgow.gov.uk/media/22017/The-User-Guide-for-Accommodation-Providers/pdf/Glasgow_Visitor_Levy_User_Guide.pdf
+- City Administration Committee report, 19 June 2025: https://www.glasgow.gov.uk/media/20544/visitor-levy-committee-report/pdf/VL_REPORT_CAC_V2_FINAL_SM_002_002.pdf
+- Council page (start date, last modified 3 Nov 2026): https://www.glasgow.gov.uk/article/14799/Glasgow-s-Visitor-Levy
 
-| Field | Value |
-|---|---|
-| Rate | 5% |
-| Night cap | None stated |
-| Start date | January 2027 — **exact day UNVERIFIED** |
-| Status | Confirmed |
+Note: glasgow.gov.uk blocks automated fetches; the PDFs were downloaded with a browser user agent.
 
-> Exact start date must be verified before filing any Glasgow returns. Until verified, use 2027-01-01 as a conservative assumption and flag the booking with `UNVERIFIED_START_DATE`.
+### Rule version 1 (`glasgow-v1`)
+
+| Field | Value | Status / source |
+|---|---|---|
+| Start | Overnight accommodation from **25 January 2027** | VERIFIED (council page; user guide) |
+| Rate | 5% of the overnight accommodation portion, **net of VAT** | VERIFIED (user guide) |
+| Night cap | **None**: "the levy will apply for the entire duration of the stay" | VERIFIED (user guide; committee report 3.6) |
+| Booking cut-off | Advance bookings **made** before **1 April 2026** are out of scope (`bookingCutOffBasis: 'booking_date'`). The guide also mentions bookings "paid for in part or in full, from 1 April 2026"; we test the booking date, as the guide's explicit rule does | VERIFIED wording; payment nuance AMBIGUOUS |
+| Stays crossing 25 Jan 2027 | Not stated. Engine charges nights from 25 Jan and raises `PRE_START_STAY_UNCLEAR` (cautious default) | UNVERIFIED |
+| Retention | Provider keeps **1.5%** (example: £5,000 levy → keep £75, pay £4,925) | VERIFIED (user guide) |
+| Levy base | Accommodation only; excludes meals/drinks, laundry/services, entertainment, leisure facilities. Commission included where part of the transaction (VisitScotland guidance s.10) | VERIFIED (user guide) |
+| VAT | Levy is 5% of the net accommodation price; VAT on the levy goes to HMRC, not the council (worked hotel example) | VERIFIED (user guide) |
+| Returns | Quarterly, monthly revenue figures, via the national platform (Improvement Service; visitorlevy.scot). Submit within **30 days** of quarter end; pay within **14 days of submission**. First period 25 Jan – 31 Mar 2027: submit 1–30 Apr 2027, pay 1–14 May 2027 | VERIFIED (user guide) |
+| Quarter for stays spanning two quarters | Not stated. Engine uses check-out quarter (as Edinburgh) | UNVERIFIED |
+| Exemptions | Only/main residence cases (homelessness, poor housing, domestic abuse, asylum/refugee), gypsy/traveller sites; disability benefits: guest pays, reclaims from the council within a calendar month (paid within 28 days). No provider-side decision at point of sale | VERIFIED (user guide) |
+| Cancellations / refunds | Pre-paid cancellation: refund levy, do not remit. Refund after the guest stayed: levy still due | VERIFIED (user guide) |
+| Platforms | No statement that platforms remit; provider is the liable person under the Act | Consistent with Edinburgh; not stated by Glasgow |
+| Records | 5 years from submission | VERIFIED (user guide) |
+| Penalties | To be approved; guide will be revised | VERIFIED (user guide) |
+
+Operational note: the deadline-reminder cron only covers councils with `status: 'live'`. Set Glasgow to `live` on 25 January 2027 (before the first April deadline).
 
 ---
 

@@ -35,15 +35,15 @@ export const metadata: Metadata = {
 
 const FILING_DEADLINES = [
   { quarter: 'Q1 2027', period: '25 Jan – 31 Mar 2027', due: '30 Apr 2027', status: 'first' },
-  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '31 Jul 2027', status: 'upcoming' },
-  { quarter: 'Q3 2027', period: '1 Jul – 30 Sep 2027', due: '31 Oct 2027', status: 'upcoming' },
-  { quarter: 'Q4 2027', period: '1 Oct – 31 Dec 2027', due: '31 Jan 2028', status: 'upcoming' },
+  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '30 Jul 2027', status: 'upcoming' },
+  { quarter: 'Q3 2027', period: '1 Jul – 30 Sep 2027', due: '30 Oct 2027', status: 'upcoming' },
+  { quarter: 'Q4 2027', period: '1 Oct – 31 Dec 2027', due: '30 Jan 2028', status: 'upcoming' },
 ]
 
 const FAQ = [
   {
     q: 'When does the Glasgow visitor levy start?',
-    a: "Glasgow's visitor levy is confirmed to start from 1 January 2027. The exact start date has been confirmed in principle but operators should monitor Glasgow City Council's website for the formal commencement order.",
+    a: "Glasgow City Council confirms the scheme starts on 25 January 2027. Advance bookings made before 1 April 2026 are out of scope, so no levy applies to them even if the stay is after 25 January 2027.",
   },
   {
     q: "How is Glasgow's levy different from Edinburgh's?",
@@ -215,7 +215,7 @@ export default function GlasgowVisitorLevyPage() {
           <div className="space-y-3">
             {[
               { step: '1', title: 'Register with Glasgow City Council', desc: 'Monitor Glasgow City Council for the formal registration process for accommodation providers.' },
-              { step: '2', title: 'Audit your bookings from 1 Jan 2027', desc: 'Every confirmed booking with a check-in on or after the start date will be liable. Ensure your records are complete.' },
+              { step: '2', title: 'Audit your bookings from 25 Jan 2027', desc: 'Stays from 25 January 2027 are liable unless the booking was made before 1 April 2026. Make sure your records include the booking date.' },
               { step: '3', title: 'Update your pricing and guest information', desc: 'The levy is a charge to the guest. Review your listing pricing and ensure guests are informed at the point of booking.' },
               { step: '4', title: 'Set up your filing system', desc: 'Levy Desk imports Airbnb, Booking.com and other exports, calculates the levy, and queues your quarterly return for filing.' },
             ].map((item) => (
@@ -244,7 +244,7 @@ export default function GlasgowVisitorLevyPage() {
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Quarter</th>
                   <th className="px-4 py-3 text-left font-medium">Period</th>
-                  <th className="px-4 py-3 text-left font-medium">Due date</th>
+                  <th className="px-4 py-3 text-left font-medium">Return due (pay within 14 days)</th>
                   <th className="px-4 py-3 text-left font-medium">Status</th>
                 </tr>
               </thead>

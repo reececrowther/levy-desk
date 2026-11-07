@@ -28,9 +28,9 @@ export const metadata: Metadata = {
 
 const DEADLINES = [
   { quarter: 'Q1 2027', period: '25 Jan – 31 Mar 2027', due: '30 Apr 2027', status: 'first' },
-  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '31 Jul 2027', status: 'upcoming' },
-  { quarter: 'Q3 2027', period: '1 Jul – 30 Sep 2027', due: '31 Oct 2027', status: 'upcoming' },
-  { quarter: 'Q4 2027', period: '1 Oct – 31 Dec 2027', due: '31 Jan 2028', status: 'upcoming' },
+  { quarter: 'Q2 2027', period: '1 Apr – 30 Jun 2027', due: '30 Jul 2027', status: 'upcoming' },
+  { quarter: 'Q3 2027', period: '1 Jul – 30 Sep 2027', due: '30 Oct 2027', status: 'upcoming' },
+  { quarter: 'Q4 2027', period: '1 Oct – 31 Dec 2027', due: '30 Jan 2028', status: 'upcoming' },
 ]
 
 const FAQ = [
@@ -52,7 +52,7 @@ const FAQ = [
   },
   {
     q: 'Does the Glasgow levy apply to bookings made before 25 January 2027?',
-    a: "The levy applies to stays that begin on or after 25 January 2027. A booking made in December 2026 for a stay beginning 1 February 2027 is liable. A booking for a stay that ends before 25 January 2027 is not liable, even if it was made recently.",
+    a: "The levy applies to stays from 25 January 2027, but Glasgow City Council's user guide says advance bookings made before 1 April 2026 are out of scope. So a booking made in December 2026 for a stay beginning 1 February 2027 is liable, while one made in March 2026 for the same stay is not. A stay that ends before 25 January 2027 is never liable.",
   },
 ]
 
@@ -177,7 +177,7 @@ export default function HowToFileGlasgowPage() {
                     <li>Guest-paid accommodation price (gross, before any platform commission)</li>
                     <li>Check-in and check-out dates</li>
                     <li>Number of nights</li>
-                    <li>Whether the booking was made before or after 25 January 2027</li>
+                    <li>The date the booking was made (bookings made before 1 April 2026 are out of scope)</li>
                   </ul>
                 </div>
               </div>
@@ -252,7 +252,7 @@ export default function HowToFileGlasgowPage() {
                 <tr>
                   <th className="px-4 py-3 text-left font-medium">Quarter</th>
                   <th className="px-4 py-3 text-left font-medium">Period</th>
-                  <th className="px-4 py-3 text-left font-medium">Due date</th>
+                  <th className="px-4 py-3 text-left font-medium">Return due (pay within 14 days)</th>
                   <th className="px-4 py-3 text-left font-medium"></th>
                 </tr>
               </thead>

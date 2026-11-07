@@ -19,6 +19,13 @@ export const FLAG_DESCRIPTIONS: Record<string, FlagDescription> = {
     severity: 'warning',
     acknowledgeOnly: true,
   },
+  [Flag.PRE_START_STAY_UNCLEAR]: {
+    title: 'Stay began before the levy start date',
+    detail:
+      'This stay started before the council levy start date and ended after it. The council has not said whether such stays are liable, so the nights from the start date have been charged as a cautious default. Acknowledge, or check with the council if the amount matters.',
+    severity: 'warning',
+    acknowledgeOnly: true,
+  },
   [Flag.PAYMENT_DATE_UNKNOWN]: {
     title: 'Booked before 1 October 2025: payment date needed',
     detail:

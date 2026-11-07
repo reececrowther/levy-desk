@@ -29,6 +29,9 @@ export const Flag = {
   /** Booking made before the cut-off but no payment date recorded: levy charged until a payment date shows it is exempt */
   PAYMENT_DATE_UNKNOWN: 'PAYMENT_DATE_UNKNOWN',
 
+  /** Stay began before the scheme start; council guidance does not say whether it is liable. Nights from the start date charged (conservative). */
+  PRE_START_STAY_UNCLEAR: 'PRE_START_STAY_UNCLEAR',
+
   /** Council start date is unverified; exact day not confirmed in legislation */
   UNVERIFIED_START_DATE: 'UNVERIFIED_START_DATE',
 } as const

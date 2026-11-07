@@ -113,6 +113,18 @@ export interface SchemeRule {
   stayStartDate?: string
   /** Bookings made AND first-paid before this date (YYYY-MM-DD) owe nothing */
   bookingCutOffDate?: string
+  /**
+   * What the cut-off is tested against. 'first_payment' (default, Edinburgh v2.1 p.10):
+   * exempt only if a non-refundable payment was made before the cut-off.
+   * 'booking_date' (Glasgow user guide, Oct 2025): bookings MADE before the cut-off are out of scope.
+   */
+  bookingCutOffBasis?: 'first_payment' | 'booking_date'
+  /**
+   * Stays that commence before the scheme start but end after it.
+   * 'not_liable' (default, Edinburgh v2.1 p.10). 'nights_from_start': charge nights on/after
+   * the start and raise PRE_START_STAY_UNCLEAR (used where the council has not said).
+   */
+  preStartStays?: 'not_liable' | 'nights_from_start'
   /** Percentage of collected levy the provider retains (e.g. 2 = 2%) */
   retentionPercent: number
   filingFrequency: 'quarterly' | 'annual'

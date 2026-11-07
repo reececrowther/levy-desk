@@ -84,15 +84,19 @@ export function calculate(
     .sort((a, b) => (a.effectiveFrom > b.effectiveFrom ? -1 : 1))
     .at(0)
 
+  let preStartPartial = false
   if (!rule && property.country === 'scotland') {
     // Scotland: a stay that commenced before the scheme started is not liable at all,
-    // even if it ends after the start date (Edinburgh guidance v2.1 p.10; assumed for
-    // other Scottish councils, UNVERIFIED).
+    // even if it ends after the start date (Edinburgh guidance v2.1 p.10). Councils that
+    // have not said use 'nights_from_start' (charge from the start date, flagged).
     const firstRule = rules
       .filter((r) => r.council === property.council && r.enabled)
       .sort((a, b) => (a.effectiveFrom < b.effectiveFrom ? -1 : 1))
       .at(0)
-    if (firstRule && firstRule.effectiveFrom < booking.checkOut) {
+    if (firstRule && firstRule.effectiveFrom < booking.checkOut && firstRule.preStartStays === 'nights_from_start') {
+      rule = firstRule
+      preStartPartial = true
+    } else if (firstRule && firstRule.effectiveFrom < booking.checkOut) {
       return buildCalculation(booking, firstRule, {
         nightsCharged: 0, basePence: 0, exclusionsPence: 0, levyPence: 0,
         vatOnLevyPence: 0, retentionPence: 0, flags: [],
@@ -146,6 +150,14 @@ export function calculate(
   // Source: Edinburgh guidance v2.1 (Sept 2026), pp.6-7. The former
   // BOOKING_COM_DOUBLE_REMIT flag was based on an incorrect assumption and is no longer raised.
 
+  if (preStartPartial) {
+    flags.push(Flag.PRE_START_STAY_UNCLEAR)
+    steps.push(
+      `Stay began on ${booking.checkIn}, before the scheme start ${rule.effectiveFrom}. The council has not said whether such stays are liable; ` +
+        'nights from the start date are charged as a conservative default.',
+    )
+  }
+
   // ── Highland proposed flag ────────────────────────────────────────────────
   if (rule.status === 'proposed') {
     flags.push(Flag.HIGHLAND_PROPOSED)
@@ -153,7 +165,17 @@ export function calculate(
   }
 
   // ── Booking cut-off (Edinburgh: booked and paid before 2025-10-01) ────────
-  if (rule.bookingCutOffDate) {
+  if (rule.bookingCutOffDate && rule.bookingCutOffBasis === 'booking_date') {
+    // Glasgow user guide (Oct 2025): "advance bookings made before the 1 April 2026 are out of scope".
+    if (booking.bookedAt < rule.bookingCutOffDate) {
+      steps.push(`Booking made on ${booking.bookedAt}, before cut-off ${rule.bookingCutOffDate} — out of scope, levy is £0.00`)
+      return buildCalculation(booking, rule, {
+        nightsCharged: 0, basePence: 0, exclusionsPence: 0, levyPence: 0,
+        vatOnLevyPence: 0, retentionPence: 0, flags, steps,
+      })
+    }
+    steps.push(`Booking made on ${booking.bookedAt} — on or after cut-off ${rule.bookingCutOffDate}, levy applies.`)
+  } else if (rule.bookingCutOffDate) {
     // Exempt only if a (non-refundable) payment was made before the cut-off (Edinburgh v2.1 p.10).
     // The booking date alone is not enough: an unpaid early booking is still liable.
     const paymentDate = booking.firstPaymentAt

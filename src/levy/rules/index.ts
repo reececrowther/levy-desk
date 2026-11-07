@@ -21,20 +21,26 @@ export const SCHEME_RULES: SchemeRule[] = [
     roundingRule: 'half_up',
   },
 
-  // ─── Glasgow (confirmed; exact start day UNVERIFIED) ─────────────────────
+  // ─── Glasgow (verified 2026-11-07 against the council's User Guide, Oct 2025) ──
+  // 5% net of VAT, whole stay (no cap), from 25 Jan 2027, bookings made before
+  // 1 Apr 2026 out of scope, providers retain 1.5%.
   {
     id: 'glasgow-v1',
     council: 'glasgow',
     country: 'scotland',
-    effectiveFrom: '2027-01-01',
+    effectiveFrom: '2027-01-25',
     chargeType: 'percentage',
     rates: { ratePercent: 5 } satisfies PercentageRates,
-    retentionPercent: 0,
+    stayStartDate: '2027-01-25',
+    bookingCutOffDate: '2026-04-01',
+    bookingCutOffBasis: 'booking_date',
+    preStartStays: 'nights_from_start',
+    retentionPercent: 1.5,
     filingFrequency: 'quarterly',
     status: 'confirmed',
     enabled: true,
-    sourceUrl: 'https://www.visitscotland.com/travel-planning/visitor-levy',
-    verified: false,
+    sourceUrl: 'https://www.glasgow.gov.uk/media/22017/The-User-Guide-for-Accommodation-Providers/pdf/Glasgow_Visitor_Levy_User_Guide.pdf',
+    verified: true,
     roundingRule: 'half_up',
   },
 
