@@ -289,13 +289,15 @@ function CreateWorkspaceForm() {
     <form
       action={async (fd: FormData) => {
         'use server'
+        const type = fd.get('type') as 'OWNER' | 'AGENT' | 'ACCOUNTANT'
         await createWorkspace({
           name: fd.get('name') as string,
-          type: fd.get('type') as 'OWNER' | 'AGENT' | 'ACCOUNTANT',
+          type,
           vatRegistered: fd.get('vatRegistered') === 'true',
           vatNumber: (fd.get('vatNumber') as string) || undefined,
         })
-        redirect('/dashboard')
+        // GA4 'sign_up' key event, fired client-side by <TrackEvent />
+        redirect(`/dashboard?track=sign_up&ev_workspace_type=${type}`)
       }}
       className="space-y-4"
     >

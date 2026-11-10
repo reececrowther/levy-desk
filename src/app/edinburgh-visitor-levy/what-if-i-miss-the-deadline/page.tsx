@@ -7,9 +7,9 @@ import { DeadlineBanner } from '@/components/marketing/deadline-banner'
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: { absolute: 'What Happens if You Miss the Edinburgh Visitor Levy Deadline? | Levy Desk' },
+  title: { absolute: 'Missed the Edinburgh Visitor Levy Deadline? What to Do Now | Levy Desk' },
   description:
-    'Missed the Edinburgh visitor levy deadline? File immediately — a late return is always better than no return. Here is what penalties apply, how to contact the council, and how to avoid missing future deadlines.',
+    'Missed the Edinburgh visitor levy deadline? File on visitorlevy.scot now, even a nil return. What penalties and interest can apply, how to appeal, and how to contact the council.',
   keywords: [
     'Edinburgh visitor levy missed deadline',
     'Edinburgh visitor levy late filing',
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/edinburgh-visitor-levy/what-if-i-miss-the-deadline' },
   openGraph: {
-    title: 'What Happens if You Miss the Edinburgh Visitor Levy Deadline?',
-    description: 'Missed the Edinburgh levy filing deadline? File immediately. Here is what penalties apply and how to minimise them.',
+    title: 'Missed the Edinburgh Visitor Levy Deadline? What to Do Now',
+    description: 'File on visitorlevy.scot now, even a nil return. What penalties and interest can apply, and how to appeal.',
     type: 'article',
     locale: 'en_GB',
     siteName: 'Levy Desk',

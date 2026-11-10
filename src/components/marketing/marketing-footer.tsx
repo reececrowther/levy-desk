@@ -15,6 +15,7 @@ export function MarketingFooter() {
           <Link href="/edinburgh-visitor-levy" className="hover:text-stone-300 transition-colors">Edinburgh levy</Link>
           <Link href="/glasgow-visitor-levy" className="hover:text-stone-300 transition-colors">Glasgow levy</Link>
           <Link href="/cardiff-tourism-levy" className="hover:text-stone-300 transition-colors">Cardiff levy</Link>
+          <Link href="/letting-agents" className="hover:text-stone-300 transition-colors">For letting agents</Link>
         </nav>
       </div>
     </footer>

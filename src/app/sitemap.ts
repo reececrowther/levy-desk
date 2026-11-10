@@ -49,6 +49,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-10-30',
     },
     {
+      url: `${BASE_URL}/letting-agents`,
+      lastModified: '2026-11-10',
+    },
+    {
       url: `${BASE_URL}/glasgow-visitor-levy/how-to-file`,
       lastModified: '2026-10-30',
     },

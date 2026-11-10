@@ -7,9 +7,9 @@ import { DeadlineBanner } from '@/components/marketing/deadline-banner'
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: { absolute: 'How to File Your Edinburgh Visitor Levy Return — Step-by-Step Guide | Levy Desk' },
+  title: { absolute: 'How to File Your Edinburgh Visitor Levy Return (Due 30 Jan 2027) | Levy Desk' },
   description:
-    'Step-by-step guide to filing your Edinburgh visitor levy return. Covers registration, calculating the levy, applying the 5-night cap and 2% host retention, and submitting the quarterly return.',
+    'Filing on the visitorlevy.scot portal, step by step: what to enter, the 5-night cap, cleaning fees, 2% retention and the 30 January 2027 deadline for October to December stays.',
   keywords: [
     'Edinburgh visitor levy how to file',
     'Edinburgh visitor levy return',
@@ -20,17 +20,17 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/edinburgh-visitor-levy/how-to-file' },
   openGraph: {
-    title: 'How to File Your Edinburgh Visitor Levy Return',
+    title: 'How to File Your Edinburgh Visitor Levy Return (Due 30 Jan 2027)',
     description:
-      'Step-by-step guide: registration, calculating the levy, applying the 5-night cap and 2% retention, and submitting quarterly.',
+      'Filing on visitorlevy.scot step by step: what to enter, the 5-night cap, cleaning fees, 2% retention and the 30 January deadline.',
     type: 'article',
     locale: 'en_GB',
     siteName: 'Levy Desk',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'How to File Your Edinburgh Visitor Levy Return',
-    description: 'Step-by-step filing guide for Edinburgh holiday let owners. 5-night cap, 2% retention, quarterly deadlines.',
+    title: 'How to File Your Edinburgh Visitor Levy Return (Due 30 Jan 2027)',
+    description: 'Filing on visitorlevy.scot step by step: the 5-night cap, cleaning fees, 2% retention and the 30 January deadline.',
   },
 }
 

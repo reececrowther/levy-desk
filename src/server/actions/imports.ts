@@ -121,7 +121,8 @@ export async function processImport(
     amountsIncludeVat: formData.get('amountsIncludeVat') === 'on',
   })
   revalidatePath('/bookings')
-  redirect(`/imports/${batchId}/results`)
+  // GA4 'import_completed' key event, fired client-side by <TrackEvent />
+  redirect(`/imports/${batchId}/results?track=import_completed`)
 }
 
 const SaveMappingSchema = z.object({

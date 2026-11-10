@@ -59,8 +59,10 @@ export function MapForm({ batchId, source, filename, propertyName, headers, vatR
           <span>
             Amounts in this file include 20% VAT
             <span className="block text-xs text-stone-500">
-              The levy is calculated on prices net of VAT. Ticked by default because your workspace is
-              {vatRegistered ? ' ' : ' not '}VAT-registered; amounts will be converted before saving.
+              The levy is calculated on prices net of VAT.{' '}
+              {vatRegistered
+                ? 'Ticked by default because your workspace is VAT-registered; amounts will be converted before saving.'
+                : 'Unticked by default because your workspace is not VAT-registered.'}
             </span>
           </span>
         </label>

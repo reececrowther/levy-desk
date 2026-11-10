@@ -5,9 +5,9 @@ import { MarketingFooter } from '@/components/marketing/marketing-footer'
 import { LevyCalculator } from '@/components/marketing/levy-calculator'
 
 export const metadata: Metadata = {
-  title: { absolute: 'Glasgow Visitor Levy — Rates, Rules & Calculator 2027 | Levy Desk' },
+  title: { absolute: 'Glasgow Visitor Levy: Starts 25 January 2027 (Rules & Calculator) | Levy Desk' },
   description:
-    "Glasgow's 5% visitor levy on holiday let gross income starts January 2027. No night cap. Quarterly returns. Free calculator and filing guide for Glasgow Airbnb and self-catering hosts.",
+    "Glasgow's 5% visitor levy starts on 25 January 2027. No night cap, hosts keep 1.5%, and bookings made before 1 April 2026 are out of scope. Free calculator and first-return dates for Glasgow hosts.",
   keywords: [
     'Glasgow visitor levy',
     'Glasgow tourist tax',
@@ -19,17 +19,17 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/glasgow-visitor-levy' },
   openGraph: {
-    title: 'Glasgow Visitor Levy — Rates, Rules & Calculator 2027',
+    title: 'Glasgow Visitor Levy: Starts 25 January 2027',
     description:
-      '5% levy on gross income from January 2027. No night cap. Free calculator and quarterly filing guide for Glasgow hosts.',
+      '5% from 25 January 2027, no night cap, hosts keep 1.5%. Free calculator and first-return dates for Glasgow hosts.',
     type: 'article',
     locale: 'en_GB',
     siteName: 'Levy Desk',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Glasgow Visitor Levy — Rates, Rules & Calculator 2027',
-    description: '5% levy on gross income from January 2027. No night cap. Free calculator for Glasgow hosts.',
+    title: 'Glasgow Visitor Levy: Starts 25 January 2027',
+    description: '5% from 25 January 2027, no night cap, hosts keep 1.5%. Free calculator for Glasgow hosts.',
   },
 }
 
@@ -47,7 +47,7 @@ const FAQ = [
   },
   {
     q: "How is Glasgow's levy different from Edinburgh's?",
-    a: "The rate is the same at 5% of gross accommodation income, but Glasgow does not apply a night cap. In Edinburgh, the levy is charged on a maximum of 5 consecutive nights per stay. In Glasgow, every night of a long stay is charged. Glasgow also has no host retention allowance, unlike Edinburgh's 2%.",
+    a: "The rate is the same at 5% of gross accommodation income, but Glasgow does not apply a night cap. In Edinburgh, the levy is charged on a maximum of 5 consecutive nights per stay. In Glasgow, every night of a long stay is charged. Glasgow hosts also keep 1.5% of the levy they collect, slightly less than Edinburgh's 2%.",
   },
   {
     q: 'Does Glasgow levy apply to Airbnb and short-term lets?',
@@ -58,8 +58,8 @@ const FAQ = [
     a: 'Start by registering with Glasgow City Council as an accommodation provider. Ensure your booking records are complete from the start date. Levy Desk can import your Airbnb or booking software exports and calculate the correct levy for each booking automatically.',
   },
   {
-    q: 'Will there be a transitional exemption like Edinburgh had?',
-    a: "Glasgow City Council has not confirmed a pre-commencement booking exemption equivalent to Edinburgh's. Until an exemption is formally announced, all bookings with stays commencing on or after the start date should be treated as liable. Levy Desk flags any uncertainty as an exception for your review.",
+    q: 'Is there a transitional exemption like Edinburgh had?',
+    a: "Yes. Glasgow City Council's user guide says advance bookings made before 1 April 2026 are out of scope, even if the stay is after 25 January 2027. Bookings made from 1 April 2026 onwards are liable for nights from 25 January 2027. The guide does not say how to treat a stay that starts before 25 January and ends after it, so Levy Desk charges only the nights from 25 January and flags the booking for your review.",
   },
 ]
 

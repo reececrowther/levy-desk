@@ -21,3 +21,9 @@ prisma/generated/
 *.swp
 .vercel
 .env*
+
+# Outreach prospect lists (contain named business contacts)
+docs/prospects-*.xlsx
+
+# Original demo video renders (large; web copy lives in public/videos)
+docs/demo-video/*.mp4

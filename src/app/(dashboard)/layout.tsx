@@ -5,6 +5,8 @@ import { auth } from '@/lib/auth'
 import { signOut } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { NavLink } from '@/components/nav-link'
+import { Suspense } from 'react'
+import { TrackEvent } from '@/components/track-event'
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -76,6 +78,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
       {/* Main area */}
       <main className="flex-1 overflow-auto">
+        <Suspense fallback={null}>
+          <TrackEvent />
+        </Suspense>
         {!member && (
           <div className="border-b border-amber-200 bg-amber-50 px-6 py-3 text-sm text-amber-800">
             You don't have a workspace yet.{' '}
