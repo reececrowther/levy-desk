@@ -1,0 +1,15 @@
+Date,Type,Confirmation Code,Booked,Start Date,End Date,Nights,Guest,Guests,Listing,Currency,Amount,Cleaning Fee,Host Fee,Paid Out,Demo note (delete before upload if you like)
+"Jan 22, 2027",Reservation,HMGL1000,"Oct 1, 2026","Jan 22, 2027","Jan 27, 2027",5,Mia Evans,2,Merchant City Loft,GBP,550.00,50.00,85.25,464.75,Crosses Glasgow start (25 Jan): only nights from 25 Jan charged
+"Jan 28, 2027",Reservation,HMGL1007,"Dec 1, 2026","Jan 28, 2027","Jan 31, 2027",3,Sam Lindqvist,2,Merchant City Loft,GBP,392.00,50.00,60.76,331.24,
+"Feb 6, 2027",Reservation,HMGL1014,"Sep 3, 2026","Feb 6, 2027","Feb 13, 2027",7,Daniel Rossi,2,Merchant City Loft,GBP,855.00,50.00,132.53,722.47,"Glasgow: no night cap, levy on all 7 nights"
+"Feb 14, 2027",Reservation,HMGL1021,"Dec 16, 2026","Feb 14, 2027","Feb 19, 2027",5,Marco Becker,2,Merchant City Loft,GBP,675.00,50.00,104.62,570.38,
+"Feb 20, 2027",Reservation,HMGL1028,"Mar 12, 2026","Feb 20, 2027","Feb 23, 2027",3,Lena Dubois,2,Merchant City Loft,GBP,365.00,50.00,56.58,308.42,Booked before 1 Apr 2026: out of scope for Glasgow
+"Feb 24, 2027",Reservation,HMGL1035,"Jan 12, 2027","Feb 24, 2027","Feb 27, 2027",3,Sophie Murphy,2,Merchant City Loft,GBP,398.00,50.00,61.69,336.31,
+"Feb 27, 2027",Reservation,HMGL1042,"Feb 6, 2027","Feb 27, 2027","Mar 4, 2027",5,Zara Becker,2,Merchant City Loft,GBP,685.00,50.00,106.17,578.83,
+"Mar 7, 2027",Reservation,HMGL1049,"Nov 7, 2026","Mar 7, 2027","Mar 9, 2027",2,James Novak,3,Merchant City Loft,GBP,312.00,50.00,48.36,263.64,
+"Mar 10, 2027",Reservation,HMGL1056,"Dec 24, 2026","Mar 10, 2027","Mar 13, 2027",3,Aisha Kowalski,4,Merchant City Loft,GBP,440.00,50.00,68.20,371.80,
+"Mar 14, 2027",Reservation,HMGL1063,"Nov 17, 2026","Mar 14, 2027","Mar 16, 2027",2,Lucas Evans,1,Merchant City Loft,GBP,314.00,50.00,48.67,265.33,
+"Mar 16, 2027",Reservation,HMGL1070,"Feb 6, 2027","Mar 16, 2027","Mar 19, 2027",3,Chloe Novak,4,Merchant City Loft,GBP,329.00,50.00,50.99,278.01,
+"Mar 22, 2027",Reservation,HMGL1077,"Jan 20, 2027","Mar 22, 2027","Mar 24, 2027",2,Tom Taylor,4,Merchant City Loft,GBP,324.00,50.00,50.22,273.78,
+"Mar 25, 2027",Reservation,HMGL1084,"Nov 29, 2026","Mar 25, 2027","Mar 27, 2027",2,Noah Rossi,2,Merchant City Loft,GBP,300.00,50.00,46.50,253.50,
+"Mar 28, 2027",Reservation,HMGL1091,"Feb 1, 2027","Mar 28, 2027","Mar 30, 2027",2,Freya Kowalski,2,Merchant City Loft,GBP,276.00,50.00,42.78,233.22,

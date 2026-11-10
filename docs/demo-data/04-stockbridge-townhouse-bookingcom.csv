@@ -1,0 +1,11 @@
+Reservation ID,Property Name,Guest Name,Reservation Creation Date,Arrival Date,Departure Date,Number of guests,Status,Currency,Amount,Commission Amount,Outstanding Balance,Demo note (delete before upload if you like)
+614100000,Stockbridge Townhouse,Daniel Murphy,2026-08-01,2026-11-19,2026-11-21,2,ok,GBP,519.00,77.85,441.15,
+614100013,Stockbridge Townhouse,Daniel Martin,2026-10-29,2026-11-21,2026-11-24,4,ok,GBP,758.00,113.70,644.30,
+614100026,Stockbridge Townhouse,Daniel Becker,2026-08-04,2026-11-24,2026-11-27,2,ok,GBP,971.00,145.65,825.35,
+614100039,Stockbridge Townhouse,Grace Lindqvist,2026-10-13,2026-11-27,2026-12-01,3,ok,GBP,1055.00,158.25,896.75,
+614100052,Stockbridge Townhouse,Sophie Evans,2026-11-01,2026-12-01,2026-12-04,2,ok,GBP,815.00,122.25,692.75,
+614100065,Stockbridge Townhouse,Grace Rossi,2026-10-04,2026-12-05,2026-12-07,2,ok,GBP,497.00,74.55,422.45,
+614100078,Stockbridge Townhouse,Noah Taylor,2026-11-17,2026-12-09,2026-12-11,2,ok,GBP,509.00,76.35,432.65,
+614100091,Stockbridge Townhouse,Tom Novak,2026-11-19,2026-12-11,2026-12-14,4,ok,GBP,740.00,111.00,629.00,
+614100104,Stockbridge Townhouse,Leo Martin,2026-10-28,2026-12-17,2026-12-21,2,ok,GBP,1071.00,160.65,910.35,
+614100117,Stockbridge Townhouse,Tom Taylor,2026-09-14,2026-12-24,2026-12-29,3,ok,GBP,1510.00,226.50,1283.50,

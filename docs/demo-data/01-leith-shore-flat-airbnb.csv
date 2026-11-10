@@ -1,0 +1,18 @@
+Date,Type,Confirmation Code,Booked,Start Date,End Date,Nights,Guest,Guests,Listing,Currency,Amount,Cleaning Fee,Host Fee,Paid Out,Demo note (delete before upload if you like)
+"Oct 1, 2026",Reservation,HMAL1000,"Jul 18, 2026","Oct 1, 2026","Oct 4, 2026",3,Ben Dubois,4,Leith Shore Flat,GBP,486.00,60.00,75.33,410.67,
+"Oct 4, 2026",Reservation,HMAL1007,"Jul 7, 2026","Oct 4, 2026","Oct 6, 2026",2,Lena Dubois,3,Leith Shore Flat,GBP,356.00,60.00,55.18,300.82,
+"Oct 9, 2026",Reservation,HMAL1014,"Aug 2, 2026","Oct 9, 2026","Oct 16, 2026",7,Oliver Martin,2,Leith Shore Flat,GBP,970.00,60.00,150.35,819.65,7 nights: levy only on the first 5 (Edinburgh cap)
+"Oct 21, 2026",Reservation,HMAL1021,"Sep 5, 2026","Oct 21, 2026","Oct 23, 2026",2,Mia Dubois,1,Leith Shore Flat,GBP,294.00,60.00,45.57,248.43,
+"Oct 25, 2026",Reservation,HMAL1028,"Aug 14, 2026","Oct 25, 2026","Oct 27, 2026",2,Noah Kowalski,4,Leith Shore Flat,GBP,366.00,60.00,56.73,309.27,
+"Oct 28, 2026",Reservation,HMAL1035,"Sep 16, 2026","Oct 28, 2026","Oct 30, 2026",2,Noah Becker,2,Leith Shore Flat,GBP,330.00,60.00,51.15,278.85,
+"Oct 31, 2026",Reservation,HMAL1042,"Aug 17, 2026","Oct 31, 2026","Nov 3, 2026",3,Daniel Evans,4,Leith Shore Flat,GBP,531.00,60.00,82.30,448.70,
+"Nov 3, 2026",Reservation,HMAL1049,"Oct 13, 2026","Nov 3, 2026","Nov 8, 2026",5,Zara Dubois,3,Leith Shore Flat,GBP,715.00,60.00,110.83,604.17,
+"Nov 11, 2026",Reservation,HMAL1056,"Sep 4, 2026","Nov 11, 2026","Nov 14, 2026",3,Ella Becker,2,Leith Shore Flat,GBP,444.00,60.00,68.82,375.18,
+"Nov 17, 2026",Reservation,HMAL1063,"Jul 22, 2026","Nov 17, 2026","Nov 20, 2026",3,Hannah Kowalski,4,Leith Shore Flat,GBP,393.00,60.00,60.91,332.09,
+"Nov 20, 2026",Cancelled reservation,HMAL1070,"Oct 30, 2026","Nov 20, 2026","Nov 23, 2026",3,Chloe Taylor,2,Leith Shore Flat,GBP,435.00,60.00,67.42,367.58,Cancelled before arrival: no levy
+"Nov 26, 2026",Reservation,HMAL1077,"Sep 14, 2026","Nov 26, 2026","Nov 30, 2026",4,James Novak,1,Leith Shore Flat,GBP,640.00,60.00,99.20,540.80,
+"Dec 2, 2026",Reservation,HMAL1084,"Aug 4, 2026","Dec 2, 2026","Dec 6, 2026",4,Leo Dubois,3,Leith Shore Flat,GBP,692.00,60.00,107.26,584.74,
+"Dec 8, 2026",Reservation,HMAL1091,"Oct 26, 2026","Dec 8, 2026","Dec 11, 2026",3,Zara Dubois,2,Leith Shore Flat,GBP,489.00,60.00,75.80,413.20,
+"Dec 14, 2026",Reservation,HMAL1098,"Sep 29, 2026","Dec 14, 2026","Dec 17, 2026",3,Lucas Rossi,1,Leith Shore Flat,GBP,486.00,60.00,75.33,410.67,
+"Dec 20, 2026",Reservation,HMAL1105,"Nov 24, 2026","Dec 20, 2026","Dec 22, 2026",2,Chloe Dubois,1,Leith Shore Flat,GBP,378.00,60.00,58.59,319.41,
+"Dec 29, 2026",Reservation,HMAL1112,"Sep 14, 2026","Dec 29, 2026","Jan 2, 2027",4,Mia Evans,2,Leith Shore Flat,GBP,900.00,60.00,139.50,760.50,New Year stay: goes in Q1 2027 (check-out quarter)

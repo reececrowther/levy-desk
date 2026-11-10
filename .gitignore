@@ -27,3 +27,7 @@ docs/prospects-*.xlsx
 
 # Original demo video renders (large; web copy lives in public/videos)
 docs/demo-video/*.mp4
+
+# Outreach email drafts (contain named business contacts; repo is public)
+docs/outreach-drafts-*.md
+docs/outreach-followups-*.md

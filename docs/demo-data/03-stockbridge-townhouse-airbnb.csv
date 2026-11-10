@@ -1,0 +1,10 @@
+Date,Type,Confirmation Code,Booked,Start Date,End Date,Nights,Guest,Guests,Listing,Currency,Amount,Cleaning Fee,Host Fee,Paid Out,Demo note (delete before upload if you like)
+"Oct 2, 2026",Reservation,HMST1000,"Jun 15, 2026","Oct 2, 2026","Oct 5, 2026",3,James Becker,2,Stockbridge Townhouse,GBP,944.00,95.00,146.32,797.68,
+"Oct 6, 2026",Reservation,HMST1007,"Aug 16, 2026","Oct 6, 2026","Oct 9, 2026",3,Grace Lindqvist,3,Stockbridge Townhouse,GBP,821.00,95.00,127.25,693.75,
+"Oct 11, 2026",Reservation,HMST1014,"Jul 26, 2026","Oct 11, 2026","Oct 14, 2026",3,Hannah Lindqvist,3,Stockbridge Townhouse,GBP,800.00,95.00,124.00,676.00,
+"Oct 15, 2026",Reservation,HMST1021,"Sep 6, 2026","Oct 15, 2026","Oct 17, 2026",2,Mia Becker,1,Stockbridge Townhouse,GBP,589.00,95.00,91.30,497.70,
+"Oct 17, 2026",Reservation,HMST1028,"Aug 26, 2026","Oct 17, 2026","Oct 20, 2026",3,Tom Murphy,2,Stockbridge Townhouse,GBP,1001.00,95.00,155.16,845.84,
+"Oct 23, 2026",Reservation,HMST1035,"Jul 11, 2026","Oct 23, 2026","Oct 31, 2026",8,Zara Kowalski,6,Stockbridge Townhouse,GBP,2175.00,95.00,337.12,1837.88,"8 nights, VAT-registered owner: levy on net price, VAT on levy to HMRC"
+"Nov 3, 2026",Reservation,HMST1042,"Aug 6, 2026","Nov 3, 2026","Nov 5, 2026",2,Ella Kowalski,4,Stockbridge Townhouse,GBP,563.00,95.00,87.27,475.73,
+"Nov 6, 2026",Reservation,HMST1049,"Aug 16, 2026","Nov 6, 2026","Nov 10, 2026",4,Lucas Taylor,4,Stockbridge Townhouse,GBP,1359.00,95.00,210.65,1148.35,
+"Nov 10, 2026",Reservation,HMST1056,"Aug 20, 2026","Nov 10, 2026","Nov 14, 2026",4,Ben Taylor,2,Stockbridge Townhouse,GBP,1123.00,95.00,174.06,948.94,
