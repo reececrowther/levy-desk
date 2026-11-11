@@ -411,6 +411,8 @@ export default function EdinburghVisitorLevyPage() {
               { href: '/edinburgh-visitor-levy/how-to-file', title: 'How to file your return', desc: 'Step-by-step: register, calculate, apply retention, submit.' },
               { href: '/edinburgh-visitor-levy/airbnb-hosts', title: 'Guide for Airbnb hosts', desc: 'Airbnb will not collect the levy for you — here is what to do.' },
               { href: '/edinburgh-visitor-levy/what-if-i-miss-the-deadline', title: 'Missed the deadline?', desc: 'What penalties apply and how to minimise them.' },
+              { href: '/edinburgh-visitor-levy/does-booking-com-pay-the-levy', title: 'Does Booking.com pay it for you?', desc: 'No: you file and pay, even if the platform collected it.' },
+              { href: '/edinburgh-visitor-levy/cleaning-fees', title: 'Is the cleaning fee included?', desc: 'Yes, even when itemised. Worked examples and the 5-night cap.' },
             ].map((g) => (
               <Link key={g.href} href={g.href} className="rounded-xl border border-stone-200 bg-white p-4 hover:border-orange-300 hover:bg-orange-50 transition-colors">
                 <p className="text-sm font-semibold text-stone-800">{g.title}</p>

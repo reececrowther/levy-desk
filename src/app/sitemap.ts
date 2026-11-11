@@ -53,6 +53,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: '2026-11-10',
     },
     {
+      url: `${BASE_URL}/edinburgh-visitor-levy/does-booking-com-pay-the-levy`,
+      lastModified: '2026-11-11',
+    },
+    {
+      url: `${BASE_URL}/edinburgh-visitor-levy/cleaning-fees`,
+      lastModified: '2026-11-11',
+    },
+    {
       url: `${BASE_URL}/glasgow-visitor-levy/how-to-file`,
       lastModified: '2026-10-30',
     },
