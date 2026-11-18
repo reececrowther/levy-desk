@@ -40,6 +40,9 @@ export async function GET(request: Request) {
     return new NextResponse('Unauthorised', { status: 401 })
   }
 
+  // Keep-alive: most days send nothing, and Supabase free pauses after 7 idle days.
+  await db.$queryRaw`SELECT 1`
+
   // Live Scotland councils only — Cardiff goes live April 2027, no deadline reminders yet
   const liveCouncils = [
     ...new Set(
