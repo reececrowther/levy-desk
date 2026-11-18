@@ -76,6 +76,8 @@ export function LevyCalculator({
   const [emailInput, setEmailInput] = useState('')
   const [emailState, setEmailState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const prevCouncil = useRef(defaultCouncil)
+  // The defaults already produce a result, so only count results after real input.
+  const touched = useRef(false)
 
   const [inputs, setInputs] = useState<Inputs>({
     ...DEFAULTS,
@@ -88,6 +90,7 @@ export function LevyCalculator({
   const isWales = council.country === 'wales'
 
   function set<K extends keyof Inputs>(key: K, value: Inputs[K]) {
+    touched.current = true
     setInputs((prev) => ({ ...prev, [key]: value }))
   }
 
@@ -135,9 +138,9 @@ export function LevyCalculator({
   }, [inputs, isWales, council.country])
 
   // Fire a GA4 event 800ms after the user stops changing inputs, if a valid
-  // result is showing. Fires again whenever the council changes.
+  // result is showing. Never fires for the untouched defaults on page load.
   useEffect(() => {
-    if (!result || result.schemeRuleId === 'no-rule') return
+    if (!touched.current || !result || result.schemeRuleId === 'no-rule') return
     const timer = setTimeout(() => {
       const g = typeof window !== 'undefined' && (window as Window & { gtag?: (...a: unknown[]) => void }).gtag
       if (g) {
