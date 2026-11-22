@@ -35,6 +35,17 @@ export function bookingInPeriod(
   return within(checkIn)
 }
 
+/**
+ * The month (YYYY-MM) a booking is reported in, on the same basis as its quarter.
+ * The guidance asks for monthly figures but doesn't say how to split a stay that
+ * crosses a month end; using the quarter's basis keeps the months summing to the
+ * quarter. UNVERIFIED (see docs/RULES.md, "Return contents").
+ */
+export function returnMonth(council: string, checkIn: Date, checkOut: Date): string {
+  const useCheckOut = usesCheckOutBasis(council) && checkIn.getTime() >= CHECK_OUT_BASIS_FROM.getTime()
+  return (useCheckOut ? checkOut : checkIn).toISOString().slice(0, 7)
+}
+
 /** Prisma filter equivalent of bookingInPeriod for a single council. */
 export function bookingPeriodWhere(
   council: string,

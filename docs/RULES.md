@@ -55,7 +55,7 @@
 | Quarter assignment | Stay belongs to the quarter in which the visitor **checks out** | VERIFIED p.13. Fixed 2026-11-07 (`src/lib/return-period.ts`). Transition: stays checking in before 1 Oct 2026 stay in their check-in quarter, because the first period's returns were already filed on that basis; avoids double reporting |
 | Deadlines | Return due within 30 days of quarter end; payment due ~44 days after quarter end (see table) | VERIFIED p.13 |
 | Portal | visitorlevy.scot | VERIFIED p.13 |
-| Return contents | **Monthly** figures: accommodation-only revenue, revenue from pre-1-Oct-2025 bookings, revenue from night 6 onwards; availability; (on request) occupied nights, etc. | VERIFIED p.14. DISCREPANCY: return pack gives quarterly totals (phase 3) |
+| Return contents | **Monthly** figures: accommodation-only revenue, revenue from pre-1-Oct-2025 bookings, revenue from night 6 onwards; availability; (on request) occupied nights, etc. | VERIFIED p.14. Fixed 2026-11-22: the return pack (page, CSV, PDF) gives the three required monthly figures, in total and per property (`src/levy/monthly-figures.ts`). UNVERIFIED: the guidance doesn't say which month a stay crossing a month end belongs to; we use the check-out month, matching the quarter rule. Availability and occupied nights (on request only) are not produced |
 | Record retention | 5 years from submission (5 years after the stay for pre-Oct-2025 bookings) | VERIFIED p.15 |
 | Penalties | Penalty Framework approved 26 May 2026, published on the council website; due diligence taken into account | VERIFIED p.15 (amounts not yet recorded here) |
 

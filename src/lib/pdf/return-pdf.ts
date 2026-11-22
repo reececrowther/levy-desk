@@ -1,6 +1,7 @@
 import PDFDocument from 'pdfkit'
 import { formatPence } from '@/lib/format'
 import type { ReturnSummary } from '@/lib/csv/return-csv'
+import { monthLabel } from '@/lib/return-monthly'
 
 const DARK = '#1a1a2e'
 const MID = '#4a5568'
@@ -66,6 +67,37 @@ export async function generateReturnPDF(s: ReturnSummary): Promise<Buffer> {
     doc.fillColor(ACCENT).fontSize(11).font('Helvetica-Bold').text(formatPence(s.netPayablePence), 50, y, { width: W, align: 'right' })
     y += 28
 
+    doc.moveTo(50, y).lineTo(50 + W, y).strokeColor(LINE).stroke()
+    y += 16
+
+    // ── Monthly figures for visitorlevy.scot (Edinburgh guidance v2.1 p.14) ──
+
+    doc.fillColor(DARK).fontSize(12).font('Helvetica-Bold').text('Monthly figures for visitorlevy.scot', 50, y)
+    y += 18
+    doc
+      .fillColor(LIGHT)
+      .fontSize(8)
+      .font('Helvetica')
+      .text('All properties. Stays count in the month the guest checked out. Per-property figures are in the CSV.', 50, y, { width: W })
+    y += 16
+    const mCols = [
+      { x: 50, w: 110, label: 'Month', align: 'left' as const },
+      { x: 165, w: 120, label: 'Accommodation only', align: 'right' as const },
+      { x: 290, w: 120, label: 'Booked before cut-off', align: 'right' as const },
+      { x: 415, w: 80 + (W - 445), label: 'Night 6 onwards', align: 'right' as const },
+    ]
+    for (const c of mCols) {
+      doc.fillColor(MID).fontSize(8).font('Helvetica-Bold').text(c.label, c.x, y, { width: c.w, align: c.align })
+    }
+    y += 14
+    for (const m of s.monthly.total) {
+      const cells = [monthLabel(m.month), formatPence(m.accommodationPence), formatPence(m.beforeCutOffPence), formatPence(m.beyondCapPence)]
+      mCols.forEach((c, i) => {
+        doc.fillColor(DARK).fontSize(9).font('Helvetica').text(cells[i]!, c.x, y, { width: c.w, align: c.align })
+      })
+      y += 15
+    }
+    y += 10
     doc.moveTo(50, y).lineTo(50 + W, y).strokeColor(LINE).stroke()
     y += 16
 

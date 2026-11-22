@@ -6,6 +6,7 @@ import { formatPence } from '@/lib/format'
 import { parseQuarterKey, scotlandDeadline, formatQuarterPeriod } from '@/lib/quarters'
 import { ReturnActions } from './return-actions'
 import { bookingPeriodWhere } from '@/lib/return-period'
+import { monthLabel, returnMonthlyFigures } from '@/lib/return-monthly'
 
 export default async function ReturnPage({ params }: { params: Promise<{ returnId: string }> }) {
   const { returnId } = await params
@@ -45,6 +46,22 @@ export default async function ReturnPage({ params }: { params: Promise<{ returnI
 
   const isLocked = levyReturn.lockedAt !== null
   const isNilReturn = bookings.filter((b) => b.calculation).length === 0
+  // One owner statement per client (agent workspaces); properties with no client get their own.
+  const clientIds = new Set(bookings.map((b) => b.property.clientId))
+  const clients = clientIds.size > 1 || !clientIds.has(null)
+    ? await db.client.findMany({
+        where: { workspaceId: member.workspaceId, id: { in: [...clientIds].filter((id): id is string => !!id) } },
+        select: { id: true, name: true },
+        orderBy: { name: 'asc' },
+      })
+    : []
+  const statements = clients.length === 0
+    ? []
+    : [
+        ...clients.map((c) => ({ key: c.id, label: c.name })),
+        ...(clientIds.has(null) ? [{ key: 'none', label: 'No client' }] : []),
+      ]
+  const monthly = returnMonthlyFigures(levyReturn.council, levyReturn.periodStart, levyReturn.periodEnd, bookings)
 
   return (
     <div className="p-6">
@@ -113,7 +130,41 @@ export default async function ReturnPage({ params }: { params: Promise<{ returnI
         isNilReturn={isNilReturn}
         status={levyReturn.status}
         filedRef={levyReturn.filedRef}
+        statements={statements}
       />
+
+      {/* Monthly figures the portal asks for (Edinburgh guidance v2.1 p.14) */}
+      {!isNilReturn && (
+        <div className="mt-8">
+          <h2 className="text-sm font-semibold">Monthly figures for visitorlevy.scot</h2>
+          <p className="mb-3 mt-1 text-xs text-stone-500">
+            The return asks for these for each month. Stays count in the month the guest checked out.
+            {monthly.byProperty.length > 1 && ' Figures for each property are in the CSV download.'}
+          </p>
+          <div className="overflow-x-auto rounded-lg border border-stone-200">
+            <table className="w-full text-sm">
+              <thead className="border-b border-stone-200 bg-stone-50 text-left text-xs text-stone-500">
+                <tr>
+                  <th className="px-3 py-2 font-medium">Month</th>
+                  <th className="px-3 py-2 font-medium text-right">Total paid for accommodation only</th>
+                  <th className="px-3 py-2 font-medium text-right">Booked before the cut-off</th>
+                  <th className="px-3 py-2 font-medium text-right">Night 6 onwards</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {monthly.total.map((m) => (
+                  <tr key={m.month}>
+                    <td className="px-3 py-2 text-xs">{monthLabel(m.month)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-xs">{formatPence(m.accommodationPence)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-xs">{formatPence(m.beforeCutOffPence)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-xs">{formatPence(m.beyondCapPence)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Per-booking appendix */}
       {bookings.length > 0 && (

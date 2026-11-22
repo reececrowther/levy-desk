@@ -5,6 +5,7 @@ import { generateReturnCSV } from '@/lib/csv/return-csv'
 import { parseQuarterKey } from '@/lib/quarters'
 import type { ReturnRow } from '@/lib/csv/return-csv'
 import { bookingPeriodWhere } from '@/lib/return-period'
+import { returnMonthlyFigures } from '@/lib/return-monthly'
 
 export async function GET(
   _req: Request,
@@ -33,8 +34,8 @@ export async function GET(
       ...bookingPeriodWhere(levyReturn.council, levyReturn.periodStart, levyReturn.periodEnd),
       status: 'CONFIRMED',
     },
-    include: { calculation: true, property: true },
-    orderBy: { checkIn: 'asc' },
+    include: { calculation: true, property: { include: { client: true } } },
+    orderBy: [{ property: { name: 'asc' } }, { checkIn: 'asc' }],
   })
 
   const quarter = parseQuarterKey(
@@ -44,6 +45,8 @@ export async function GET(
   const rows: ReturnRow[] = bookings
     .filter((b) => b.calculation)
     .map((b) => ({
+      property: b.property.name,
+      client: b.property.client?.name ?? '',
       externalRef: b.externalRef,
       checkIn: b.checkIn,
       checkOut: b.checkOut,
@@ -71,6 +74,7 @@ export async function GET(
     totalVatOnLevyPence: levyReturn.totalVatOnLevyPence,
     totalRetentionPence: levyReturn.totalRetentionPence,
     netPayablePence: levyReturn.netPayablePence,
+    monthly: returnMonthlyFigures(levyReturn.council, levyReturn.periodStart, levyReturn.periodEnd, bookings),
     rows,
   })
 

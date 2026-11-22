@@ -31,12 +31,25 @@ export async function GET(
   const isMember = levyReturn.workspace.members.some((m) => m.userId === session.user.id)
   if (!isMember) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  // Fetch bookings for this council+period, scoped to client if present
+  // One statement per owner: ?client=<id> (or "none" for properties with no client).
+  // A return that already belongs to a client is always scoped to that client.
+  const requested = req.nextUrl.searchParams.get('client')
+  let clientId: string | null | undefined = levyReturn.clientId ?? undefined
+  let client = levyReturn.client
+  if (!levyReturn.clientId && requested === 'none') {
+    clientId = null
+  } else if (!levyReturn.clientId && requested) {
+    client = await db.client.findFirst({ where: { id: requested, workspaceId: levyReturn.workspaceId } })
+    if (!client) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+    clientId = client.id
+  }
+
+  // Fetch bookings for this council+period, scoped to the client if one is chosen
   const properties = await db.property.findMany({
     where: {
       workspaceId: levyReturn.workspaceId,
       council: levyReturn.council,
-      ...(levyReturn.clientId ? { clientId: levyReturn.clientId } : {}),
+      ...(clientId !== undefined ? { clientId } : {}),
     },
     select: { id: true, name: true },
   })
@@ -59,7 +72,7 @@ export async function GET(
   const fmt = (d: Date) =>
     d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
   const period = `${fmt(levyReturn.periodStart)} to ${fmt(levyReturn.periodEnd)}`
-  const subjectName = levyReturn.client?.name ?? levyReturn.workspace.name
+  const subjectName = client?.name ?? (clientId === null ? 'Properties with no client' : levyReturn.workspace.name)
 
   const lines: string[] = [
     `Owner Statement — ${subjectName}`,
@@ -87,7 +100,7 @@ export async function GET(
     const checkOut = new Date(b.checkOut).toISOString().slice(0, 10)
     lines.push(
       [
-        `"${property}"`,
+        `"${property.replace(/"/g, '""')}"`,
         checkIn,
         checkOut,
         nights,
@@ -104,7 +117,8 @@ export async function GET(
   lines.push(`Levy disbursement note: £${(totalLevy / 100).toFixed(2)} is payable to the council as visitor levy.`)
 
   const csv = lines.join('\n')
-  const filename = `owner-statement-${levyReturn.council}-${period.replace(/\s/g, '-')}.csv`
+  const slug = subjectName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  const filename = `owner-statement-${slug}-${levyReturn.council}-${period.replace(/\s/g, '-')}.csv`
 
   return new NextResponse(csv, {
     headers: {

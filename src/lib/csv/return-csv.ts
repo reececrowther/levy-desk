@@ -1,7 +1,11 @@
 import { formatPence } from '@/lib/format'
 import type { Quarter } from '@/lib/quarters'
+import { monthLabel, type ReturnMonthly } from '@/lib/return-monthly'
+import type { MonthlyFigures } from '@/levy/monthly-figures'
 
 export type ReturnRow = {
+  property: string
+  client: string
   externalRef: string | null
   checkIn: Date
   checkOut: Date
@@ -29,6 +33,7 @@ export type ReturnSummary = {
   totalVatOnLevyPence: number
   totalRetentionPence: number
   netPayablePence: number
+  monthly: ReturnMonthly
   rows: ReturnRow[]
 }
 
@@ -66,10 +71,27 @@ export function generateReturnCSV(s: ReturnSummary): string {
   lines.push(row(['Net payable to council', formatPence(s.netPayablePence)]))
   lines.push('')
 
+  // Monthly figures the portal asks for (Edinburgh guidance v2.1 p.14)
+  lines.push(row(['MONTHLY FIGURES: enter these on visitorlevy.scot']))
+  lines.push(row(['Stays are counted in the month the guest checked out, as for the quarter.']))
+  lines.push(row(MONTHLY_HEADER))
+  for (const m of s.monthly.total) lines.push(row(monthlyCells('All properties', m)))
+  if (s.monthly.byProperty.length > 1) {
+    lines.push('')
+    lines.push(row(['MONTHLY FIGURES BY PROPERTY: use these if you file each property separately']))
+    lines.push(row(MONTHLY_HEADER))
+    for (const p of s.monthly.byProperty) {
+      for (const m of p.months) lines.push(row(monthlyCells(p.propertyName, m)))
+    }
+  }
+  lines.push('')
+
   // Appendix
   lines.push(row(['APPENDIX — per-booking detail']))
   lines.push(
     row([
+      'Property',
+      'Client',
       'Ref',
       'Check-in',
       'Check-out',
@@ -90,6 +112,8 @@ export function generateReturnCSV(s: ReturnSummary): string {
   for (const r of s.rows) {
     lines.push(
       row([
+        r.property,
+        r.client,
         r.externalRef ?? '',
         r.checkIn.toISOString().slice(0, 10),
         r.checkOut.toISOString().slice(0, 10),
@@ -109,6 +133,24 @@ export function generateReturnCSV(s: ReturnSummary): string {
   }
 
   return lines.join('\r\n')
+}
+
+const MONTHLY_HEADER = [
+  'Property',
+  'Month',
+  'Total paid for accommodation only (£)',
+  'Revenue from stays booked before the cut-off (£)',
+  'Revenue from night 6 onwards (£)',
+]
+
+function monthlyCells(label: string, m: MonthlyFigures): string[] {
+  return [
+    label,
+    monthLabel(m.month),
+    formatPence(m.accommodationPence),
+    formatPence(m.beforeCutOffPence),
+    formatPence(m.beyondCapPence),
+  ]
 }
 
 function councilLabel(slug: string): string {

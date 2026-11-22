@@ -9,9 +9,11 @@ type Props = {
   isNilReturn: boolean
   status: string
   filedRef?: string | null
+  /** One owner statement per client; empty for workspaces without clients */
+  statements?: { key: string; label: string }[]
 }
 
-export function ReturnActions({ returnId, isLocked, isNilReturn, status, filedRef }: Props) {
+export function ReturnActions({ returnId, isLocked, isNilReturn, status, filedRef, statements = [] }: Props) {
   const [pending, startTransition] = useTransition()
   const [showFilingForm, setShowFilingForm] = useState(false)
   const [refInput, setRefInput] = useState(filedRef ?? '')
@@ -31,6 +33,23 @@ export function ReturnActions({ returnId, isLocked, isNilReturn, status, filedRe
         <p className="text-sm text-green-700 font-medium">{successMsg}</p>
       )}
 
+      {statements.length > 0 && (
+        <div>
+          <p className="mb-1 text-xs text-stone-500">Owner statements (CSV, one per client)</p>
+          <div className="flex flex-wrap gap-2">
+            {statements.map((st) => (
+              <a
+                key={st.key}
+                href={`/api/returns/${returnId}/statement?client=${encodeURIComponent(st.key)}`}
+                className="rounded-md border border-stone-300 px-3 py-1.5 text-sm text-stone-700 hover:bg-stone-50"
+              >
+                {st.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-2">
         {/* Download CSV */}
         <a
@@ -48,13 +67,15 @@ export function ReturnActions({ returnId, isLocked, isNilReturn, status, filedRe
           Download PDF
         </a>
 
-        {/* Owner statement CSV */}
-        <a
-          href={`/api/returns/${returnId}/statement`}
-          className="rounded-md border border-stone-300 px-3 py-1.5 text-sm text-stone-700 hover:bg-stone-50"
-        >
-          Owner statement
-        </a>
+        {/* Owner statement CSV (per client when there are several) */}
+        {statements.length === 0 && (
+          <a
+            href={`/api/returns/${returnId}/statement`}
+            className="rounded-md border border-stone-300 px-3 py-1.5 text-sm text-stone-700 hover:bg-stone-50"
+          >
+            Owner statement
+          </a>
+        )}
 
         {/* Lock */}
         {!isLocked && (status === 'DRAFT' || status === 'READY') && (
