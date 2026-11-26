@@ -2,7 +2,8 @@
 
 import { redirect } from 'next/navigation'
 import { stripe } from '@/lib/stripe'
-import { STRIPE_PRICES, type PlanKey } from '@/lib/billing-config'
+import { FREE_TRIAL_DAYS, STRIPE_PRICES, type PlanKey } from '@/lib/billing-config'
+import { billableUnits } from '@/lib/billing'
 import { requireWorkspace } from './auth-helpers'
 import { db } from '@/lib/db'
 
@@ -39,7 +40,9 @@ export async function createCheckoutSession(plan: Exclude<PlanKey, 'FREE'>) {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
     mode: 'subscription',
-    line_items: [{ price: priceId, quantity: 1 }],
+    // Billed per property (per room for B&B); kept in step by syncSubscriptionQuantity.
+    line_items: [{ price: priceId, quantity: await billableUnits(workspace.id, plan) }],
+    subscription_data: { trial_period_days: FREE_TRIAL_DAYS },
     success_url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/account?upgraded=1`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/account`,
     metadata: { workspaceId: workspace.id, plan },

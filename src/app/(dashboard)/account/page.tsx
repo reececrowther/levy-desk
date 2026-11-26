@@ -105,9 +105,9 @@ export default async function AccountPage({
           <div className="flex flex-wrap gap-2">
             {plan === 'FREE' && (
               <>
-                <UpgradeButton plan="OWNER" label="Upgrade to Owner (£8/unit/month)" />
-                <UpgradeButton plan="AGENT" label="Upgrade to Agent (£25/month, 5 units included)" />
-                <UpgradeButton plan="BNB" label="Upgrade to B&B / Hotel (£25/property/month)" />
+                <UpgradeButton plan="OWNER" label="Upgrade to Owner (£6/property/month, first quarter free)" />
+                <UpgradeButton plan="AGENT" label="Upgrade to Agent (£4/property/month, £29 minimum, first quarter free)" />
+                <UpgradeButton plan="BNB" label="Upgrade to B&B / Hotel (£1.50/room/month, first quarter free)" />
               </>
             )}
             {hasSubscription && (

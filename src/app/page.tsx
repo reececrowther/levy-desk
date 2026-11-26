@@ -148,23 +148,23 @@ function SoftwareApplicationSchema() {
       {
         '@type': 'Offer',
         name: 'Owner',
-        price: '8',
+        price: '6',
         priceCurrency: 'GBP',
-        description: 'Unlimited properties, CSV/Excel import, Airbnb and Booking.com presets, PDF return packs',
+        description: '£6 per property per month (£5 above 10), CSV/Excel import, Airbnb and Booking.com presets, PDF return packs',
       },
       {
         '@type': 'Offer',
         name: 'Agent',
-        price: '25',
+        price: '29',
         priceCurrency: 'GBP',
-        description: 'Multiple clients, per-client return packs, owner statements, accountant read-only access',
+        description: '£4 per property per month, £29 minimum. Multiple clients, per-client return packs, owner statements, accountant read-only access',
       },
       {
         '@type': 'Offer',
         name: 'B&B / Hotel',
-        price: '25',
+        price: '1.50',
         priceCurrency: 'GBP',
-        description: 'Up to 10 rooms, room-level breakdown, PDF return packs, deadline reminders',
+        description: 'Priced per room, room-level breakdown, PDF return packs, deadline reminders',
       },
     ],
   }
@@ -467,7 +467,7 @@ export default async function HomePage() {
                   'Per-client return packs in PDF and CSV',
                   'Owner statements showing levy collected and remitted',
                   'Accountant read-only access at no extra cost',
-                  '£25/month includes 5 properties, then £5/property/month',
+                  '£4 per property per month (£29 minimum), first quarter free',
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <span className="mt-0.5 shrink-0 text-xs font-bold text-orange-500">✓</span>
@@ -495,8 +495,8 @@ export default async function HomePage() {
                 <p className="text-xs font-semibold uppercase tracking-wide text-stone-400 mb-3">Agent — worked example</p>
                 <div className="space-y-2 text-sm text-stone-600">
                   <div className="flex justify-between"><span>Properties under management</span><span className="font-medium text-stone-800">24</span></div>
-                  <div className="flex justify-between"><span>Monthly cost</span><span className="font-medium text-stone-800">£120/month</span></div>
-                  <div className="flex justify-between border-t border-stone-100 pt-2"><span>Per-property cost</span><span className="font-medium text-stone-800">£5/property</span></div>
+                  <div className="flex justify-between"><span>Monthly cost</span><span className="font-medium text-stone-800">£96/month</span></div>
+                  <div className="flex justify-between border-t border-stone-100 pt-2"><span>Per-property cost</span><span className="font-medium text-stone-800">£4/property</span></div>
                 </div>
               </div>
               <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-600">
@@ -512,7 +512,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-6xl px-6 py-16">
           <h2 className="text-2xl font-bold text-stone-900 mb-2">Pricing</h2>
           <p className="text-stone-500 mb-10">
-            Start free. Upgrade when you need more properties or clients.
+            Your first property is free, forever. Paid plans start with your first quarter free.
           </p>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <PricingCard
@@ -530,10 +530,11 @@ export default async function HomePage() {
             />
             <PricingCard
               plan="Owner"
-              price="£8"
-              per="unit / month"
+              price="£6"
+              per="property / month"
               features={[
                 'Unlimited properties',
+                '£5/property above 10',
                 'CSV and Excel import',
                 'Airbnb and Booking.com presets',
                 'Exceptions queue',
@@ -545,25 +546,25 @@ export default async function HomePage() {
             />
             <PricingCard
               plan="Agent"
-              price="£25"
-              per="/ month"
+              price="£4"
+              per="property / month"
               features={[
-                '5 units included',
+                '£29/month minimum (up to 7 properties)',
                 'Multiple clients',
                 'Per-client return packs',
                 'Owner statements',
                 'Accountant read-only access',
-                '£5/unit/month after 5',
+                'First quarter free',
               ]}
               cta="Get started free"
               href="/account"
             />
             <PricingCard
               plan="B&B / Hotel"
-              price="£25"
-              per="property / month"
+              price="£1.50"
+              per="room / month"
               features={[
-                'Up to 10 rooms',
+                '£1.20/room above 20 rooms',
                 'Room-level breakdown',
                 'PDF return packs',
                 'Deadline reminders',

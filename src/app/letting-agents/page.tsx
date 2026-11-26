@@ -88,7 +88,7 @@ const FAQ = [
   },
   {
     q: 'What does it cost?',
-    a: 'The Agent plan is £25 a month including 5 units, then £5 per unit per month.',
+    a: 'The Agent plan is £4 per property per month, with a £29 monthly minimum (that covers up to 7 properties). Your first quarter is free.',
   },
   {
     q: 'Can our accountant see the figures?',
@@ -198,7 +198,7 @@ export default function LettingAgentsPage() {
         <section className="rounded-xl border border-orange-200 bg-orange-50 p-6 space-y-2">
           <h2 className="text-xl font-semibold text-stone-900">Pricing</h2>
           <p className="text-stone-700">
-            <strong>£25 a month</strong> including 5 units, then <strong>£5 per unit</strong> per month.
+            <strong>£4 per property</strong> per month, with a <strong>£29 monthly minimum</strong> (up to 7 properties). Your first quarter is free.
           </p>
           <p className="text-sm text-stone-600">
             Free setup before the 30 January 2027 return: send one owner&apos;s export and I&apos;ll import October to

@@ -6,6 +6,7 @@ import { db } from '@/lib/db'
 import { lookupPostcode } from '@/lib/postcodes'
 import { requireWorkspace } from './auth-helpers'
 import { PLAN_LIMITS } from '@/lib/billing-config'
+import { syncSubscriptionQuantity } from '@/lib/billing'
 import type { AccommodationType, Country } from '@prisma/client'
 
 const PropertySchema = z.object({
@@ -67,6 +68,7 @@ export async function createProperty(input: PropertyFormValues) {
     },
   })
 
+  await syncSubscriptionQuantity(workspace.id)
   revalidatePath('/properties')
   return property
 }
@@ -82,6 +84,7 @@ export async function updateProperty(id: string, input: Partial<PropertyFormValu
     data,
   })
 
+  if (data.unitsOrRooms !== undefined) await syncSubscriptionQuantity(property.workspaceId)
   revalidatePath('/properties')
   revalidatePath(`/properties/${id}`)
   return updated
